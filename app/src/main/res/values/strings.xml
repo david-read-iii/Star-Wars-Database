@@ -1,3 +1,4 @@
 <resources>
+    <string name="short_app_name">SWDB</string>
     <string name="app_name">Star Wars Database</string>
 </resources>
