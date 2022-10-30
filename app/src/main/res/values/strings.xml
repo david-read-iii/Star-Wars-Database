@@ -1,3 +1,38 @@
 <resources>
+
+    <!-- App name strings. -->
+    <string name="short_app_name">SWDB</string>
     <string name="app_name">Star Wars Database</string>
+
+    <!-- CategoryActivity strings. -->
+    <string name="drawer_open_action_label">Open navigation drawer</string>
+    <string name="drawer_close_action_label">Close navigation drawer</string>
+    <string name="categories_label">Categories</string>
+
+    <!-- EmptyFragment strings. -->
+    <string name="people_in_empty_fragment_detail_text">People launched in EmptyFragment!</string>
+    <string name="films_in_empty_fragment_detail_text">Films launched in EmptyFragment!</string>
+    <string name="starships_in_empty_fragment_detail_text">Starships launched in EmptyFragment!</string>
+    <string name="vehicles_in_empty_fragment_detail_text">Vehicles launched in EmptyFragment!</string>
+    <string name="species_in_empty_fragment_detail_text">Species launched in EmptyFragment!</string>
+    <string name="planets_in_empty_fragment_detail_text">Planets launched in EmptyFragment!</string>
+
+    <!-- PeopleListFragment strings. -->
+    <string name="people_list_fragment_name">People</string>
+
+    <!-- FilmsListFragment strings. -->
+    <string name="films_list_fragment_name">Films</string>
+
+    <!-- StarshipsListFragment strings. -->
+    <string name="starships_list_fragment_name">Starships</string>
+
+    <!-- VehiclesListFragment strings. -->
+    <string name="vehicles_list_fragment_name">Vehicles</string>
+
+    <!-- SpeciesListFragment strings. -->
+    <string name="species_list_fragment_name">Species</string>
+
+    <!-- PlanetsListFragment strings. -->
+    <string name="planets_list_fragment_name">Planets</string>
+
 </resources>

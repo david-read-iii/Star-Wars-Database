@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_category"
+    app:startDestination="@id/people_list_fragment">
+
+    <fragment
+        android:id="@+id/people_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/people_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/people_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/films_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/films_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/films_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/starships_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/starships_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/starships_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/vehicles_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/vehicles_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/vehicles_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/species_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/species_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/species_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/planets_list_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:label="@string/planets_list_fragment_name"
+        tools:layout="@layout/fragment_empty">
+
+        <argument
+            android:name="DETAIL_TEXT_RES_ID"
+            android:defaultValue="@string/planets_in_empty_fragment_detail_text"
+            app:argType="reference" />
+
+    </fragment>
+
+</navigation>
