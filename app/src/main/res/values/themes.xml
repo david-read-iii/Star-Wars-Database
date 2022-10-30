@@ -1,11 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="Theme.StarWarsDatabase" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/yellow_500</item>
         <item name="colorPrimaryVariant">@color/yellow_500_dark</item>
         <item name="colorOnPrimary">@color/black</item>
-
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
@@ -15,6 +14,12 @@
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="theme">@style/ToolbarThemeOverlay</item>
+    </style>
+
+    <!-- Toolbar theme overlay. For setting action bar icon color tint. -->
+    <style name="ToolbarThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="colorOnPrimary">@color/black</item>
     </style>
 
 </resources>

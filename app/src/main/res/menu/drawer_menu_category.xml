@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/categories_label">
+
+        <menu>
+
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/people_list_fragment"
+                    android:title="@string/people_list_fragment_name" />
+
+                <item
+                    android:id="@+id/films_list_fragment"
+                    android:title="@string/films_list_fragment_name" />
+
+                <item
+                    android:id="@+id/starships_list_fragment"
+                    android:title="@string/starships_list_fragment_name" />
+
+                <item
+                    android:id="@+id/vehicles_list_fragment"
+                    android:title="@string/vehicles_list_fragment_name" />
+
+                <item
+                    android:id="@+id/species_list_fragment"
+                    android:title="@string/species_list_fragment_name" />
+
+                <item
+                    android:id="@+id/planets_list_fragment"
+                    android:title="@string/planets_list_fragment_name" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+</menu>
