@@ -4,6 +4,7 @@
     package="com.davidread.starwarsdatabase">
 
     <application
+        android:name=".di.ApplicationController"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
