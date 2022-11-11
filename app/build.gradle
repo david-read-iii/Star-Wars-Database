@@ -16,6 +16,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+    namespace 'com.davidread.starwarsdatabase'
 }
 
 dependencies {
