@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.davidread.starwarsdatabase.di.ApplicationController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
+import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 /**
@@ -60,11 +62,34 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to populate the UI with a dummy string for now.
+     * Sets up an observer to populate the UI with a dummy list for now.
      */
     private fun setupObserver() {
-        viewModel.testLiveData.observe(viewLifecycleOwner) {
-            binding.textView.text = it
+        viewModel.personListItems.observe(viewLifecycleOwner) {
+            binding.peopleList.apply {
+                adapter = PeopleListAdapter(
+                    it,
+                    { id -> onPersonItemClick(id) },
+                    { onErrorItemRetryClick() }
+                )
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
         }
+    }
+
+    /**
+     * Called when a person item is clicked in the list. Does nothing for now.
+     *
+     * @param id Id of the person item clicked.
+     */
+    private fun onPersonItemClick(id: Int) {
+        Snackbar.make(binding.root, "Person click with id=$id", Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Called when the retry button of an error item is clicked in the list. Does nothing for now.
+     */
+    private fun onErrorItemRetryClick() {
+        Snackbar.make(binding.root, "Error item retry click", Snackbar.LENGTH_SHORT).show()
     }
 }

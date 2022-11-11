@@ -1,10 +1,11 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.lifecycle.LiveData
+import com.davidread.starwarsdatabase.model.PersonListItem
 
 /**
  * Defines the structure of [PeopleListFragmentViewModelImpl].
  */
 interface PeopleListFragmentViewModel {
-    val testLiveData: LiveData<String>
+    val personListItems: LiveData<List<PersonListItem>>
 }
