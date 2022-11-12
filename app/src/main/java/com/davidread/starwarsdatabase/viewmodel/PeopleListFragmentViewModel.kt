@@ -7,5 +7,5 @@ import com.davidread.starwarsdatabase.model.view.PersonListItem
  * Defines the structure of [PeopleListFragmentViewModelImpl].
  */
 interface PeopleListFragmentViewModel {
-    val personListItems: LiveData<List<PersonListItem>>
+    val personListItemsLiveData: LiveData<List<PersonListItem>>
 }

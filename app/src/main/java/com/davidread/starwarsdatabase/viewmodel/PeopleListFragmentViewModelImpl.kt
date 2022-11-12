@@ -1,9 +1,14 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.util.extractIDFromURL
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -18,21 +23,49 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     /**
      * Emits a [List] of [PersonListItem]s that should be displayed in the UI.
      */
-    override val personListItems = MutableLiveData(getDummyList())
+    override val personListItemsLiveData = MutableLiveData<List<PersonListItem>>()
 
     /**
-     * Returns a dummy [List] of [PersonListItem]s.
+     * Container for managing resources used by `Disposable`s or their subclasses.
      */
-    private fun getDummyList(): List<PersonListItem> = listOf(
-        PersonListItem.PersonItem(1, "Luke Skywalker"),
-        PersonListItem.PersonItem(2, "C-3P0"),
-        PersonListItem.PersonItem(3, "R2-D2"),
-        PersonListItem.PersonItem(4, "Darth Vader"),
-        PersonListItem.PersonItem(5, "Leia Organa"),
-        PersonListItem.PersonItem(6, "Owen Lars"),
-        PersonListItem.PersonItem(7, "Beru Whitesun lars"),
-        PersonListItem.PersonItem(8, "R5-D4"),
-        PersonListItem.PersonItem(9, "Biggs Darklighter"),
-        PersonListItem.PersonItem(10, "Obi-Wan Kenobi")
-    )
+    private val disposable: CompositeDisposable = CompositeDisposable()
+
+    /**
+     * Called when this `ViewModel` is initialized. It sets up a subscription for getting a simple
+     * list of people from SWAPI to show in the UI.
+     */
+    init {
+        disposable.add(peopleRemoteDataSource.getPeople()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe {
+                personListItemsLiveData.postValue(listOf(PersonListItem.LoadingItem))
+            }
+            .subscribe(
+                { personResponse ->
+                    val personListItems = personResponse.results.map { person ->
+                        PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
+                    }
+                    personListItemsLiveData.postValue(personListItems)
+                },
+                { throwable ->
+                    personListItemsLiveData.postValue(listOf(PersonListItem.ErrorItem))
+                    Log.e(TAG, throwable.toString())
+                }
+            )
+        )
+    }
+
+    /**
+     * Called when this `ViewModel` is no longer used and will be destroyed. Clears any
+     * subscriptions held by [disposable] to prevent this `ViewModel` from leaking.
+     */
+    override fun onCleared() {
+        disposable.clear()
+        super.onCleared()
+    }
+
+    companion object {
+        private const val TAG = "PeopleListFragmentViewModelImpl"
+    }
 }

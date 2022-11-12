@@ -62,10 +62,10 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to populate the UI with a dummy list for now.
+     * Sets up an observer to populate the UI with a simple list from SWAPI for now.
      */
     private fun setupObserver() {
-        viewModel.personListItems.observe(viewLifecycleOwner) {
+        viewModel.personListItemsLiveData.observe(viewLifecycleOwner) {
             binding.peopleList.apply {
                 adapter = PeopleListAdapter(
                     it,
