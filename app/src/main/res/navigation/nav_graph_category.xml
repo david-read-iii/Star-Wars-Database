@@ -7,16 +7,9 @@
 
     <fragment
         android:id="@+id/people_list_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.PeopleListFragment"
         android:label="@string/people_list_fragment_name"
-        tools:layout="@layout/fragment_empty">
-
-        <argument
-            android:name="DETAIL_TEXT_RES_ID"
-            android:defaultValue="@string/people_in_empty_fragment_detail_text"
-            app:argType="reference" />
-
-    </fragment>
+        tools:layout="@layout/fragment_people_list" />
 
     <fragment
         android:id="@+id/films_list_fragment"
