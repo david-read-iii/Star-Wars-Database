@@ -7,7 +7,7 @@
 
         <variable
             name="personItem"
-            type="com.davidread.starwarsdatabase.model.PersonListItem.PersonItem" />
+            type="com.davidread.starwarsdatabase.model.view.PersonListItem.PersonItem" />
 
     </data>
 

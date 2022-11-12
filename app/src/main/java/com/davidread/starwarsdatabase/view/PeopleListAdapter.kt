@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.ListItemErrorBinding
 import com.davidread.starwarsdatabase.databinding.ListItemLoadingBinding
 import com.davidread.starwarsdatabase.databinding.ListItemPersonBinding
-import com.davidread.starwarsdatabase.model.PersonListItem
+import com.davidread.starwarsdatabase.model.view.PersonListItem
 import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
 
 /**

@@ -2,7 +2,7 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.davidread.starwarsdatabase.model.PersonListItem
+import com.davidread.starwarsdatabase.model.view.PersonListItem
 import javax.inject.Inject
 
 /**
