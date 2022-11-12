@@ -2,14 +2,18 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 import javax.inject.Inject
 
 /**
  * Exposes state and encapsulates business logic related to the people category list.
+ *
+ * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
+ * fetching people data from SWAPI.
  */
-class PeopleListFragmentViewModelImpl @Inject constructor() : ViewModel(),
-    PeopleListFragmentViewModel {
+class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
+    ViewModel(), PeopleListFragmentViewModel {
 
     /**
      * Emits a [List] of [PersonListItem]s that should be displayed in the UI.
