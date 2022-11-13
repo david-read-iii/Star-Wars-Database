@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
+import androidx.annotation.IntRange
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
@@ -23,7 +24,7 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     /**
      * Emits a [List] of [PersonListItem]s that should be displayed in the UI.
      */
-    override val personListItemsLiveData = MutableLiveData<List<PersonListItem>>()
+    override val personListItemsLiveData = MutableLiveData(listOf<PersonListItem>())
 
     /**
      * Container for managing resources used by `Disposable`s or their subclasses.
@@ -31,29 +32,17 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     /**
-     * Called when this `ViewModel` is initialized. It sets up a subscription for getting a simple
-     * list of people from SWAPI to show in the UI.
+     * [MutableList] of [PersonListItem] dataset that can be modified here. Should be exposed to the
+     * UI as a [List] when new items are fetched or state is updated.
+     */
+    private val personListItems = mutableListOf<PersonListItem>()
+
+    /**
+     * Called when this `ViewModel` is initially created. It sets up the initial subscription for
+     * getting page 1 of people to show in the UI.
      */
     init {
-        disposable.add(peopleRemoteDataSource.getPeople()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .doOnSubscribe {
-                personListItemsLiveData.postValue(listOf(PersonListItem.LoadingItem))
-            }
-            .subscribe(
-                { personResponse ->
-                    val personListItems = personResponse.results.map { person ->
-                        PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
-                    }
-                    personListItemsLiveData.postValue(personListItems)
-                },
-                { throwable ->
-                    personListItemsLiveData.postValue(listOf(PersonListItem.ErrorItem))
-                    Log.e(TAG, throwable.toString())
-                }
-            )
-        )
+        getPeople(1)
     }
 
     /**
@@ -63,6 +52,39 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     override fun onCleared() {
         disposable.clear()
         super.onCleared()
+    }
+
+    /**
+     * Sets up a subscription for getting a page of people (10 people in each page) from SWAPI to
+     * show in the UI. Exposes the data via [personListItemsLiveData] when done.
+     *
+     * @param page Which page of people to fetch.
+     */
+    override fun getPeople(@IntRange(from = 1) page: Int) {
+        disposable.add(peopleRemoteDataSource.getPeople(page)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe {
+                personListItems.add(PersonListItem.LoadingItem)
+                personListItemsLiveData.postValue(personListItems)
+            }
+            .subscribe(
+                { personResponse ->
+                    val newPersonItems = personResponse.results.map { person ->
+                        PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
+                    }
+                    personListItems.remove(PersonListItem.LoadingItem)
+                    personListItems.addAll(newPersonItems)
+                    personListItemsLiveData.postValue(personListItems)
+                },
+                { throwable ->
+                    personListItems.remove(PersonListItem.LoadingItem)
+                    personListItems.add(PersonListItem.ErrorItem)
+                    personListItemsLiveData.postValue(personListItems)
+                    Log.e(TAG, throwable.toString())
+                }
+            )
+        )
     }
 
     companion object {

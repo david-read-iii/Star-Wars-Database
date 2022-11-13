@@ -20,7 +20,7 @@ import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
  * [ViewType.ERROR_ITEM] is clicked.
  */
 class PeopleListAdapter(
-    private val personListItems: List<PersonListItem>,
+    var personListItems: List<PersonListItem>,
     private val onPersonItemClick: (id: Int) -> Unit,
     private val onErrorItemRetryClick: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -80,7 +80,7 @@ class PeopleListAdapter(
     /**
      * The possible view types of items.
      */
-    private enum class ViewType {
+    enum class ViewType {
         PERSON_ITEM, LOADING_ITEM, ERROR_ITEM
     }
 

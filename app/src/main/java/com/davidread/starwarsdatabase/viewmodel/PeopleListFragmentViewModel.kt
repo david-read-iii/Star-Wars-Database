@@ -8,4 +8,5 @@ import com.davidread.starwarsdatabase.model.view.PersonListItem
  */
 interface PeopleListFragmentViewModel {
     val personListItemsLiveData: LiveData<List<PersonListItem>>
+    fun getPeople(page: Int)
 }
