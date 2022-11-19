@@ -5,4 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Represents a person response from SWAPI.
  */
-data class PersonResponse(@SerializedName("results") val results: List<Person>)
+data class PersonResponse(
+    @SerializedName("results") val results: List<Person>,
+    @SerializedName("next") val next: String?
+)

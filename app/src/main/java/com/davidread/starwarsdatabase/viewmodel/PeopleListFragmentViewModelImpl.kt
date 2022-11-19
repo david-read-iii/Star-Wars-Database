@@ -27,6 +27,11 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     override val personListItemsLiveData = MutableLiveData(listOf<PersonListItem>())
 
     /**
+     * Whether all [PersonListItem]s have been fetched from SWAPI.
+     */
+    override val isAllPersonListItemsRequestedLiveData = MutableLiveData(false)
+
+    /**
      * Container for managing resources used by `Disposable`s or their subclasses.
      */
     private val disposable: CompositeDisposable = CompositeDisposable()
@@ -76,6 +81,9 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
                     personListItems.remove(PersonListItem.LoadingItem)
                     personListItems.addAll(newPersonItems)
                     personListItemsLiveData.postValue(personListItems)
+                    if (personResponse.next == null) {
+                        isAllPersonListItemsRequestedLiveData.postValue(true)
+                    }
                 },
                 { throwable ->
                     personListItems.remove(PersonListItem.LoadingItem)

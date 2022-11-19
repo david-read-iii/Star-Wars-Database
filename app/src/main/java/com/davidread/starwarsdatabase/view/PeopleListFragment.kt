@@ -101,9 +101,10 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to the [PeopleListAdapter]'s dataset. First, it updates the adapter with
-     * the latest dataset from the [viewModel]. Then, it takes some action depending on the last
-     * item in the dataset.
+     * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
+     * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
+     * second is responsible for removing the scroll listener from the [RecyclerView] when no more
+     * entries may be fetched for the dataset.
      */
     private fun setupObserver() {
         viewModel.personListItemsLiveData.observe(viewLifecycleOwner) { personListItems ->
@@ -119,6 +120,12 @@ class PeopleListFragment : Fragment() {
                     binding.peopleList.smoothScrollToPosition(personListItems.lastIndex)
                 }
                 else -> {}
+            }
+        }
+
+        viewModel.isAllPersonListItemsRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
+            if (isAllPersonListItemsRequested) {
+                binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
             }
         }
     }
