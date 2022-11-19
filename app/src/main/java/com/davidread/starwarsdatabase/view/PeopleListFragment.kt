@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
+import com.davidread.starwarsdatabase.model.view.PersonListItem
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
 import com.google.android.material.snackbar.Snackbar
@@ -41,6 +44,37 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
+     * Adapts a people list dataset onto the [RecyclerView] in the UI.
+     */
+    private val peopleListAdapter = PeopleListAdapter(
+        { id -> onPersonItemClick(id) },
+        { onErrorItemRetryClick() }
+    )
+
+    /**
+     * Detects whether the last view of the [RecyclerView] is visible. If so, it requests more
+     * people from the [viewModel] to add onto the dataset from SWAPI. It also removes the on scroll
+     * listener so duplicate requests are not made.
+     */
+    private val loadMorePeopleOnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val totalItemCount = layoutManager.itemCount
+            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+            val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
+
+            if (isLastItemVisible) {
+                recyclerView.removeOnScrollListener(this)
+                val page = ((totalItemCount - 1) / 10) + 2
+                viewModel.getPeople(page)
+            }
+        }
+    }
+
+    /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
      * dependency injection.
      */
@@ -50,29 +84,48 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be created. Sets up some dummy UI for now.
+     * Invoked when this fragment's view is to be created. It initializes the [RecyclerView], sets
+     * up an observer to the [PeopleListAdapter]'s dataset, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding.peopleList.apply {
+            adapter = peopleListAdapter
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
         setupObserver()
         return binding.root
     }
 
     /**
-     * Sets up an observer to populate the UI with a dummy list for now.
+     * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
+     * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
+     * second is responsible for removing the scroll listener from the [RecyclerView] when no more
+     * entries may be fetched for the dataset.
      */
     private fun setupObserver() {
-        viewModel.personListItems.observe(viewLifecycleOwner) {
-            binding.peopleList.apply {
-                adapter = PeopleListAdapter(
-                    it,
-                    { id -> onPersonItemClick(id) },
-                    { onErrorItemRetryClick() }
-                )
-                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        viewModel.personListItemsLiveData.observe(viewLifecycleOwner) { personListItems ->
+            /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
+             * new lists. */
+            peopleListAdapter.submitList(personListItems.toList())
+
+            when (personListItems.lastOrNull()) {
+                is PersonListItem.PersonItem -> {
+                    binding.peopleList.addOnScrollListener(loadMorePeopleOnScrollListener)
+                }
+                is PersonListItem.LoadingItem -> {
+                    binding.peopleList.smoothScrollToPosition(personListItems.lastIndex)
+                }
+                else -> {}
+            }
+        }
+
+        viewModel.isAllPersonListItemsRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
+            if (isAllPersonListItemsRequested) {
+                binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
             }
         }
     }
@@ -87,9 +140,11 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Called when the retry button of an error item is clicked in the list. Does nothing for now.
+     * Called when the retry button of an error item is clicked in the list. It requests more
+     * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorItemRetryClick() {
-        Snackbar.make(binding.root, "Error item retry click", Snackbar.LENGTH_SHORT).show()
+        val page = ((peopleListAdapter.itemCount - 2) / 10) + 2
+        viewModel.getPeople(page)
     }
 }

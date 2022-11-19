@@ -1,4 +1,4 @@
-package com.davidread.starwarsdatabase.model
+package com.davidread.starwarsdatabase.model.view
 
 /**
  * Represents a list item that appears in the people list.
@@ -8,10 +8,10 @@ sealed class PersonListItem {
     /**
      * Represents a list item for a person.
      *
-     * @param id Unique identifier for the person from the API.
-     * @param name Person's name.
+     * @property id Unique identifier for the person from the API.
+     * @property name Person's name.
      */
-    class PersonItem(val id: Int, val name: String) : PersonListItem()
+    data class PersonItem(val id: Int, val name: String) : PersonListItem()
 
     /**
      * Represents a list item for a loading view.

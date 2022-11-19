@@ -18,7 +18,7 @@ import com.davidread.starwarsdatabase.databinding.ActivityCategoryBinding
 class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     /**
-     * Allows easy access to view objects from the layout.
+     * Binding object for this activity's layout.
      */
     private val binding: ActivityCategoryBinding by lazy {
         ActivityCategoryBinding.inflate(layoutInflater)

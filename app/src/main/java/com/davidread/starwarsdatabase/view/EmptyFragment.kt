@@ -13,7 +13,7 @@ import com.davidread.starwarsdatabase.databinding.FragmentEmptyBinding
 class EmptyFragment : Fragment() {
 
     /**
-     * Allows easy access to view objects from the layout.
+     * Binding object for this fragment's layout.
      */
     private val binding: FragmentEmptyBinding by lazy {
         FragmentEmptyBinding.inflate(layoutInflater)

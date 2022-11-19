@@ -11,7 +11,7 @@ import javax.inject.Singleton
  * Defines the dependencies graph for the entire application.
  */
 @Singleton
-@Component(modules = [ViewModelModule::class])
+@Component(modules = [RemoteDataSourceModule::class, ViewModelModule::class])
 interface ApplicationGraph {
 
     /**
