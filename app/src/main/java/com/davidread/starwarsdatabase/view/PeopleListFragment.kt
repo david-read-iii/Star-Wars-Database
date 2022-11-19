@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
+import com.davidread.starwarsdatabase.model.view.PersonListItem
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
 import com.google.android.material.snackbar.Snackbar
@@ -46,37 +47,29 @@ class PeopleListFragment : Fragment() {
      * Adapts a people list dataset onto the [RecyclerView] in the UI.
      */
     private val peopleListAdapter = PeopleListAdapter(
-        listOf(),
         { id -> onPersonItemClick(id) },
         { onErrorItemRetryClick() }
     )
 
     /**
-     * On scroll listener for the [RecyclerView]. It detects if the last view of the [RecyclerView]
-     * corresponds with the last person in the dataset. If so, it requests to the [viewModel] to
-     * add more people to the dataset from SWAPI.
+     * Detects whether the last view of the [RecyclerView] is visible. If so, it requests more
+     * people from the [viewModel] to add onto the dataset from SWAPI. It also removes the on scroll
+     * listener so duplicate requests are not made.
      */
-    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+    private val loadMorePeopleOnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
-            val adapter = recyclerView.adapter as PeopleListAdapter
             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-
             val totalItemCount = layoutManager.itemCount
             val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
             val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
 
             if (isLastItemVisible) {
-                val lastItemViewType = adapter.getItemViewType(lastVisibleItemPosition)
-                val isLastItemAPersonItem =
-                    lastItemViewType == PeopleListAdapter.ViewType.PERSON_ITEM.ordinal
-
-                if (isLastItemAPersonItem) {
-                    val page = ((totalItemCount - 1) / 10) + 2
-                    viewModel.getPeople(page)
-                }
+                recyclerView.removeOnScrollListener(this)
+                val page = ((totalItemCount - 1) / 10) + 2
+                viewModel.getPeople(page)
             }
         }
     }
@@ -101,7 +94,6 @@ class PeopleListFragment : Fragment() {
     ): View {
         binding.peopleList.apply {
             adapter = peopleListAdapter
-            addOnScrollListener(onScrollListener)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         setupObserver()
@@ -109,13 +101,24 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to the [PeopleListAdapter]'s dataset.
+     * Sets up an observer to the [PeopleListAdapter]'s dataset. First, it updates the adapter with
+     * the latest dataset from the [viewModel]. Then, it takes some action depending on the last
+     * item in the dataset.
      */
     private fun setupObserver() {
         viewModel.personListItemsLiveData.observe(viewLifecycleOwner) { personListItems ->
-            peopleListAdapter.apply {
-                this.personListItems = personListItems
-                notifyDataSetChanged()
+            /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
+             * new lists. */
+            peopleListAdapter.submitList(personListItems.toList())
+
+            when (personListItems.lastOrNull()) {
+                is PersonListItem.PersonItem -> {
+                    binding.peopleList.addOnScrollListener(loadMorePeopleOnScrollListener)
+                }
+                is PersonListItem.LoadingItem -> {
+                    binding.peopleList.smoothScrollToPosition(personListItems.lastIndex)
+                }
+                else -> {}
             }
         }
     }

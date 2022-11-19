@@ -2,28 +2,28 @@ package com.davidread.starwarsdatabase.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.ListItemErrorBinding
 import com.davidread.starwarsdatabase.databinding.ListItemLoadingBinding
 import com.davidread.starwarsdatabase.databinding.ListItemPersonBinding
 import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.util.PeopleListAdapterDiffCallback
 import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
 
 /**
- * Binds the [personListItems] dataset into a set of views that are displayed within a
+ * Binds a [List] of [PersonListItem] dataset into a set of views that are displayed within a
  * [RecyclerView].
  *
- * @param personListItems Dataset for the adapter.
  * @param onPersonItemClick Function to invoke when a view of type [ViewType.PERSON_ITEM] is
  * clicked.
  * @param onErrorItemRetryClick Function to invoke when the retry button of a view of type
  * [ViewType.ERROR_ITEM] is clicked.
  */
 class PeopleListAdapter(
-    var personListItems: List<PersonListItem>,
     private val onPersonItemClick: (id: Int) -> Unit,
     private val onErrorItemRetryClick: () -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<PersonListItem, RecyclerView.ViewHolder>(PeopleListAdapterDiffCallback()) {
 
     /**
      * Called when [RecyclerView] needs a new [RecyclerView.ViewHolder] of the given type to
@@ -54,7 +54,7 @@ class PeopleListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is PersonViewHolder -> {
-                val personItem = personListItems[position] as PersonListItem.PersonItem
+                val personItem = getItem(position) as PersonListItem.PersonItem
                 holder.bind(personItem, onPersonItemClick)
             }
             is ErrorViewHolder -> {
@@ -64,14 +64,9 @@ class PeopleListAdapter(
     }
 
     /**
-     * Total number of items in the dataset.
-     */
-    override fun getItemCount(): Int = personListItems.size
-
-    /**
      * Returns the view type of the item at the given position.
      */
-    override fun getItemViewType(position: Int): Int = when (personListItems[position]) {
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is PersonListItem.PersonItem -> ViewType.PERSON_ITEM.ordinal
         is PersonListItem.LoadingItem -> ViewType.LOADING_ITEM.ordinal
         is PersonListItem.ErrorItem -> ViewType.ERROR_ITEM.ordinal
