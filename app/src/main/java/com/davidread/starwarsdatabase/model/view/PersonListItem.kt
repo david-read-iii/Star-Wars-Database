@@ -8,8 +8,8 @@ sealed class PersonListItem {
     /**
      * Represents a list item for a person.
      *
-     * @param id Unique identifier for the person from the API.
-     * @param name Person's name.
+     * @property id Unique identifier for the person from the API.
+     * @property name Person's name.
      */
     data class PersonItem(val id: Int, val name: String) : PersonListItem()
 

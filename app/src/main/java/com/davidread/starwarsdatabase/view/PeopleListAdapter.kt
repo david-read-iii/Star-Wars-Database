@@ -15,9 +15,9 @@ import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
  * Binds a [List] of [PersonListItem] dataset into a set of views that are displayed within a
  * [RecyclerView].
  *
- * @param onPersonItemClick Function to invoke when a view of type [ViewType.PERSON_ITEM] is
+ * @property onPersonItemClick Function to invoke when a view of type [ViewType.PERSON_ITEM] is
  * clicked.
- * @param onErrorItemRetryClick Function to invoke when the retry button of a view of type
+ * @property onErrorItemRetryClick Function to invoke when the retry button of a view of type
  * [ViewType.ERROR_ITEM] is clicked.
  */
 class PeopleListAdapter(
