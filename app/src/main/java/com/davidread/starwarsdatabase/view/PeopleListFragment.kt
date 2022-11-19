@@ -140,9 +140,11 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Called when the retry button of an error item is clicked in the list. Does nothing for now.
+     * Called when the retry button of an error item is clicked in the list. It requests more
+     * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorItemRetryClick() {
-        Snackbar.make(binding.root, "Error item retry click", Snackbar.LENGTH_SHORT).show()
+        val page = ((peopleListAdapter.itemCount - 2) / 10) + 2
+        viewModel.getPeople(page)
     }
 }

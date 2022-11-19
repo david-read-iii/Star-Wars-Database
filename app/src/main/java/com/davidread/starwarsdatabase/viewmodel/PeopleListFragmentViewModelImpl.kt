@@ -70,7 +70,10 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
-                personListItems.add(PersonListItem.LoadingItem)
+                personListItems.apply {
+                    remove(PersonListItem.ErrorItem)
+                    add(PersonListItem.LoadingItem)
+                }
                 personListItemsLiveData.postValue(personListItems)
             }
             .subscribe(
@@ -78,16 +81,20 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
                     val newPersonItems = personResponse.results.map { person ->
                         PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
                     }
-                    personListItems.remove(PersonListItem.LoadingItem)
-                    personListItems.addAll(newPersonItems)
+                    personListItems.apply {
+                        remove(PersonListItem.LoadingItem)
+                        addAll(newPersonItems)
+                    }
                     personListItemsLiveData.postValue(personListItems)
                     if (personResponse.next == null) {
                         isAllPersonListItemsRequestedLiveData.postValue(true)
                     }
                 },
                 { throwable ->
-                    personListItems.remove(PersonListItem.LoadingItem)
-                    personListItems.add(PersonListItem.ErrorItem)
+                    personListItems.apply {
+                        remove(PersonListItem.LoadingItem)
+                        add(PersonListItem.ErrorItem)
+                    }
                     personListItemsLiveData.postValue(personListItems)
                     Log.e(TAG, throwable.toString())
                 }
