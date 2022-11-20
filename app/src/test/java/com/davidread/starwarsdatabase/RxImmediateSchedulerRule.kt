@@ -1,0 +1,34 @@
+package com.davidread.starwarsdatabase
+
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import io.reactivex.rxjava3.schedulers.Schedulers
+import org.junit.rules.TestRule
+import org.junit.runner.Description
+import org.junit.runners.model.Statement
+
+/**
+ * A [TestRule] that overrides RxJava's default scheduler behavior. Instead of executing it's load
+ * on a background thread, it it forces it to execute it's load on the main thread.
+ */
+class RxImmediateSchedulerRule : TestRule {
+
+    override fun apply(base: Statement, description: Description): Statement {
+        return object : Statement() {
+            @Throws(Throwable::class)
+            override fun evaluate() {
+                RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
+                RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
+                RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
+                RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+
+                try {
+                    base.evaluate()
+                } finally {
+                    RxJavaPlugins.reset()
+                    RxAndroidPlugins.reset()
+                }
+            }
+        }
+    }
+}

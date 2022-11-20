@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.PeopleListAdapter">
+
+    <data>
+
+        <variable
+            name="personItem"
+            type="com.davidread.starwarsdatabase.model.view.PersonListItem.PersonItem" />
+
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/list_item_padding"
+        android:text="@{personItem.name}"
+        tools:text="Luke Skywalker" />
+
+</layout>

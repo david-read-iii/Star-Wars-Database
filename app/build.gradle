@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -15,6 +16,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+    namespace 'com.davidread.starwarsdatabase'
 }
 
 dependencies {
@@ -25,4 +27,29 @@ dependencies {
      * navigation drawer. */
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+
+    // Dagger 2 library. Contains APIs for dependency injection.
+    implementation 'com.google.dagger:dagger:2.44'
+    kapt 'com.google.dagger:dagger-compiler:2.44'
+
+    /* RxJava3 library. Contains APIs for composing asynchronous and event-based programs using
+     * observable sequences. */
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+
+    // Retrofit 2 library. Is a type-safe HTTP client.
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    /* Retrofit 2 GSON parsing library. Contains APIs for converting between JSON representations
+     * and Kotlin models. */
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // Retrofit 2 RxJava3 adapter. Contains an API for using RxJava3CallAdapterFactory.
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    // Mocking library for Kotlin.
+    testImplementation 'io.mockk:mockk:1.13.2'
+
+    // Contains APIs with JUnit test rules that can be used with LiveData.
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }
