@@ -46,4 +46,10 @@ dependencies {
 
     // Retrofit 2 RxJava3 adapter. Contains an API for using RxJava3CallAdapterFactory.
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    // Mocking library for Kotlin.
+    testImplementation 'io.mockk:mockk:1.13.2'
+
+    // Contains APIs with JUnit test rules that can be used with LiveData.
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }
