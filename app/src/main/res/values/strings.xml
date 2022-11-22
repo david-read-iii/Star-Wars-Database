@@ -35,6 +35,9 @@
     <!-- PlanetsListFragment strings. -->
     <string name="planets_list_fragment_name">Planets</string>
 
+    <!-- PersonDetailFragment strings. -->
+    <string name="person_detail_fragment_name">Person Details</string>
+
     <!-- List item strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
     <string name="retry_button_label">Retry</string>
