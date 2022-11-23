@@ -102,6 +102,15 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
+     * Invoked when this fragment's view is to be destroyed. It removes the on scroll listener so
+     * duplicate requests don't happen when the user navigates back to this fragment.
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
+    }
+
+    /**
      * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
      * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
      * second is responsible for removing the scroll listener from the [RecyclerView] when no more
