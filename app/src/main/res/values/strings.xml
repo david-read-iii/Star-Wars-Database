@@ -35,6 +35,24 @@
     <!-- PlanetsListFragment strings. -->
     <string name="planets_list_fragment_name">Planets</string>
 
+    <!-- PersonDetailFragment strings. -->
+    <string name="person_detail_fragment_name">Person Details</string>
+
+    <!-- Detail label strings. -->
+    <string name="name_detail_label">Name</string>
+    <string name="homeworld_detail_label">Homeworld</string>
+    <string name="birth_year_detail_label">Birth Year</string>
+    <string name="species_detail_label">Species</string>
+    <string name="gender_detail_label">Gender</string>
+    <string name="height_detail_label">Height</string>
+    <string name="mass_detail_label">Mass</string>
+    <string name="hair_color_detail_label">Hair Color</string>
+    <string name="eye_color_detail_label">Eye Color</string>
+    <string name="skin_color_detail_label">Skin Color</string>
+    <string name="films_detail_label">Films</string>
+    <string name="starships_detail_label">Starships</string>
+    <string name="vehicles_detail_label">Vehicles</string>
+
     <!-- List item strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
     <string name="retry_button_label">Retry</string>
