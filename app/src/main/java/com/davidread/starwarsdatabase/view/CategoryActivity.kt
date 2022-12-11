@@ -34,21 +34,17 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
     }
 
     /**
-     * Set of id resources that represent top-level fragment destinations in the nav controller.
-     */
-    private val topLevelDestinations: Set<Int> = setOf(
-        R.id.people_list_fragment,
-        R.id.films_list_fragment,
-        R.id.starships_list_fragment,
-        R.id.vehicles_list_fragment,
-        R.id.species_list_fragment,
-        R.id.planets_list_fragment
-    )
-
-    /**
      * Manages the behavior of the navigation drawer button in the action bar.
      */
     private val appBarConfiguration: AppBarConfiguration by lazy {
+        val topLevelDestinations = setOf(
+            R.id.people_list_fragment,
+            R.id.films_list_fragment,
+            R.id.starships_list_fragment,
+            R.id.vehicles_list_fragment,
+            R.id.species_list_fragment,
+            R.id.planets_list_fragment
+        )
         AppBarConfiguration(topLevelDestinations, binding.drawerLayout)
     }
 
@@ -95,28 +91,15 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
     }
 
     /**
-     * Invoked when the up button in the action bar is selected. It passes this event to
-     * [navController] to handle first. If not handled, then the superclass handles it.
-     */
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    /**
-     * Invoked when the [navController] shows a new fragment. It determines whether to show the
-     * drawer toggle in the action bar and whether to sync the drawer toggle's state with it's
-     * drawer layout.
+     * Invoked when the [navController] shows a new fragment. It calls this because [drawerToggle]
+     * is not notified to update the navigation drawer button when a navigation drawer option is
+     * selected.
      */
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
         arguments: Bundle?
     ) {
-        if (topLevelDestinations.contains(destination.id)) {
-            drawerToggle.isDrawerIndicatorEnabled = true
-            drawerToggle.syncState()
-        } else {
-            drawerToggle.isDrawerIndicatorEnabled = false
-        }
+        drawerToggle.syncState()
     }
 }

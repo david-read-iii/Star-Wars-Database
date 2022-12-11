@@ -5,18 +5,11 @@
     android:id="@+id/nav_graph_category"
     app:startDestination="@id/people_list_fragment">
 
-    <!-- Top-level fragment destinations. -->
     <fragment
         android:id="@+id/people_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.PeopleListFragment"
         android:label="@string/people_list_fragment_name"
-        tools:layout="@layout/fragment_people_list">
-
-        <action
-            android:id="@+id/action_peopleListFragment_to_personDetailFragment"
-            app:destination="@id/person_detail_fragment" />
-
-    </fragment>
+        tools:layout="@layout/fragment_people_list" />
 
     <fragment
         android:id="@+id/films_list_fragment"
@@ -82,12 +75,5 @@
             app:argType="reference" />
 
     </fragment>
-
-    <!-- 2nd-level fragment destinations. -->
-    <fragment
-        android:id="@+id/person_detail_fragment"
-        android:name="com.davidread.starwarsdatabase.view.PersonDetailFragment"
-        android:label="@string/person_detail_fragment_name"
-        tools:layout="@layout/fragment_person_detail" />
 
 </navigation>

@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
 import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 /**
@@ -102,15 +101,6 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be destroyed. It removes the on scroll listener so
-     * duplicate requests don't happen when the user navigates back to this fragment.
-     */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
-    }
-
-    /**
      * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
      * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
      * second is responsible for removing the scroll listener from the [RecyclerView] when no more
@@ -141,12 +131,12 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Called when a person item is clicked in the list. Doesn't do much for now.
+     * Called when a person item is clicked in the list. Does nothing for now.
      *
      * @param id Id of the person item clicked.
      */
     private fun onPersonItemClick(id: Int) {
-        findNavController().navigate(R.id.action_peopleListFragment_to_personDetailFragment)
+        Snackbar.make(binding.root, "Person click with id=$id", Snackbar.LENGTH_SHORT).show()
     }
 
     /**
