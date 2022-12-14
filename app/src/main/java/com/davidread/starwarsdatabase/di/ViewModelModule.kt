@@ -3,7 +3,7 @@ package com.davidread.starwarsdatabase.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davidread.starwarsdatabase.util.ViewModelFactory
-import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PeopleViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -22,6 +22,6 @@ abstract class ViewModelModule {
     @Binds
     @Singleton
     @IntoMap
-    @ViewModelKey(PeopleListFragmentViewModelImpl::class)
-    abstract fun bindPeopleListFragmentViewModelImpl(viewModel: PeopleListFragmentViewModelImpl): ViewModel
+    @ViewModelKey(PeopleViewModelImpl::class)
+    abstract fun bindPeopleViewModelImpl(viewModel: PeopleViewModelImpl): ViewModel
 }

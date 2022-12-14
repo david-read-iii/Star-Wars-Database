@@ -15,8 +15,8 @@ import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
-import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
-import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PeopleViewModel
+import com.davidread.starwarsdatabase.viewmodel.PeopleViewModelImpl
 import javax.inject.Inject
 
 /**
@@ -40,8 +40,8 @@ class PeopleListFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PeopleListFragmentViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PeopleListFragmentViewModelImpl::class.java]
+    private val viewModel: PeopleViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PeopleViewModelImpl::class.java]
     }
 
     /**

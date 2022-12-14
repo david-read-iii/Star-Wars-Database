@@ -18,8 +18,8 @@ import javax.inject.Inject
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
  */
-class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    ViewModel(), PeopleListFragmentViewModel {
+class PeopleViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
+    ViewModel(), PeopleViewModel {
 
     /**
      * Emits a [List] of [PersonListItem]s that should be displayed in the UI.
@@ -109,6 +109,6 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     }
 
     companion object {
-        private const val TAG = "PeopleListFragmentViewModelImpl"
+        private const val TAG = "PeopleViewModelImpl"
     }
 }

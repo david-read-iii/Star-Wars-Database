@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 
 /**
- * Defines the structure of [PeopleListFragmentViewModelImpl].
+ * Defines the structure of [PeopleViewModelImpl].
  */
-interface PeopleListFragmentViewModel {
+interface PeopleViewModel {
     val personListItemsLiveData: LiveData<List<PersonListItem>>
     val isAllPersonListItemsRequestedLiveData: LiveData<Boolean>
     var selectedPersonItemPosition: Int?
