@@ -48,7 +48,7 @@ class PeopleListFragment : Fragment() {
      * Adapts a people list dataset onto the [RecyclerView] in the UI.
      */
     private val peopleListAdapter = PeopleListAdapter(
-        { id -> onPersonItemClick(id) },
+        { position -> onPersonItemClick(position) },
         { onErrorItemRetryClick() }
     )
 
@@ -143,9 +143,10 @@ class PeopleListFragment : Fragment() {
     /**
      * Called when a person item is clicked in the list. Doesn't do much for now.
      *
-     * @param id Id of the person item clicked.
+     * @param position Position of the person item clicked in the list.
      */
-    private fun onPersonItemClick(id: Int) {
+    private fun onPersonItemClick(position: Int) {
+        viewModel.selectedPersonItemPosition = position
         findNavController().navigate(R.id.action_peopleListFragment_to_personDetailFragment)
     }
 

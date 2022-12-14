@@ -7,6 +7,7 @@ import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 /**
  * Defines which [ViewModelProvider.Factory] and [ViewModel] instances to inject for the entire
@@ -19,6 +20,7 @@ abstract class ViewModelModule {
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
+    @Singleton
     @IntoMap
     @ViewModelKey(PeopleListFragmentViewModelImpl::class)
     abstract fun bindPeopleListFragmentViewModelImpl(viewModel: PeopleListFragmentViewModelImpl): ViewModel

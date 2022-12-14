@@ -27,6 +27,12 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     override val personListItemsLiveData = MutableLiveData(listOf<PersonListItem>())
 
     /**
+     * List position associated with which [PersonListItem.PersonItem] to show in the detail UI. Is
+     * `null` if none is selected.
+     */
+    override var selectedPersonItemPosition: Int? = null
+
+    /**
      * Whether all [PersonListItem]s have been fetched from SWAPI.
      */
     override val isAllPersonListItemsRequestedLiveData = MutableLiveData(false)
