@@ -7,11 +7,23 @@ sealed class PersonListItem {
 
     /**
      * Represents a list item for a person.
-     *
-     * @property id Unique identifier for the person from the API.
-     * @property name Person's name.
      */
-    data class PersonItem(val id: Int, val name: String) : PersonListItem()
+    data class PersonItem(
+        val name: String,
+        val birthYear: String,
+        val eyeColor: String,
+        val gender: String,
+        val hairColor: String,
+        val height: String,
+        val mass: String,
+        val skinColor: String,
+        val homeworld: String,
+        val films: List<String>,
+        val species: List<String>,
+        val starships: List<String>,
+        val vehicles: List<String>,
+        val id: Int
+    ) : PersonListItem()
 
     /**
      * Represents a list item for a loading view.

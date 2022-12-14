@@ -85,7 +85,22 @@ class PeopleViewModelImpl @Inject constructor(private val peopleRemoteDataSource
             .subscribe(
                 { personResponse ->
                     val newPersonItems = personResponse.results.map { person ->
-                        PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
+                        PersonListItem.PersonItem(
+                            person.name,
+                            person.birthYear,
+                            person.eyeColor,
+                            person.gender,
+                            person.hairColor,
+                            person.height,
+                            person.mass,
+                            person.skinColor,
+                            person.homeworldURL,
+                            person.filmsURLs,
+                            person.speciesURLs,
+                            person.starshipsURLs,
+                            person.vehiclesURLs,
+                            person.url.extractIDFromURL()
+                        )
                     }
                     personListItems.apply {
                         remove(PersonListItem.LoadingItem)
