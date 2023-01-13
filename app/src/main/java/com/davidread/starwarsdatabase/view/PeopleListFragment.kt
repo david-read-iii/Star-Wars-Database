@@ -15,8 +15,8 @@ import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
-import com.davidread.starwarsdatabase.viewmodel.PeopleViewModel
-import com.davidread.starwarsdatabase.viewmodel.PeopleViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModel
+import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModelImpl
 import javax.inject.Inject
 
 /**
@@ -40,15 +40,15 @@ class PeopleListFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PeopleViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PeopleViewModelImpl::class.java]
+    private val viewModel: PeopleListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PeopleListViewModelImpl::class.java]
     }
 
     /**
      * Adapts a people list dataset onto the [RecyclerView] in the UI.
      */
     private val peopleListAdapter = PeopleListAdapter(
-        { position -> onPersonItemClick(position) },
+        { id -> onPersonItemClick(id) },
         { onErrorItemRetryClick() }
     )
 
@@ -141,12 +141,13 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Called when a person item is clicked in the list. Doesn't do much for now.
+     * Called when a person item is clicked in the list. Launches [PersonDetailFragment] while
+     * passing the id of the clicked person.
      *
-     * @param position Position of the person item clicked in the list.
+     * @param id Unique id of the person clicked in the list.
      */
-    private fun onPersonItemClick(position: Int) {
-        viewModel.selectedPersonItemPosition = position
+    private fun onPersonItemClick(id: Int) {
+        // TODO: Find way to pass id to PersonDetailFragment.
         findNavController().navigate(R.id.action_peopleListFragment_to_personDetailFragment)
     }
 

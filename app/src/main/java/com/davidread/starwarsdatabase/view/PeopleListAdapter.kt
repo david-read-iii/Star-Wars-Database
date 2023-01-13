@@ -21,7 +21,7 @@ import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
  * [ViewType.ERROR_ITEM] is clicked.
  */
 class PeopleListAdapter(
-    private val onPersonItemClick: (position: Int) -> Unit,
+    private val onPersonItemClick: (id: Int) -> Unit,
     private val onErrorItemRetryClick: () -> Unit
 ) : ListAdapter<PersonListItem, RecyclerView.ViewHolder>(PeopleListAdapterDiffCallback()) {
 
@@ -89,10 +89,12 @@ class PeopleListAdapter(
         /**
          * Binds data to the view held by this [PersonViewHolder].
          */
-        fun bind(personItem: PersonListItem.PersonItem, onPersonItemClick: (position: Int) -> Unit) {
+        fun bind(personItem: PersonListItem.PersonItem, onPersonItemClick: (id: Int) -> Unit) {
             binding.apply {
                 this.personItem = personItem
-                root.setOnClickListener { onPersonItemClick(adapterPosition) }
+                root.setOnClickListener {
+                    onPersonItemClick(personItem.id)
+                }
             }
         }
     }
