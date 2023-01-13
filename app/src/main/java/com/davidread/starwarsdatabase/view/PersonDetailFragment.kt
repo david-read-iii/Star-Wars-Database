@@ -59,7 +59,9 @@ class PersonDetailFragment : Fragment() {
     ): View {
         setupObserver()
         // TODO: Find way to receive id from PeopleListFragment.
-        viewModel.getPerson(1)
+        if (savedInstanceState == null) {
+            viewModel.getPerson(1)
+        }
         return binding.root
     }
 
