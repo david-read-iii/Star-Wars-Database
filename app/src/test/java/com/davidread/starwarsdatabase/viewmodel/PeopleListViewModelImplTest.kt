@@ -14,9 +14,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests that verify the correctness of [PeopleViewModelImpl].
+ * Unit tests that verify the correctness of [PeopleListViewModelImpl].
  */
-class PeopleViewModelImplTest {
+class PeopleListViewModelImplTest {
 
     /**
      * Rule that swaps the background executor used by the Architecture Components with one that
@@ -39,7 +39,7 @@ class PeopleViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         val actualList = viewModel.personListItemsLiveData.value
         Assert.assertEquals(response.results.size, actualList!!.size)
@@ -53,7 +53,7 @@ class PeopleViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PeopleViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         val actualList = viewModel.personListItemsLiveData.value
         Assert.assertEquals(1, actualList!!.size)
@@ -67,7 +67,7 @@ class PeopleViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
@@ -79,7 +79,7 @@ class PeopleViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertTrue(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
@@ -89,7 +89,7 @@ class PeopleViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PeopleViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
