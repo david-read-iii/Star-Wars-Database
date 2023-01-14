@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
@@ -40,6 +41,11 @@ class PersonDetailFragment : Fragment() {
     }
 
     /**
+     * Arguments passed into this fragment.
+     */
+    private val arguments: PersonDetailFragmentArgs by navArgs()
+
+    /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
      * dependency injection.
      */
@@ -58,9 +64,8 @@ class PersonDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setupObserver()
-        // TODO: Find way to receive id from PeopleListFragment.
         if (savedInstanceState == null) {
-            viewModel.getPerson(1)
+            viewModel.getPerson(arguments.id)
         }
         return binding.root
     }

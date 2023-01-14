@@ -88,6 +88,12 @@
         android:id="@+id/person_detail_fragment"
         android:name="com.davidread.starwarsdatabase.view.PersonDetailFragment"
         android:label="@string/person_detail_fragment_name"
-        tools:layout="@layout/fragment_person_detail" />
+        tools:layout="@layout/fragment_person_detail" >
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
 
 </navigation>

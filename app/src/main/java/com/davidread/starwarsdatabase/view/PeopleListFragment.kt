@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
@@ -147,8 +146,8 @@ class PeopleListFragment : Fragment() {
      * @param id Unique id of the person clicked in the list.
      */
     private fun onPersonItemClick(id: Int) {
-        // TODO: Find way to pass id to PersonDetailFragment.
-        findNavController().navigate(R.id.action_peopleListFragment_to_personDetailFragment)
+        val action = PeopleListFragmentDirections.actionPeopleListFragmentToPersonDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     /**
