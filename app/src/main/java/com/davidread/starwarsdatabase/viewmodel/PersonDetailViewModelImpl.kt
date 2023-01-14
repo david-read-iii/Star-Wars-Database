@@ -28,6 +28,16 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
         MutableLiveData()
 
     /**
+     * Emits whether a loading state should be shown on the UI.
+     */
+    override val showLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    /**
+     * Emits whether an error state should be shown on the UI.
+     */
+    override val showErrorLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    /**
      * Container for managing resources used by `Disposable`s or their subclasses.
      */
     private val disposable: CompositeDisposable = CompositeDisposable()
@@ -51,8 +61,13 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
         disposable.add(peopleRemoteDataSource.getPerson(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
+            .doOnSubscribe {
+                showLoadingLiveData.postValue(true)
+                showErrorLiveData.postValue(false)
+            }
             .subscribe(
                 { personResponse ->
+                    showLoadingLiveData.postValue(false)
                     val newDetailListItems = listOf(
                         DetailListItem(R.string.name_detail_label, personResponse.name),
                         DetailListItem(
@@ -98,6 +113,8 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
                     personDetailListItemsLiveData.postValue(newDetailListItems)
                 },
                 { throwable ->
+                    showLoadingLiveData.postValue(false)
+                    showErrorLiveData.postValue(true)
                     Log.e(TAG, throwable.toString())
                 }
             )

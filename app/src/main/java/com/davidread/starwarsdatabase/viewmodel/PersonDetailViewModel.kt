@@ -9,5 +9,7 @@ import com.davidread.starwarsdatabase.model.view.DetailListItem
  */
 interface PersonDetailViewModel {
     val personDetailListItemsLiveData: LiveData<List<DetailListItem>>
+    val showLoadingLiveData: LiveData<Boolean>
+    val showErrorLiveData: LiveData<Boolean>
     fun getPerson(@IntRange(from = 1) id: Int)
 }

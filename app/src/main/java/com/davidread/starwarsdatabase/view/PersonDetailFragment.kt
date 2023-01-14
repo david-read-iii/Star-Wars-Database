@@ -55,15 +55,16 @@ class PersonDetailFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be created. It sets up an observer to
-     * [DetailListAdapter]'s dataset and returns the fragment's view.
+     * Invoked when this fragment's view is to be created. It configures click listeners, sets up
+     * observers, initializes the `ViewModel`, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setupObserver()
+        binding.personDetailRetryButton.setOnClickListener { onRetryClick() }
+        setupObservers()
         if (savedInstanceState == null) {
             viewModel.getPerson(arguments.id)
         }
@@ -71,14 +72,39 @@ class PersonDetailFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to [DetailListAdapter]'s dataset.
+     * Sets up an observer to [DetailListAdapter]'s dataset, to this fragment's loading state, and
+     * this fragment's error state.
      */
-    private fun setupObserver() {
+    private fun setupObservers() {
         viewModel.personDetailListItemsLiveData.observe(viewLifecycleOwner) { personDetailListItems ->
             binding.personDetailList.apply {
                 adapter = DetailListAdapter(personDetailListItems)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
+
+        viewModel.showLoadingLiveData.observe(viewLifecycleOwner) { showLoading ->
+            binding.personDetailProgressBar.visibility = if (showLoading) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+        viewModel.showErrorLiveData.observe(viewLifecycleOwner) { showError ->
+            binding.personDetailErrorLayout.visibility = if (showError) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+    }
+
+    /**
+     * Called when the retry button is clicked when this fragment is in error mode. It requests the
+     * details of the person from SWAPI again.
+     */
+    private fun onRetryClick() {
+        viewModel.getPerson(arguments.id)
     }
 }
