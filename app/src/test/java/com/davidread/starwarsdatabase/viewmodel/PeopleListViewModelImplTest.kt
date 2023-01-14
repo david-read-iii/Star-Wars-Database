@@ -3,7 +3,7 @@ package com.davidread.starwarsdatabase.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
-import com.davidread.starwarsdatabase.model.datasource.Person
+import com.davidread.starwarsdatabase.model.datasource.PeoplePageResponse
 import com.davidread.starwarsdatabase.model.datasource.PersonResponse
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 import io.mockk.every
@@ -14,9 +14,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests that verify the correctness of [PeopleListFragmentViewModelImpl].
+ * Unit tests that verify the correctness of [PeopleListViewModelImpl].
  */
-class PeopleListFragmentViewModelImplTest {
+class PeopleListViewModelImplTest {
 
     /**
      * Rule that swaps the background executor used by the Architecture Components with one that
@@ -35,11 +35,11 @@ class PeopleListFragmentViewModelImplTest {
 
     @Test
     fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 10 person items in the UI list`() {
-        val response = getSuccessfulPersonResponse()
+        val response = getSuccessfulPeoplePageResponse()
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleListFragmentViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         val actualList = viewModel.personListItemsLiveData.value
         Assert.assertEquals(response.results.size, actualList!!.size)
@@ -53,7 +53,7 @@ class PeopleListFragmentViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PeopleListFragmentViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         val actualList = viewModel.personListItemsLiveData.value
         Assert.assertEquals(1, actualList!!.size)
@@ -63,11 +63,11 @@ class PeopleListFragmentViewModelImplTest {
     @Test
     fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits list not full status`() {
         val next = "https://swapi.dev/api/people/?page=2"
-        val response = getSuccessfulPersonResponse(next)
+        val response = getSuccessfulPeoplePageResponse(next)
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleListFragmentViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
@@ -75,11 +75,11 @@ class PeopleListFragmentViewModelImplTest {
     @Test
     fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits list full status`() {
         val next = null
-        val response = getSuccessfulPersonResponse(next)
+        val response = getSuccessfulPeoplePageResponse(next)
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
-        val viewModel = PeopleListFragmentViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertTrue(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
@@ -89,24 +89,54 @@ class PeopleListFragmentViewModelImplTest {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PeopleListFragmentViewModelImpl(dataSource)
+        val viewModel = PeopleListViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
 
-    private fun getSuccessfulPersonResponse(next: String? = null) = PersonResponse(
-        listOf(
-            Person("Luke Skywalker", "https://swapi.dev/api/people/1/"),
-            Person("C-3PO", "https://swapi.dev/api/people/2/"),
-            Person("R2-D2", "https://swapi.dev/api/people/3/"),
-            Person("Darth Vader", "https://swapi.dev/api/people/4/"),
-            Person("Leia Organa", "https://swapi.dev/api/people/5/"),
-            Person("Owen Lars", "https://swapi.dev/api/people/6/"),
-            Person("Owen Lars", "https://swapi.dev/api/people/7/"),
-            Person("R5-D4", "https://swapi.dev/api/people/8/"),
-            Person("Biggs Darklighter", "https://swapi.dev/api/people/9/"),
-            Person("Obi-Wan Kenobi", "https://swapi.dev/api/people/10/")
-        ),
-        next
-    )
+    private fun getSuccessfulPeoplePageResponse(next: String? = null): PeoplePageResponse {
+        val results = listOf<PersonResponse>(
+            mockk {
+                every { name } returns "Luke Skywalker"
+                every { url } returns "https://swapi.dev/api/people/1/"
+            },
+            mockk {
+                every { name } returns "C-3PO"
+                every { url } returns "https://swapi.dev/api/people/2/"
+            },
+            mockk {
+                every { name } returns "R2-D2"
+                every { url } returns "https://swapi.dev/api/people/3/"
+            },
+            mockk {
+                every { name } returns "Darth Vader"
+                every { url } returns "https://swapi.dev/api/people/4/"
+            },
+            mockk {
+                every { name } returns "Leia Organa"
+                every { url } returns "https://swapi.dev/api/people/5/"
+            },
+            mockk {
+                every { name } returns "Owen Lars"
+                every { url } returns "https://swapi.dev/api/people/6/"
+            },
+            mockk {
+                every { name } returns "Beru Whitesun lars"
+                every { url } returns "https://swapi.dev/api/people/7/"
+            },
+            mockk {
+                every { name } returns "R5-D4"
+                every { url } returns "https://swapi.dev/api/people/8/"
+            },
+            mockk {
+                every { name } returns "R5-D4"
+                every { url } returns "https://swapi.dev/api/people/9/"
+            },
+            mockk {
+                every { name } returns "Obi-Wan Kenobi"
+                every { url } returns "https://swapi.dev/api/people/10/"
+            }
+        )
+        return PeoplePageResponse(results, next)
+    }
 }

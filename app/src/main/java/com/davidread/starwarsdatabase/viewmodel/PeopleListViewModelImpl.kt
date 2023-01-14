@@ -18,29 +18,29 @@ import javax.inject.Inject
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
  */
-class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    ViewModel(), PeopleListFragmentViewModel {
+class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
+    PeopleListViewModel, ViewModel() {
 
     /**
-     * Emits a [List] of [PersonListItem]s that should be displayed in the UI.
+     * Emits a [List] of [PersonListItem]s that should be shown on the UI.
      */
-    override val personListItemsLiveData = MutableLiveData(listOf<PersonListItem>())
+    override val personListItemsLiveData: MutableLiveData<List<PersonListItem>> = MutableLiveData()
 
     /**
      * Whether all [PersonListItem]s have been fetched from SWAPI.
      */
-    override val isAllPersonListItemsRequestedLiveData = MutableLiveData(false)
+    override val isAllPersonListItemsRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    /**
+     * [MutableList] of [PersonListItem]s to be stored/modified here. Emitted via its `LiveData`
+     * each time it is updated.
+     */
+    private val personListItems: MutableList<PersonListItem> = mutableListOf()
 
     /**
      * Container for managing resources used by `Disposable`s or their subclasses.
      */
     private val disposable: CompositeDisposable = CompositeDisposable()
-
-    /**
-     * [MutableList] of [PersonListItem] dataset that can be modified here. Should be exposed to the
-     * UI as a [List] when new items are fetched or state is updated.
-     */
-    private val personListItems = mutableListOf<PersonListItem>()
 
     /**
      * Called when this `ViewModel` is initially created. It sets up the initial subscription for
@@ -79,7 +79,10 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
             .subscribe(
                 { personResponse ->
                     val newPersonItems = personResponse.results.map { person ->
-                        PersonListItem.PersonItem(person.url.extractIDFromURL(), person.name)
+                        PersonListItem.PersonItem(
+                            id = person.url.extractIDFromURL(),
+                            name = person.name
+                        )
                     }
                     personListItems.apply {
                         remove(PersonListItem.LoadingItem)
@@ -103,6 +106,6 @@ class PeopleListFragmentViewModelImpl @Inject constructor(private val peopleRemo
     }
 
     companion object {
-        private const val TAG = "PeopleListFragmentViewModelImpl"
+        private const val TAG = "PeopleListViewModelImpl"
     }
 }

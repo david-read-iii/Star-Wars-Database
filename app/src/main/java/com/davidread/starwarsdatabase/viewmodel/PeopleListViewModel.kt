@@ -1,13 +1,14 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import androidx.annotation.IntRange
 import androidx.lifecycle.LiveData
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 
 /**
- * Defines the structure of [PeopleListFragmentViewModelImpl].
+ * Defines the structure of [PeopleListViewModelImpl].
  */
-interface PeopleListFragmentViewModel {
+interface PeopleListViewModel {
     val personListItemsLiveData: LiveData<List<PersonListItem>>
     val isAllPersonListItemsRequestedLiveData: LiveData<Boolean>
-    fun getPeople(page: Int)
+    fun getPeople(@IntRange(from = 1) page: Int)
 }

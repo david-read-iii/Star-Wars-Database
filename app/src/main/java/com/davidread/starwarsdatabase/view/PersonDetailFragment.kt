@@ -1,19 +1,30 @@
 package com.davidread.starwarsdatabase.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailBinding
-import com.davidread.starwarsdatabase.model.view.DetailListItem
+import com.davidread.starwarsdatabase.di.ApplicationController
+import com.davidread.starwarsdatabase.viewmodel.PersonDetailViewModel
+import com.davidread.starwarsdatabase.viewmodel.PersonDetailViewModelImpl
+import javax.inject.Inject
 
 /**
  * Fragment representing the detail view of a person.
  */
 class PersonDetailFragment : Fragment() {
+
+    /**
+     * Factory for instantiating `ViewModel` instances.
+     */
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     /**
      * Binding object for this fragment's layout.
@@ -23,36 +34,77 @@ class PersonDetailFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be created. It initializes the details list with
-     * dummy data and returns the fragment's view.
+     * Exposes state to the UI and encapsulates business logic for this fragment.
+     */
+    private val viewModel: PersonDetailViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PersonDetailViewModelImpl::class.java]
+    }
+
+    /**
+     * Arguments passed into this fragment.
+     */
+    private val arguments: PersonDetailFragmentArgs by navArgs()
+
+    /**
+     * Invoked when this fragment is attached to it's associated activity. It just requests
+     * dependency injection.
+     */
+    override fun onAttach(context: Context) {
+        (activity?.application as ApplicationController).applicationGraph.inject(this)
+        super.onAttach(context)
+    }
+
+    /**
+     * Invoked when this fragment's view is to be created. It configures click listeners, sets up
+     * observers, initializes the `ViewModel`, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dummyDetailListItems = listOf(
-            DetailListItem(getString(R.string.name_detail_label), "Luke Skywalker"),
-            DetailListItem(getString(R.string.homeworld_detail_label), "Tatooine"),
-            DetailListItem(getString(R.string.birth_year_detail_label), "19BBY"),
-            DetailListItem(getString(R.string.species_detail_label), ""),
-            DetailListItem(getString(R.string.gender_detail_label), "male"),
-            DetailListItem(getString(R.string.height_detail_label), "172"),
-            DetailListItem(getString(R.string.mass_detail_label), "77"),
-            DetailListItem(getString(R.string.hair_color_detail_label), "blond"),
-            DetailListItem(getString(R.string.eye_color_detail_label), "blue"),
-            DetailListItem(getString(R.string.skin_color_detail_label), "fair"),
-            DetailListItem(
-                getString(R.string.films_detail_label),
-                "A New Hope, The Empire Strikes Back, Return of the Jedi, Revenge of the Sith"
-            ),
-            DetailListItem(getString(R.string.starships_detail_label), "X-wing, Imperial shuttle"),
-            DetailListItem(getString(R.string.vehicles_detail_label), "Snowspeeder, Imperial Speeder Bike")
-        )
-        binding.personDetailList.apply {
-            adapter = DetailListAdapter(dummyDetailListItems)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        binding.personDetailRetryButton.setOnClickListener { onRetryClick() }
+        setupObservers()
+        if (savedInstanceState == null) {
+            viewModel.getPerson(arguments.id)
         }
         return binding.root
+    }
+
+    /**
+     * Sets up an observer to [DetailListAdapter]'s dataset, to this fragment's loading state, and
+     * this fragment's error state.
+     */
+    private fun setupObservers() {
+        viewModel.personDetailListItemsLiveData.observe(viewLifecycleOwner) { personDetailListItems ->
+            binding.personDetailList.apply {
+                adapter = DetailListAdapter(personDetailListItems)
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
+        }
+
+        viewModel.showLoadingLiveData.observe(viewLifecycleOwner) { showLoading ->
+            binding.personDetailProgressBar.visibility = if (showLoading) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+        viewModel.showErrorLiveData.observe(viewLifecycleOwner) { showError ->
+            binding.personDetailErrorLayout.visibility = if (showError) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+    }
+
+    /**
+     * Called when the retry button is clicked when this fragment is in error mode. It requests the
+     * details of the person from SWAPI again.
+     */
+    private fun onRetryClick() {
+        viewModel.getPerson(arguments.id)
     }
 }

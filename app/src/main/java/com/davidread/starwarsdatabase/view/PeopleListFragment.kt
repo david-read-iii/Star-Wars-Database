@@ -11,12 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
-import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModel
-import com.davidread.starwarsdatabase.viewmodel.PeopleListFragmentViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModel
+import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModelImpl
 import javax.inject.Inject
 
 /**
@@ -40,8 +39,8 @@ class PeopleListFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PeopleListFragmentViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PeopleListFragmentViewModelImpl::class.java]
+    private val viewModel: PeopleListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PeopleListViewModelImpl::class.java]
     }
 
     /**
@@ -141,12 +140,14 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Called when a person item is clicked in the list. Doesn't do much for now.
+     * Called when a person item is clicked in the list. Launches [PersonDetailFragment] while
+     * passing the id of the clicked person.
      *
-     * @param id Id of the person item clicked.
+     * @param id Unique id of the person clicked in the list.
      */
     private fun onPersonItemClick(id: Int) {
-        findNavController().navigate(R.id.action_peopleListFragment_to_personDetailFragment)
+        val action = PeopleListFragmentDirections.actionPeopleListFragmentToPersonDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     /**

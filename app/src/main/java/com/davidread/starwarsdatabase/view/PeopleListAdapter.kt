@@ -92,7 +92,9 @@ class PeopleListAdapter(
         fun bind(personItem: PersonListItem.PersonItem, onPersonItemClick: (id: Int) -> Unit) {
             binding.apply {
                 this.personItem = personItem
-                root.setOnClickListener { onPersonItemClick(personItem.id) }
+                root.setOnClickListener {
+                    onPersonItemClick(personItem.id)
+                }
             }
         }
     }
