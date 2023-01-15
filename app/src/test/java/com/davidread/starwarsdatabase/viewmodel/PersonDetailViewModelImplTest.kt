@@ -71,13 +71,13 @@ class PersonDetailViewModelImplTest {
 
     private fun getSuccessfulPersonResponse() = ResourceResponse.Person(
         "Luke Skywalker",
-        "19BBY",
-        "blue",
-        "male",
-        "blond",
         "172",
         "77",
+        "blond",
         "fair",
+        "blue",
+        "19BBY",
+        "male",
         "https://swapi.dev/api/planets/1/",
         listOf(
             "https://swapi.dev/api/films/1/",
@@ -87,12 +87,12 @@ class PersonDetailViewModelImplTest {
         ),
         listOf(),
         listOf(
-            "https://swapi.dev/api/starships/12/",
-            "https://swapi.dev/api/starships/22/"
-        ),
-        listOf(
             "https://swapi.dev/api/vehicles/14/",
             "https://swapi.dev/api/vehicles/30/"
+        ),
+        listOf(
+            "https://swapi.dev/api/starships/12/",
+            "https://swapi.dev/api/starships/22/"
         ),
         "https://swapi.dev/api/people/1/"
     )
