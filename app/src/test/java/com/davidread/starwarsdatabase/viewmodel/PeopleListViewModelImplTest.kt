@@ -3,8 +3,8 @@ package com.davidread.starwarsdatabase.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
-import com.davidread.starwarsdatabase.model.datasource.PeoplePageResponse
-import com.davidread.starwarsdatabase.model.datasource.PersonResponse
+import com.davidread.starwarsdatabase.model.datasource.PageResponse
+import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import com.davidread.starwarsdatabase.model.view.PersonListItem
 import io.mockk.every
 import io.mockk.mockk
@@ -35,7 +35,7 @@ class PeopleListViewModelImplTest {
 
     @Test
     fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 10 person items in the UI list`() {
-        val response = getSuccessfulPeoplePageResponse()
+        val response = getSuccessfulPageResponseOfPeople()
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
@@ -63,7 +63,7 @@ class PeopleListViewModelImplTest {
     @Test
     fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits list not full status`() {
         val next = "https://swapi.dev/api/people/?page=2"
-        val response = getSuccessfulPeoplePageResponse(next)
+        val response = getSuccessfulPageResponseOfPeople(next)
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
@@ -75,7 +75,7 @@ class PeopleListViewModelImplTest {
     @Test
     fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits list full status`() {
         val next = null
-        val response = getSuccessfulPeoplePageResponse(next)
+        val response = getSuccessfulPageResponseOfPeople(next)
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
         }
@@ -94,8 +94,8 @@ class PeopleListViewModelImplTest {
         Assert.assertFalse(viewModel.isAllPersonListItemsRequestedLiveData.value!!)
     }
 
-    private fun getSuccessfulPeoplePageResponse(next: String? = null): PeoplePageResponse {
-        val results = listOf<PersonResponse>(
+    private fun getSuccessfulPageResponseOfPeople(next: String? = null): PageResponse<ResourceResponse.Person> {
+        val results = listOf<ResourceResponse.Person>(
             mockk {
                 every { name } returns "Luke Skywalker"
                 every { url } returns "https://swapi.dev/api/people/1/"
@@ -137,6 +137,6 @@ class PeopleListViewModelImplTest {
                 every { url } returns "https://swapi.dev/api/people/10/"
             }
         )
-        return PeoplePageResponse(results, next)
+        return PageResponse(results, next)
     }
 }

@@ -3,7 +3,7 @@ package com.davidread.starwarsdatabase.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
-import com.davidread.starwarsdatabase.model.datasource.PersonResponse
+import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
@@ -69,7 +69,7 @@ class PersonDetailViewModelImplTest {
         Assert.assertTrue(actual!!)
     }
 
-    private fun getSuccessfulPersonResponse() = PersonResponse(
+    private fun getSuccessfulPersonResponse() = ResourceResponse.Person(
         "Luke Skywalker",
         "19BBY",
         "blue",
