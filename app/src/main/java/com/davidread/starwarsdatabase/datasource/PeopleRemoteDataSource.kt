@@ -9,31 +9,31 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
- * Defines SWAPI endpoints to hit in order to fetch people data.
+ * Defines HTTP operations that may be performed on the people endpoint of SWAPI.
  *
  * @see <a href="https://swapi.dev/documentation">SWAPI documentation</a>
  */
 interface PeopleRemoteDataSource {
 
     /**
-     * Fetches a [PageResponse] of [ResourceResponse.Person]s from SWAPI.
+     * Fetches a [PageResponse] containing [ResourceResponse.Person] results from SWAPI.
      *
      * @param page Which page of people to fetch.
      */
     @GET(ENDPOINT_PEOPLE)
-    fun getPeople(@Query(PARAMETER_NAME_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Person>>
+    fun getPeople(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Person>>
 
     /**
-     * Fetches a [ResourceResponse.Person] from SWAPI.
+     * Fetches a single [ResourceResponse.Person] from SWAPI.
      *
      * @param id Unique id of the person to fetch.
      */
-    @GET("$ENDPOINT_PEOPLE/{$PATH_NAME_ID}")
-    fun getPerson(@Path(PATH_NAME_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Person>
+    @GET("$ENDPOINT_PEOPLE/{$PATH_ID}")
+    fun getPerson(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Person>
 
     companion object {
         private const val ENDPOINT_PEOPLE = "people"
-        private const val PARAMETER_NAME_PAGE = "page"
-        private const val PATH_NAME_ID = "id"
+        private const val PARAMETER_PAGE = "page"
+        private const val PATH_ID = "id"
     }
 }
