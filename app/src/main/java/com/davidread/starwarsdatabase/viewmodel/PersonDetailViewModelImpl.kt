@@ -5,9 +5,16 @@ import androidx.annotation.IntRange
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.R
-import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.*
+import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import com.davidread.starwarsdatabase.model.view.DetailListItem
+import com.davidread.starwarsdatabase.model.viewmodel.Sextuple
+import com.davidread.starwarsdatabase.util.extractIDFromURL
+import com.davidread.starwarsdatabase.util.extractIDsFromURLs
+import com.davidread.starwarsdatabase.util.extractNames
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -17,9 +24,25 @@ import javax.inject.Inject
  *
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
+ * @property planetsRemoteDataSource [PlanetsRemoteDataSource] implementation by `Retrofit` for
+ * fetching planet data from SWAPI.
+ * @property speciesRemoteDataSource [SpeciesRemoteDataSource] implementation by `Retrofit` for
+ * fetching planet data from SWAPI.
+ * @property filmsRemoteDataSource [FilmsRemoteDataSource] implementation by `Retrofit` for
+ * fetching planet data from SWAPI.
+ * @property starshipsRemoteDataSource [StarshipsRemoteDataSource] implementation by `Retrofit` for
+ * fetching planet data from SWAPI.
+ * @property vehiclesRemoteDataSource [VehiclesRemoteDataSource] implementation by `Retrofit` for
+ * fetching planet data from SWAPI.
  */
-class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    PersonDetailViewModel, ViewModel() {
+class PersonDetailViewModelImpl @Inject constructor(
+    private val peopleRemoteDataSource: PeopleRemoteDataSource,
+    private val planetsRemoteDataSource: PlanetsRemoteDataSource,
+    private val speciesRemoteDataSource: SpeciesRemoteDataSource,
+    private val filmsRemoteDataSource: FilmsRemoteDataSource,
+    private val starshipsRemoteDataSource: StarshipsRemoteDataSource,
+    private val vehiclesRemoteDataSource: VehiclesRemoteDataSource
+) : PersonDetailViewModel, ViewModel() {
 
     /**
      * Emits a [List] of [DetailListItem]s that should be shown on the UI.
@@ -65,14 +88,23 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
                 showLoadingLiveData.postValue(true)
                 showErrorLiveData.postValue(false)
             }
+            .flatMap { personResponse ->
+                getMoreDetailsSingle(personResponse)
+            }
             .subscribe(
-                { personResponse ->
-                    showLoadingLiveData.postValue(false)
+                { response ->
+                    val personResponse = response.first
+                    val homeworldResponse = response.second
+                    val speciesResponse = response.third
+                    val filmsResponse = response.fourth
+                    val starshipsResponse = response.fifth
+                    val vehiclesResponse = response.sixth
+
                     val newDetailListItems = listOf(
                         DetailListItem(R.string.name_detail_label, personResponse.name),
                         DetailListItem(
                             R.string.homeworld_detail_label,
-                            personResponse.homeworldURL
+                            homeworldResponse.name
                         ),
                         DetailListItem(
                             R.string.birth_year_detail_label,
@@ -80,7 +112,7 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
                         ),
                         DetailListItem(
                             R.string.species_detail_label,
-                            personResponse.speciesURLs.toString()
+                            speciesResponse.extractNames()
                         ),
                         DetailListItem(R.string.gender_detail_label, personResponse.gender),
                         DetailListItem(R.string.height_detail_label, personResponse.height),
@@ -99,17 +131,18 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
                         ),
                         DetailListItem(
                             R.string.films_detail_label,
-                            personResponse.filmsURLs.toString()
+                            filmsResponse.extractNames()
                         ),
                         DetailListItem(
                             R.string.starships_detail_label,
-                            personResponse.starshipsURLs.toString()
+                            starshipsResponse.extractNames()
                         ),
                         DetailListItem(
                             R.string.vehicles_detail_label,
-                            personResponse.vehiclesURLs.toString()
+                            vehiclesResponse.extractNames()
                         )
                     )
+                    showLoadingLiveData.postValue(false)
                     personDetailListItemsLiveData.postValue(newDetailListItems)
                 },
                 { throwable ->
@@ -118,6 +151,78 @@ class PersonDetailViewModelImpl @Inject constructor(private val peopleRemoteData
                     Log.e(TAG, throwable.toString())
                 }
             )
+        )
+    }
+
+    /**
+     * Returns a zipped [Single] for performing network calls for getting more details of the
+     * person corresponding with the given the already fetched [ResourceResponse.Person]. The
+     * original [ResourceResponse.Person] is also emitted by the return [Single].
+     *
+     * @param personResponse [ResourceResponse.Person] containing URLs specifying which network
+     * calls to make.
+     * @return Zipped [Single] for performing network calls for getting more details of a person.
+     */
+    private fun getMoreDetailsSingle(personResponse: ResourceResponse.Person): Single<Sextuple<ResourceResponse.Person,
+            ResourceResponse.Planet,
+            List<ResourceResponse.Species>,
+            List<ResourceResponse.Film>,
+            List<ResourceResponse.Starship>,
+            List<ResourceResponse.Vehicle>>
+            > {
+
+        val homeworldSingle =
+            planetsRemoteDataSource.getPlanet(personResponse.homeworldURL.extractIDFromURL())
+
+        val speciesSingle = Observable.fromIterable(personResponse.speciesURLs.extractIDsFromURLs())
+            .flatMapSingle { id ->
+                speciesRemoteDataSource.getSingleSpecies(id)
+            }
+            .toList()
+
+        val filmsSingle = Observable.fromIterable(personResponse.filmsURLs.extractIDsFromURLs())
+            .flatMapSingle { id ->
+                filmsRemoteDataSource.getFilm(id)
+            }
+            .toList()
+
+        val starshipsSingle: Single<List<ResourceResponse.Starship>> =
+            Observable.fromIterable(personResponse.starshipsURLs.extractIDsFromURLs())
+                .flatMapSingle { id ->
+                    starshipsRemoteDataSource.getStarship(id)
+                }
+                .toList()
+
+        val vehiclesSingle =
+            Observable.fromIterable(personResponse.vehiclesURLs.extractIDsFromURLs())
+                .flatMapSingle { id ->
+                    vehiclesRemoteDataSource.getVehicle(id)
+                }
+                .toList()
+
+        val zipper =
+            { homeworldResponse: ResourceResponse.Planet,
+              speciesResponse: List<ResourceResponse.Species>,
+              filmsResponse: List<ResourceResponse.Film>,
+              starshipsResponse: List<ResourceResponse.Starship>,
+              vehiclesResponse: List<ResourceResponse.Vehicle> ->
+                Sextuple(
+                    personResponse,
+                    homeworldResponse,
+                    speciesResponse,
+                    filmsResponse,
+                    starshipsResponse,
+                    vehiclesResponse
+                )
+            }
+
+        return Single.zip(
+            homeworldSingle,
+            speciesSingle,
+            filmsSingle,
+            starshipsSingle,
+            vehiclesSingle,
+            zipper
         )
     }
 

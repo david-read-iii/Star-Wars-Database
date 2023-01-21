@@ -77,11 +77,11 @@ class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSo
                 personListItemsLiveData.postValue(personListItems)
             }
             .subscribe(
-                { personResponse ->
-                    val newPersonItems = personResponse.results.map { person ->
+                { pageResponse ->
+                    val newPersonItems = pageResponse.results.map { personResponse ->
                         PersonListItem.PersonItem(
-                            id = person.url.extractIDFromURL(),
-                            name = person.name
+                            id = personResponse.url.extractIDFromURL(),
+                            name = personResponse.name
                         )
                     }
                     personListItems.apply {
@@ -89,7 +89,7 @@ class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSo
                         addAll(newPersonItems)
                     }
                     personListItemsLiveData.postValue(personListItems)
-                    if (personResponse.next == null) {
+                    if (pageResponse.next == null) {
                         isAllPersonListItemsRequestedLiveData.postValue(true)
                     }
                 },
