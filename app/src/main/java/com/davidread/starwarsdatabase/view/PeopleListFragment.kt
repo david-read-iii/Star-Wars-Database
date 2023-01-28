@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.PersonListItem
-import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModel
-import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModel
+import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
 /**
@@ -39,8 +39,8 @@ class PeopleListFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PeopleListViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PeopleListViewModelImpl::class.java]
+    private val viewModel: PersonNamesViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PersonNamesViewModelImpl::class.java]
     }
 
     /**
@@ -69,7 +69,7 @@ class PeopleListFragment : Fragment() {
             if (isLastItemVisible) {
                 recyclerView.removeOnScrollListener(this)
                 val page = ((totalItemCount - 1) / 10) + 2
-                viewModel.getPeople(page)
+                viewModel.getPersonNames(page)
             }
         }
     }
@@ -116,7 +116,7 @@ class PeopleListFragment : Fragment() {
      * entries may be fetched for the dataset.
      */
     private fun setupObserver() {
-        viewModel.personListItemsLiveData.observe(viewLifecycleOwner) { personListItems ->
+        viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personListItems ->
             /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
              * new lists. */
             peopleListAdapter.submitList(personListItems.toList())
@@ -132,7 +132,7 @@ class PeopleListFragment : Fragment() {
             }
         }
 
-        viewModel.isAllPersonListItemsRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
+        viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
             if (isAllPersonListItemsRequested) {
                 binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
             }
@@ -156,6 +156,6 @@ class PeopleListFragment : Fragment() {
      */
     private fun onErrorItemRetryClick() {
         val page = ((peopleListAdapter.itemCount - 2) / 10) + 2
-        viewModel.getPeople(page)
+        viewModel.getPersonNames(page)
     }
 }

@@ -13,29 +13,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * Exposes state and encapsulates business logic related to the people category list.
+ * Exposes state and encapsulates business logic related to the person names list.
  *
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
  */
-class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    PeopleListViewModel, ViewModel() {
+class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
+    PersonNamesViewModel, ViewModel() {
 
     /**
      * Emits a [List] of [PersonListItem]s that should be shown on the UI.
      */
-    override val personListItemsLiveData: MutableLiveData<List<PersonListItem>> = MutableLiveData()
+    override val personNamesLiveData: MutableLiveData<List<PersonListItem>> = MutableLiveData()
 
     /**
      * Whether all [PersonListItem]s have been fetched from SWAPI.
      */
-    override val isAllPersonListItemsRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+    override val isAllPersonNamesRequestedLiveData: MutableLiveData<Boolean> =
+        MutableLiveData(false)
 
     /**
      * [MutableList] of [PersonListItem]s to be stored/modified here. Emitted via its `LiveData`
      * each time it is updated.
      */
-    private val personListItems: MutableList<PersonListItem> = mutableListOf()
+    private val personNames: MutableList<PersonListItem> = mutableListOf()
 
     /**
      * Container for managing resources used by `Disposable`s or their subclasses.
@@ -44,10 +45,10 @@ class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSo
 
     /**
      * Called when this `ViewModel` is initially created. It sets up the initial subscription for
-     * getting page 1 of people to show in the UI.
+     * getting page 1 of person names to show in the UI.
      */
     init {
-        getPeople(1)
+        getPersonNames(1)
     }
 
     /**
@@ -60,45 +61,45 @@ class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSo
     }
 
     /**
-     * Sets up a subscription for getting a page of people (10 people in each page) from SWAPI to
-     * show in the UI. Exposes the data via [personListItemsLiveData] when done.
+     * Sets up a subscription for getting a page of person names (10 in each page) from SWAPI to
+     * show in the UI. Exposes the data via [personNamesLiveData] when done.
      *
-     * @param page Which page of people to fetch.
+     * @param page Which page of person names to fetch.
      */
-    override fun getPeople(@IntRange(from = 1) page: Int) {
+    override fun getPersonNames(@IntRange(from = 1) page: Int) {
         disposable.add(peopleRemoteDataSource.getPeople(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
-                personListItems.apply {
+                personNames.apply {
                     remove(PersonListItem.ErrorItem)
                     add(PersonListItem.LoadingItem)
                 }
-                personListItemsLiveData.postValue(personListItems)
+                personNamesLiveData.postValue(personNames)
             }
             .subscribe(
                 { pageResponse ->
-                    val newPersonItems = pageResponse.results.map { personResponse ->
+                    val newPersonNames = pageResponse.results.map { personResponse ->
                         PersonListItem.PersonItem(
                             id = personResponse.url.extractIDFromURL(),
                             name = personResponse.name
                         )
                     }
-                    personListItems.apply {
+                    personNames.apply {
                         remove(PersonListItem.LoadingItem)
-                        addAll(newPersonItems)
+                        addAll(newPersonNames)
                     }
-                    personListItemsLiveData.postValue(personListItems)
+                    personNamesLiveData.postValue(personNames)
                     if (pageResponse.next == null) {
-                        isAllPersonListItemsRequestedLiveData.postValue(true)
+                        isAllPersonNamesRequestedLiveData.postValue(true)
                     }
                 },
                 { throwable ->
-                    personListItems.apply {
+                    personNames.apply {
                         remove(PersonListItem.LoadingItem)
                         add(PersonListItem.ErrorItem)
                     }
-                    personListItemsLiveData.postValue(personListItems)
+                    personNamesLiveData.postValue(personNames)
                     Log.e(TAG, throwable.toString())
                 }
             )
@@ -106,6 +107,6 @@ class PeopleListViewModelImpl @Inject constructor(private val peopleRemoteDataSo
     }
 
     companion object {
-        private const val TAG = "PeopleListViewModelImpl"
+        private const val TAG = "PersonNamesViewModelImpl"
     }
 }

@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * Exposes state and encapsulates business logic related to the person detail list.
+ * Exposes state and encapsulates business logic related to the person details list.
  *
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
@@ -35,20 +35,19 @@ import javax.inject.Inject
  * @property vehiclesRemoteDataSource [VehiclesRemoteDataSource] implementation by `Retrofit` for
  * fetching planet data from SWAPI.
  */
-class PersonDetailViewModelImpl @Inject constructor(
+class PersonDetailsViewModelImpl @Inject constructor(
     private val peopleRemoteDataSource: PeopleRemoteDataSource,
     private val planetsRemoteDataSource: PlanetsRemoteDataSource,
     private val speciesRemoteDataSource: SpeciesRemoteDataSource,
     private val filmsRemoteDataSource: FilmsRemoteDataSource,
     private val starshipsRemoteDataSource: StarshipsRemoteDataSource,
     private val vehiclesRemoteDataSource: VehiclesRemoteDataSource
-) : PersonDetailViewModel, ViewModel() {
+) : PersonDetailsViewModel, ViewModel() {
 
     /**
      * Emits a [List] of [DetailListItem]s that should be shown on the UI.
      */
-    override val personDetailListItemsLiveData: MutableLiveData<List<DetailListItem>> =
-        MutableLiveData()
+    override val personDetailsLiveData: MutableLiveData<List<DetailListItem>> = MutableLiveData()
 
     /**
      * Emits whether a loading state should be shown on the UI.
@@ -76,11 +75,11 @@ class PersonDetailViewModelImpl @Inject constructor(
 
     /**
      * Sets up a subscription for getting the details of a single person from SWAPI to show in the
-     * UI. Exposes the data via [personDetailListItemsLiveData] when done.
+     * UI. Exposes the data via [personDetailsLiveData] when done.
      *
      * @param id Unique id of the person to fetch.
      */
-    override fun getPerson(@IntRange(from = 1) id: Int) {
+    override fun getPersonDetails(@IntRange(from = 1) id: Int) {
         disposable.add(peopleRemoteDataSource.getPerson(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -100,12 +99,9 @@ class PersonDetailViewModelImpl @Inject constructor(
                     val starshipsResponse = response.fifth
                     val vehiclesResponse = response.sixth
 
-                    val newDetailListItems = listOf(
+                    val newPersonDetails = listOf(
                         DetailListItem(R.string.name_detail_label, personResponse.name),
-                        DetailListItem(
-                            R.string.homeworld_detail_label,
-                            homeworldResponse.name
-                        ),
+                        DetailListItem(R.string.homeworld_detail_label, homeworldResponse.name),
                         DetailListItem(
                             R.string.birth_year_detail_label,
                             personResponse.birthYear
@@ -143,7 +139,7 @@ class PersonDetailViewModelImpl @Inject constructor(
                         )
                     )
                     showLoadingLiveData.postValue(false)
-                    personDetailListItemsLiveData.postValue(newDetailListItems)
+                    personDetailsLiveData.postValue(newPersonDetails)
                 },
                 { throwable ->
                     showLoadingLiveData.postValue(false)
@@ -227,6 +223,6 @@ class PersonDetailViewModelImpl @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "PersonDetailViewModelImpl"
+        private const val TAG = "PersonDetailsViewModelImpl"
     }
 }

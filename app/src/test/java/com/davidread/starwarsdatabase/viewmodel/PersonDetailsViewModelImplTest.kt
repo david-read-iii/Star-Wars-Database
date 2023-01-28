@@ -14,9 +14,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests that verify the correctness of [PersonDetailViewModelImpl].
+ * Unit tests that verify the correctness of [PersonDetailsViewModelImpl].
  */
-class PersonDetailViewModelImplTest {
+class PersonDetailsViewModelImplTest {
 
     /**
      * Rule that swaps the background executor used by the Architecture Components with one that
@@ -34,7 +34,7 @@ class PersonDetailViewModelImplTest {
     val testSchedulerRule = RxImmediateSchedulerRule()
 
     @Test
-    fun `given that all datasources return success response, when viewmodel calls getPerson(), then viewmodel emits the expected detail list items in the UI list`() {
+    fun `given that all datasources return success response, when viewmodel calls getPersonDetails(), then viewmodel emits the expected detail list items in the UI list`() {
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
             every { getPerson(any()) } returns Single.just(getSuccessfulPersonResponse())
         }
@@ -57,7 +57,7 @@ class PersonDetailViewModelImplTest {
             every { getStarship(10) } returns Single.just(getSuccessfulStarshipResponse(10))
             every { getStarship(22) } returns Single.just(getSuccessfulStarshipResponse(22))
         }
-        val viewModel = PersonDetailViewModelImpl(
+        val viewModel = PersonDetailsViewModelImpl(
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
@@ -65,7 +65,7 @@ class PersonDetailViewModelImplTest {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPerson(1)
+        viewModel.getPersonDetails(1)
 
         val expectedList = listOf(
             DetailListItem(R.string.name_detail_label, "Chewbacca"),
@@ -85,12 +85,12 @@ class PersonDetailViewModelImplTest {
             DetailListItem(R.string.starships_detail_label, "Millennium Falcon, Imperial shuttle"),
             DetailListItem(R.string.vehicles_detail_label, "AT-ST")
         )
-        val actualList = viewModel.personDetailListItemsLiveData.value
+        val actualList = viewModel.personDetailsLiveData.value
         Assert.assertEquals(expectedList, actualList)
     }
 
     @Test
-    fun `given that all datasources return success response, when viewmodel calls getPerson(), then viewmodel does not emit an error status to the UI`() {
+    fun `given that all datasources return success response, when viewmodel calls getPersonDetails(), then viewmodel does not emit an error status to the UI`() {
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
             every { getPerson(any()) } returns Single.just(getSuccessfulPersonResponse())
         }
@@ -109,7 +109,7 @@ class PersonDetailViewModelImplTest {
         val starshipsRemoteDataSource = mockk<StarshipsRemoteDataSource> {
             every { getStarship(any()) } returns Single.just(getSuccessfulStarshipResponse())
         }
-        val viewModel = PersonDetailViewModelImpl(
+        val viewModel = PersonDetailsViewModelImpl(
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
@@ -117,14 +117,14 @@ class PersonDetailViewModelImplTest {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPerson(1)
+        viewModel.getPersonDetails(1)
 
         val actual = viewModel.showErrorLiveData.value
         Assert.assertFalse(actual!!)
     }
 
     @Test
-    fun `given all datasources return error response, when viewmodel calls getPerson(), then viewmodel emits an error status to the UI`() {
+    fun `given all datasources return error response, when viewmodel calls getPersonDetails(), then viewmodel emits an error status to the UI`() {
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
             every { getPerson(any()) } returns Single.error(Throwable())
         }
@@ -143,7 +143,7 @@ class PersonDetailViewModelImplTest {
         val starshipsRemoteDataSource = mockk<StarshipsRemoteDataSource> {
             every { getStarship(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PersonDetailViewModelImpl(
+        val viewModel = PersonDetailsViewModelImpl(
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
@@ -151,7 +151,7 @@ class PersonDetailViewModelImplTest {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPerson(1)
+        viewModel.getPersonDetails(1)
 
         val actual = viewModel.showErrorLiveData.value
         Assert.assertTrue(actual!!)

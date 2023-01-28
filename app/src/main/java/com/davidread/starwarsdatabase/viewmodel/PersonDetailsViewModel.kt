@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import com.davidread.starwarsdatabase.model.view.DetailListItem
 
 /**
- * Defines the structure of [PersonDetailViewModelImpl].
+ * Defines the structure of [PersonDetailsViewModelImpl].
  */
-interface PersonDetailViewModel {
-    val personDetailListItemsLiveData: LiveData<List<DetailListItem>>
+interface PersonDetailsViewModel {
+    val personDetailsLiveData: LiveData<List<DetailListItem>>
     val showLoadingLiveData: LiveData<Boolean>
     val showErrorLiveData: LiveData<Boolean>
-    fun getPerson(@IntRange(from = 1) id: Int)
+    fun getPersonDetails(@IntRange(from = 1) id: Int)
 }

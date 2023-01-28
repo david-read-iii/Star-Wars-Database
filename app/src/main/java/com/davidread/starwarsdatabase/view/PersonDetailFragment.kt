@@ -11,8 +11,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
-import com.davidread.starwarsdatabase.viewmodel.PersonDetailViewModel
-import com.davidread.starwarsdatabase.viewmodel.PersonDetailViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModel
+import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModelImpl
 import javax.inject.Inject
 
 /**
@@ -36,8 +36,8 @@ class PersonDetailFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PersonDetailViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PersonDetailViewModelImpl::class.java]
+    private val viewModel: PersonDetailsViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PersonDetailsViewModelImpl::class.java]
     }
 
     /**
@@ -66,7 +66,7 @@ class PersonDetailFragment : Fragment() {
         binding.personDetailRetryButton.setOnClickListener { onRetryClick() }
         setupObservers()
         if (savedInstanceState == null) {
-            viewModel.getPerson(arguments.id)
+            viewModel.getPersonDetails(arguments.id)
         }
         return binding.root
     }
@@ -76,7 +76,7 @@ class PersonDetailFragment : Fragment() {
      * this fragment's error state.
      */
     private fun setupObservers() {
-        viewModel.personDetailListItemsLiveData.observe(viewLifecycleOwner) { personDetailListItems ->
+        viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetailListItems ->
             binding.personDetailList.apply {
                 adapter = DetailListAdapter(personDetailListItems)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -105,6 +105,6 @@ class PersonDetailFragment : Fragment() {
      * details of the person from SWAPI again.
      */
     private fun onRetryClick() {
-        viewModel.getPerson(arguments.id)
+        viewModel.getPersonDetails(arguments.id)
     }
 }
