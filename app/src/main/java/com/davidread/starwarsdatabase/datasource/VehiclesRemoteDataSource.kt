@@ -20,20 +20,14 @@ interface VehiclesRemoteDataSource {
      *
      * @param page Which page of vehicles to fetch.
      */
-    @GET(ENDPOINT_VEHICLES)
-    fun getVehicles(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Vehicle>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_VEHICLES)
+    fun getVehicles(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Vehicle>>
 
     /**
      * Fetches a single [ResourceResponse.Vehicle] from SWAPI.
      *
      * @param id Unique id of the vehicle to fetch.
      */
-    @GET("${ENDPOINT_VEHICLES}/{${PATH_ID}}")
-    fun getVehicle(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Vehicle>
-
-    companion object {
-        private const val ENDPOINT_VEHICLES = "vehicles"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_VEHICLES}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getVehicle(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Vehicle>
 }

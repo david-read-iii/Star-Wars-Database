@@ -20,20 +20,14 @@ interface SpeciesRemoteDataSource {
      *
      * @param page Which page of species to fetch.
      */
-    @GET(ENDPOINT_SPECIES)
-    fun getSpecies(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Species>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_SPECIES)
+    fun getSpecies(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Species>>
 
     /**
      * Fetches a single [ResourceResponse.Species] from SWAPI.
      *
      * @param id Unique id of the species to fetch.
      */
-    @GET("${ENDPOINT_SPECIES}/{${PATH_ID}}")
-    fun getSingleSpecies(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Species>
-
-    companion object {
-        private const val ENDPOINT_SPECIES = "species"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_SPECIES}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getSingleSpecies(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Species>
 }

@@ -20,20 +20,14 @@ interface PeopleRemoteDataSource {
      *
      * @param page Which page of people to fetch.
      */
-    @GET(ENDPOINT_PEOPLE)
-    fun getPeople(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Person>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_PEOPLE)
+    fun getPeople(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Person>>
 
     /**
      * Fetches a single [ResourceResponse.Person] from SWAPI.
      *
      * @param id Unique id of the person to fetch.
      */
-    @GET("$ENDPOINT_PEOPLE/{$PATH_ID}")
-    fun getPerson(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Person>
-
-    companion object {
-        private const val ENDPOINT_PEOPLE = "people"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_PEOPLE}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getPerson(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Person>
 }
