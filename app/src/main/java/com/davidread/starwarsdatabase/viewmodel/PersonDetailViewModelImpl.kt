@@ -8,7 +8,7 @@ import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.datasource.*
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import com.davidread.starwarsdatabase.model.view.DetailListItem
-import com.davidread.starwarsdatabase.model.viewmodel.Sextuple
+import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
