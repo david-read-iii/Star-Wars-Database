@@ -68,7 +68,7 @@ class PersonDetailsFragment : Fragment() {
             personDetailsViewModel = viewModel
             personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
         }
-        setupObservers()
+        setupObserver()
         if (savedInstanceState == null) {
             viewModel.getPersonDetails(arguments.id)
         }
@@ -76,10 +76,10 @@ class PersonDetailsFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to [ResourceDetailsAdapter]'s dataset, to this fragment's loading state,
-     * and this fragment's error state.
+     * Sets up observers for the fragment.
      */
-    private fun setupObservers() {
+    private fun setupObserver() {
+        // Updates the adapter with the dataset when it becomes available.
         viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
             binding.personDetailsList.apply {
                 adapter = ResourceDetailsAdapter(personDetails)
