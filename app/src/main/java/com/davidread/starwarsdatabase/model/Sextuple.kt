@@ -1,4 +1,4 @@
-package com.davidread.starwarsdatabase.model.viewmodel
+package com.davidread.starwarsdatabase.model
 
 /**
  * Helper object to use with RxJava disposables. Specifically, with the `zip`, `combineLatest`, and

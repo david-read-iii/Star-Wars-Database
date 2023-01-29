@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.datasource.*
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.DetailListItem
-import com.davidread.starwarsdatabase.model.viewmodel.Sextuple
+import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
+import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * Exposes state and encapsulates business logic related to the person detail list.
+ * Exposes state and encapsulates business logic related to the person details list.
  *
  * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
  * fetching people data from SWAPI.
@@ -35,19 +35,19 @@ import javax.inject.Inject
  * @property vehiclesRemoteDataSource [VehiclesRemoteDataSource] implementation by `Retrofit` for
  * fetching planet data from SWAPI.
  */
-class PersonDetailViewModelImpl @Inject constructor(
+class PersonDetailsViewModelImpl @Inject constructor(
     private val peopleRemoteDataSource: PeopleRemoteDataSource,
     private val planetsRemoteDataSource: PlanetsRemoteDataSource,
     private val speciesRemoteDataSource: SpeciesRemoteDataSource,
     private val filmsRemoteDataSource: FilmsRemoteDataSource,
     private val starshipsRemoteDataSource: StarshipsRemoteDataSource,
     private val vehiclesRemoteDataSource: VehiclesRemoteDataSource
-) : PersonDetailViewModel, ViewModel() {
+) : PersonDetailsViewModel, ViewModel() {
 
     /**
-     * Emits a [List] of [DetailListItem]s that should be shown on the UI.
+     * Emits a [List] of [ResourceDetailListItem]s that should be shown on the UI.
      */
-    override val personDetailListItemsLiveData: MutableLiveData<List<DetailListItem>> =
+    override val personDetailsLiveData: MutableLiveData<List<ResourceDetailListItem>> =
         MutableLiveData()
 
     /**
@@ -76,11 +76,11 @@ class PersonDetailViewModelImpl @Inject constructor(
 
     /**
      * Sets up a subscription for getting the details of a single person from SWAPI to show in the
-     * UI. Exposes the data via [personDetailListItemsLiveData] when done.
+     * UI. Exposes the data via [personDetailsLiveData] when done.
      *
      * @param id Unique id of the person to fetch.
      */
-    override fun getPerson(@IntRange(from = 1) id: Int) {
+    override fun getPersonDetails(@IntRange(from = 1) id: Int) {
         disposable.add(peopleRemoteDataSource.getPerson(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -100,50 +100,56 @@ class PersonDetailViewModelImpl @Inject constructor(
                     val starshipsResponse = response.fifth
                     val vehiclesResponse = response.sixth
 
-                    val newDetailListItems = listOf(
-                        DetailListItem(R.string.name_detail_label, personResponse.name),
-                        DetailListItem(
+                    val newPersonDetails = listOf(
+                        ResourceDetailListItem(R.string.name_detail_label, personResponse.name),
+                        ResourceDetailListItem(
                             R.string.homeworld_detail_label,
                             homeworldResponse.name
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.birth_year_detail_label,
                             personResponse.birthYear
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.species_detail_label,
                             speciesResponse.extractNames()
                         ),
-                        DetailListItem(R.string.gender_detail_label, personResponse.gender),
-                        DetailListItem(R.string.height_detail_label, personResponse.height),
-                        DetailListItem(R.string.mass_detail_label, personResponse.mass),
-                        DetailListItem(
+                        ResourceDetailListItem(
+                            R.string.gender_detail_label,
+                            personResponse.gender
+                        ),
+                        ResourceDetailListItem(
+                            R.string.height_detail_label,
+                            personResponse.height
+                        ),
+                        ResourceDetailListItem(R.string.mass_detail_label, personResponse.mass),
+                        ResourceDetailListItem(
                             R.string.hair_color_detail_label,
                             personResponse.hairColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.eye_color_detail_label,
                             personResponse.eyeColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.skin_color_detail_label,
                             personResponse.skinColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.films_detail_label,
                             filmsResponse.extractNames()
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.starships_detail_label,
                             starshipsResponse.extractNames()
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.vehicles_detail_label,
                             vehiclesResponse.extractNames()
                         )
                     )
                     showLoadingLiveData.postValue(false)
-                    personDetailListItemsLiveData.postValue(newDetailListItems)
+                    personDetailsLiveData.postValue(newPersonDetails)
                 },
                 { throwable ->
                     showLoadingLiveData.postValue(false)
@@ -227,6 +233,6 @@ class PersonDetailViewModelImpl @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "PersonDetailViewModelImpl"
+        private const val TAG = "PersonDetailsViewModelImpl"
     }
 }

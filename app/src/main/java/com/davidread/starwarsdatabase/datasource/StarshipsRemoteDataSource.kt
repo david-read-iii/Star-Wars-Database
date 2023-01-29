@@ -20,20 +20,14 @@ interface StarshipsRemoteDataSource {
      *
      * @param page Which page of starships to fetch.
      */
-    @GET(ENDPOINT_STARSHIPS)
-    fun getStarships(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Starship>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_STARSHIPS)
+    fun getStarships(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Starship>>
 
     /**
      * Fetches a single [ResourceResponse.Starship] from SWAPI.
      *
      * @param id Unique id of the starship to fetch.
      */
-    @GET("${ENDPOINT_STARSHIPS}/{${PATH_ID}}")
-    fun getStarship(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Starship>
-
-    companion object {
-        private const val ENDPOINT_STARSHIPS = "starships"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_STARSHIPS}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getStarship(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Starship>
 }

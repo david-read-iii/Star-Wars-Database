@@ -17,26 +17,16 @@
     <string name="species_in_empty_fragment_detail_text">Species launched in EmptyFragment!</string>
     <string name="planets_in_empty_fragment_detail_text">Planets launched in EmptyFragment!</string>
 
-    <!-- PeopleListFragment strings. -->
-    <string name="people_list_fragment_name">People</string>
+    <!-- Top-level fragment names. -->
+    <string name="person_names_fragment_name">People</string>
+    <string name="film_names_fragment_name">Films</string>
+    <string name="starship_names_fragment_name">Starships</string>
+    <string name="vehicle_names_fragment_name">Vehicles</string>
+    <string name="species_names_fragment_name">Species</string>
+    <string name="planet_names_fragment_name">Planets</string>
 
-    <!-- FilmsListFragment strings. -->
-    <string name="films_list_fragment_name">Films</string>
-
-    <!-- StarshipsListFragment strings. -->
-    <string name="starships_list_fragment_name">Starships</string>
-
-    <!-- VehiclesListFragment strings. -->
-    <string name="vehicles_list_fragment_name">Vehicles</string>
-
-    <!-- SpeciesListFragment strings. -->
-    <string name="species_list_fragment_name">Species</string>
-
-    <!-- PlanetsListFragment strings. -->
-    <string name="planets_list_fragment_name">Planets</string>
-
-    <!-- PersonDetailFragment strings. -->
-    <string name="person_detail_fragment_name">Person Details</string>
+    <!-- 2nd-level fragment names. -->
+    <string name="person_details_fragment_name">Person Details</string>
 
     <!-- Detail label strings. -->
     <string name="name_detail_label">Name</string>
@@ -53,7 +43,7 @@
     <string name="starships_detail_label">Starships</string>
     <string name="vehicles_detail_label">Vehicles</string>
 
-    <!-- List item strings. -->
+    <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
     <string name="retry_button_label">Retry</string>
 

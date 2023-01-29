@@ -37,12 +37,12 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
      * Set of id resources that represent top-level fragment destinations in the nav controller.
      */
     private val topLevelDestinations: Set<Int> = setOf(
-        R.id.people_list_fragment,
-        R.id.films_list_fragment,
-        R.id.starships_list_fragment,
-        R.id.vehicles_list_fragment,
-        R.id.species_list_fragment,
-        R.id.planets_list_fragment
+        R.id.person_names_fragment,
+        R.id.film_names_fragment,
+        R.id.starship_names_fragment,
+        R.id.vehicle_names_fragment,
+        R.id.species_names_fragment,
+        R.id.planet_names_fragment
     )
 
     /**
@@ -81,8 +81,8 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
 
         /* Set initial checked item for navigation drawer with this condition because nav controller
          * current destination is preserved through configuration changes. */
-        if (navController.currentDestination?.id == R.id.people_list_fragment) {
-            binding.navigationView.setCheckedItem(R.id.people_list_fragment)
+        if (navController.currentDestination?.id == R.id.person_names_fragment) {
+            binding.navigationView.setCheckedItem(R.id.person_names_fragment)
         }
     }
 

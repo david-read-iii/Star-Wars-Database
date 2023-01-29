@@ -11,17 +11,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
+import com.davidread.starwarsdatabase.databinding.FragmentPersonNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
-import com.davidread.starwarsdatabase.model.view.PersonListItem
-import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModel
-import com.davidread.starwarsdatabase.viewmodel.PeopleListViewModelImpl
+import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
+import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModel
+import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
 /**
- * Fragment representing a list of entries in the people category.
+ * Fragment representing a list of person names.
  */
-class PeopleListFragment : Fragment() {
+class PersonNamesFragment : Fragment() {
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -32,23 +32,23 @@ class PeopleListFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentPeopleListBinding by lazy {
-        FragmentPeopleListBinding.inflate(layoutInflater)
+    private val binding: FragmentPersonNamesBinding by lazy {
+        FragmentPersonNamesBinding.inflate(layoutInflater)
     }
 
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PeopleListViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PeopleListViewModelImpl::class.java]
+    private val viewModel: PersonNamesViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PersonNamesViewModelImpl::class.java]
     }
 
     /**
-     * Adapts a people list dataset onto the [RecyclerView] in the UI.
+     * Adapts a person names list dataset onto the [RecyclerView] in the UI.
      */
-    private val peopleListAdapter = PeopleListAdapter(
-        { id -> onPersonItemClick(id) },
-        { onErrorItemRetryClick() }
+    private val personNamesAdapter = ResourceNamesAdapter(
+        { id -> onPersonNameClick(id) },
+        { onErrorRetryClick() }
     )
 
     /**
@@ -56,7 +56,7 @@ class PeopleListFragment : Fragment() {
      * people from the [viewModel] to add onto the dataset from SWAPI. It also removes the on scroll
      * listener so duplicate requests are not made.
      */
-    private val loadMorePeopleOnScrollListener = object : RecyclerView.OnScrollListener() {
+    private val loadMorePersonNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -69,7 +69,7 @@ class PeopleListFragment : Fragment() {
             if (isLastItemVisible) {
                 recyclerView.removeOnScrollListener(this)
                 val page = ((totalItemCount - 1) / 10) + 2
-                viewModel.getPeople(page)
+                viewModel.getPersonNames(page)
             }
         }
     }
@@ -85,15 +85,15 @@ class PeopleListFragment : Fragment() {
 
     /**
      * Invoked when this fragment's view is to be created. It initializes the [RecyclerView], sets
-     * up an observer to the [PeopleListAdapter]'s dataset, and returns the fragment's view.
+     * up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.peopleList.apply {
-            adapter = peopleListAdapter
+        binding.personNamesList.apply {
+            adapter = personNamesAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         setupObserver()
@@ -106,47 +106,48 @@ class PeopleListFragment : Fragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
+        binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
     }
 
     /**
-     * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
-     * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
-     * second is responsible for removing the scroll listener from the [RecyclerView] when no more
-     * entries may be fetched for the dataset.
+     * Sets up an observer to the [ResourceNamesAdapter]'s dataset. It sets up two observers. The
+     * first one is responsible for updating the adapter with the latest dataset from the
+     * [viewModel]. The second is responsible for removing the scroll listener from the
+     * [RecyclerView] when no more entries may be fetched for the dataset.
      */
     private fun setupObserver() {
-        viewModel.personListItemsLiveData.observe(viewLifecycleOwner) { personListItems ->
+        viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
             /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
              * new lists. */
-            peopleListAdapter.submitList(personListItems.toList())
+            personNamesAdapter.submitList(personNames.toList())
 
-            when (personListItems.lastOrNull()) {
-                is PersonListItem.PersonItem -> {
-                    binding.peopleList.addOnScrollListener(loadMorePeopleOnScrollListener)
+            when (personNames.lastOrNull()) {
+                is ResourceNameListItem.ResourceName -> {
+                    binding.personNamesList.addOnScrollListener(loadMorePersonNamesOnScrollListener)
                 }
-                is PersonListItem.LoadingItem -> {
-                    binding.peopleList.smoothScrollToPosition(personListItems.lastIndex)
+                is ResourceNameListItem.Loading -> {
+                    binding.personNamesList.smoothScrollToPosition(personNames.lastIndex)
                 }
                 else -> {}
             }
         }
 
-        viewModel.isAllPersonListItemsRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
-            if (isAllPersonListItemsRequested) {
-                binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
+        viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
+            if (isAllPersonNamesRequested) {
+                binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
             }
         }
     }
 
     /**
-     * Called when a person item is clicked in the list. Launches [PersonDetailFragment] while
+     * Called when a person name is clicked in the list. Launches [PersonDetailsFragment] while
      * passing the id of the clicked person.
      *
      * @param id Unique id of the person clicked in the list.
      */
-    private fun onPersonItemClick(id: Int) {
-        val action = PeopleListFragmentDirections.actionPeopleListFragmentToPersonDetailFragment(id)
+    private fun onPersonNameClick(id: Int) {
+        val action =
+            PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
         findNavController().navigate(action)
     }
 
@@ -154,8 +155,8 @@ class PeopleListFragment : Fragment() {
      * Called when the retry button of an error item is clicked in the list. It requests more
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
-    private fun onErrorItemRetryClick() {
-        val page = ((peopleListAdapter.itemCount - 2) / 10) + 2
-        viewModel.getPeople(page)
+    private fun onErrorRetryClick() {
+        val page = ((personNamesAdapter.itemCount - 2) / 10) + 2
+        viewModel.getPersonNames(page)
     }
 }

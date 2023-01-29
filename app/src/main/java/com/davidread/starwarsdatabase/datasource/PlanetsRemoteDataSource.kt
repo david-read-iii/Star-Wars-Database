@@ -20,20 +20,14 @@ interface PlanetsRemoteDataSource {
      *
      * @param page Which page of planets to fetch.
      */
-    @GET(ENDPOINT_PLANETS)
-    fun getPlanets(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Planet>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_PLANETS)
+    fun getPlanets(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Planet>>
 
     /**
      * Fetches a single [ResourceResponse.Planet] from SWAPI.
      *
      * @param id Unique id of the planet to fetch.
      */
-    @GET("${ENDPOINT_PLANETS}/{${PATH_ID}}")
-    fun getPlanet(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Planet>
-
-    companion object {
-        private const val ENDPOINT_PLANETS = "planets"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_PLANETS}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getPlanet(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Planet>
 }

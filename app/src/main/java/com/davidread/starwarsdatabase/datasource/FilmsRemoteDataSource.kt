@@ -20,20 +20,14 @@ interface FilmsRemoteDataSource {
      *
      * @param page Which page of films to fetch.
      */
-    @GET(ENDPOINT_FILMS)
-    fun getFilms(@Query(PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Film>>
+    @GET(RemoteDataSourceConstants.ENDPOINT_FILMS)
+    fun getFilms(@Query(RemoteDataSourceConstants.PARAMETER_PAGE) @IntRange(from = 1) page: Int): Single<PageResponse<ResourceResponse.Film>>
 
     /**
      * Fetches a single [ResourceResponse.Film] from SWAPI.
      *
      * @param id Unique id of the film to fetch.
      */
-    @GET("${ENDPOINT_FILMS}/{${PATH_ID}}")
-    fun getFilm(@Path(PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Film>
-
-    companion object {
-        private const val ENDPOINT_FILMS = "films"
-        private const val PARAMETER_PAGE = "page"
-        private const val PATH_ID = "id"
-    }
+    @GET("${RemoteDataSourceConstants.ENDPOINT_FILMS}/{${RemoteDataSourceConstants.PATH_ID}}")
+    fun getFilm(@Path(RemoteDataSourceConstants.PATH_ID) @IntRange(from = 1) id: Int): Single<ResourceResponse.Film>
 }
