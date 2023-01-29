@@ -13,23 +13,23 @@
 
                 <item
                     android:id="@+id/films_list_fragment"
-                    android:title="@string/films_list_fragment_name" />
+                    android:title="@string/film_names_fragment_name" />
 
                 <item
                     android:id="@+id/starships_list_fragment"
-                    android:title="@string/starships_list_fragment_name" />
+                    android:title="@string/starship_names_fragment_name" />
 
                 <item
                     android:id="@+id/vehicles_list_fragment"
-                    android:title="@string/vehicles_list_fragment_name" />
+                    android:title="@string/vehicle_names_fragment_name" />
 
                 <item
                     android:id="@+id/species_list_fragment"
-                    android:title="@string/species_list_fragment_name" />
+                    android:title="@string/species_names_fragment_name" />
 
                 <item
                     android:id="@+id/planets_list_fragment"
-                    android:title="@string/planets_list_fragment_name" />
+                    android:title="@string/planet_names_fragment_name" />
 
             </group>
 

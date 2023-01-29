@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/films_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/films_list_fragment_name"
+        android:label="@string/film_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/starships_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/starships_list_fragment_name"
+        android:label="@string/starship_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/vehicles_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/vehicles_list_fragment_name"
+        android:label="@string/vehicle_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/species_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/species_list_fragment_name"
+        android:label="@string/species_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/planets_list_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/planets_list_fragment_name"
+        android:label="@string/planet_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
