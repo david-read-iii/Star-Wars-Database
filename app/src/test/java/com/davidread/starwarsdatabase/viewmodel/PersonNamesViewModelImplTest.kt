@@ -5,7 +5,7 @@ import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
@@ -44,7 +44,7 @@ class PersonNamesViewModelImplTest {
         val actualList = viewModel.personNamesLiveData.value
         Assert.assertEquals(response.results.size, actualList!!.size)
         for (item in actualList) {
-            Assert.assertTrue(item is PersonListItem.PersonItem)
+            Assert.assertTrue(item is ResourceNameListItem.ResourceName)
         }
     }
 
@@ -57,7 +57,7 @@ class PersonNamesViewModelImplTest {
 
         val actualList = viewModel.personNamesLiveData.value
         Assert.assertEquals(1, actualList!!.size)
-        Assert.assertTrue(actualList.first() is PersonListItem.ErrorItem)
+        Assert.assertTrue(actualList.first() is ResourceNameListItem.Error)
     }
 
     @Test

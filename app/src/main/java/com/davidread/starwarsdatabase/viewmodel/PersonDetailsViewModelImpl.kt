@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.datasource.*
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.DetailListItem
+import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
@@ -45,9 +45,10 @@ class PersonDetailsViewModelImpl @Inject constructor(
 ) : PersonDetailsViewModel, ViewModel() {
 
     /**
-     * Emits a [List] of [DetailListItem]s that should be shown on the UI.
+     * Emits a [List] of [ResourceDetailListItem]s that should be shown on the UI.
      */
-    override val personDetailsLiveData: MutableLiveData<List<DetailListItem>> = MutableLiveData()
+    override val personDetailsLiveData: MutableLiveData<List<ResourceDetailListItem>> =
+        MutableLiveData()
 
     /**
      * Emits whether a loading state should be shown on the UI.
@@ -100,40 +101,49 @@ class PersonDetailsViewModelImpl @Inject constructor(
                     val vehiclesResponse = response.sixth
 
                     val newPersonDetails = listOf(
-                        DetailListItem(R.string.name_detail_label, personResponse.name),
-                        DetailListItem(R.string.homeworld_detail_label, homeworldResponse.name),
-                        DetailListItem(
+                        ResourceDetailListItem(R.string.name_detail_label, personResponse.name),
+                        ResourceDetailListItem(
+                            R.string.homeworld_detail_label,
+                            homeworldResponse.name
+                        ),
+                        ResourceDetailListItem(
                             R.string.birth_year_detail_label,
                             personResponse.birthYear
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.species_detail_label,
                             speciesResponse.extractNames()
                         ),
-                        DetailListItem(R.string.gender_detail_label, personResponse.gender),
-                        DetailListItem(R.string.height_detail_label, personResponse.height),
-                        DetailListItem(R.string.mass_detail_label, personResponse.mass),
-                        DetailListItem(
+                        ResourceDetailListItem(
+                            R.string.gender_detail_label,
+                            personResponse.gender
+                        ),
+                        ResourceDetailListItem(
+                            R.string.height_detail_label,
+                            personResponse.height
+                        ),
+                        ResourceDetailListItem(R.string.mass_detail_label, personResponse.mass),
+                        ResourceDetailListItem(
                             R.string.hair_color_detail_label,
                             personResponse.hairColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.eye_color_detail_label,
                             personResponse.eyeColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.skin_color_detail_label,
                             personResponse.skinColor
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.films_detail_label,
                             filmsResponse.extractNames()
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.starships_detail_label,
                             starshipsResponse.extractNames()
                         ),
-                        DetailListItem(
+                        ResourceDetailListItem(
                             R.string.vehicles_detail_label,
                             vehiclesResponse.extractNames()
                         )

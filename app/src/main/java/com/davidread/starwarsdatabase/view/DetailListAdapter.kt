@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.ListItemDetailBinding
-import com.davidread.starwarsdatabase.model.view.DetailListItem
+import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 
 /**
- * Binds a [List] of [DetailListItem] into a set of views that are displayed within a
+ * Binds a [List] of [ResourceDetailListItem] into a set of views that are displayed within a
  * [RecyclerView].
  *
- * @property detailListItems Data source for the list.
+ * @property resourceDetails Data source for the list.
  */
-class DetailListAdapter(private val detailListItems: List<DetailListItem>) :
+class DetailListAdapter(private val resourceDetails: List<ResourceDetailListItem>) :
     RecyclerView.Adapter<DetailListAdapter.DetailViewHolder>() {
 
     /**
@@ -29,14 +29,14 @@ class DetailListAdapter(private val detailListItems: List<DetailListItem>) :
      * the given position.
      */
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-        val detailItem = detailListItems[position]
-        holder.bind(detailItem)
+        val resourceDetail = resourceDetails[position]
+        holder.bind(resourceDetail)
     }
 
     /**
      * Returns the count of items in the data source.
      */
-    override fun getItemCount(): Int = detailListItems.size
+    override fun getItemCount(): Int = resourceDetails.size
 
     /**
      * Describes a detail view and metadata about its place within the [RecyclerView].
@@ -47,8 +47,8 @@ class DetailListAdapter(private val detailListItems: List<DetailListItem>) :
         /**
          * Binds data to the view held by this [DetailViewHolder].
          */
-        fun bind(detailItem: DetailListItem) {
-            binding.detailItem = detailItem
+        fun bind(resourceDetail: ResourceDetailListItem) {
+            binding.resourceDetail = resourceDetail
         }
     }
 }

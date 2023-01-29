@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.ListItemErrorBinding
 import com.davidread.starwarsdatabase.databinding.ListItemLoadingBinding
 import com.davidread.starwarsdatabase.databinding.ListItemPersonBinding
-import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.PeopleListAdapterDiffCallback
 import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
 
 /**
- * Binds a [List] of [PersonListItem] dataset into a set of views that are displayed within a
+ * Binds a [List] of [ResourceNameListItem] dataset into a set of views that are displayed within a
  * [RecyclerView].
  *
  * @property onPersonItemClick Function to invoke when a view of type [ViewType.PERSON_ITEM] is
@@ -23,7 +23,7 @@ import com.davidread.starwarsdatabase.view.PeopleListAdapter.ViewType
 class PeopleListAdapter(
     private val onPersonItemClick: (id: Int) -> Unit,
     private val onErrorItemRetryClick: () -> Unit
-) : ListAdapter<PersonListItem, RecyclerView.ViewHolder>(PeopleListAdapterDiffCallback()) {
+) : ListAdapter<ResourceNameListItem, RecyclerView.ViewHolder>(PeopleListAdapterDiffCallback()) {
 
     /**
      * Called when [RecyclerView] needs a new [RecyclerView.ViewHolder] of the given type to
@@ -54,8 +54,8 @@ class PeopleListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is PersonViewHolder -> {
-                val personItem = getItem(position) as PersonListItem.PersonItem
-                holder.bind(personItem, onPersonItemClick)
+                val resourceName = getItem(position) as ResourceNameListItem.ResourceName
+                holder.bind(resourceName, onPersonItemClick)
             }
             is ErrorViewHolder -> {
                 holder.bind(onErrorItemRetryClick)
@@ -67,9 +67,9 @@ class PeopleListAdapter(
      * Returns the view type of the item at the given position.
      */
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is PersonListItem.PersonItem -> ViewType.PERSON_ITEM.ordinal
-        is PersonListItem.LoadingItem -> ViewType.LOADING_ITEM.ordinal
-        is PersonListItem.ErrorItem -> ViewType.ERROR_ITEM.ordinal
+        is ResourceNameListItem.ResourceName -> ViewType.PERSON_ITEM.ordinal
+        is ResourceNameListItem.Loading -> ViewType.LOADING_ITEM.ordinal
+        is ResourceNameListItem.Error -> ViewType.ERROR_ITEM.ordinal
     }
 
     /**
@@ -89,11 +89,11 @@ class PeopleListAdapter(
         /**
          * Binds data to the view held by this [PersonViewHolder].
          */
-        fun bind(personItem: PersonListItem.PersonItem, onPersonItemClick: (id: Int) -> Unit) {
+        fun bind(resourceName: ResourceNameListItem.ResourceName, onPersonItemClick: (id: Int) -> Unit) {
             binding.apply {
-                this.personItem = personItem
+                this.resourceName = resourceName
                 root.setOnClickListener {
-                    onPersonItemClick(personItem.id)
+                    onPersonItemClick(resourceName.id)
                 }
             }
         }

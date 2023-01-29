@@ -5,7 +5,7 @@ import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.*
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.DetailListItem
+import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
@@ -68,22 +68,25 @@ class PersonDetailsViewModelImplTest {
         viewModel.getPersonDetails(1)
 
         val expectedList = listOf(
-            DetailListItem(R.string.name_detail_label, "Chewbacca"),
-            DetailListItem(R.string.homeworld_detail_label, "Kashyyyk"),
-            DetailListItem(R.string.birth_year_detail_label, "200BBY"),
-            DetailListItem(R.string.species_detail_label, "Wookie"),
-            DetailListItem(R.string.gender_detail_label, "male"),
-            DetailListItem(R.string.height_detail_label, "228"),
-            DetailListItem(R.string.mass_detail_label, "112"),
-            DetailListItem(R.string.hair_color_detail_label, "brown"),
-            DetailListItem(R.string.eye_color_detail_label, "blue"),
-            DetailListItem(R.string.skin_color_detail_label, "unknown"),
-            DetailListItem(
+            ResourceDetailListItem(R.string.name_detail_label, "Chewbacca"),
+            ResourceDetailListItem(R.string.homeworld_detail_label, "Kashyyyk"),
+            ResourceDetailListItem(R.string.birth_year_detail_label, "200BBY"),
+            ResourceDetailListItem(R.string.species_detail_label, "Wookie"),
+            ResourceDetailListItem(R.string.gender_detail_label, "male"),
+            ResourceDetailListItem(R.string.height_detail_label, "228"),
+            ResourceDetailListItem(R.string.mass_detail_label, "112"),
+            ResourceDetailListItem(R.string.hair_color_detail_label, "brown"),
+            ResourceDetailListItem(R.string.eye_color_detail_label, "blue"),
+            ResourceDetailListItem(R.string.skin_color_detail_label, "unknown"),
+            ResourceDetailListItem(
                 R.string.films_detail_label,
                 "A New Hope, The Empire Strikes Back, Return of the Jedi, Revenge of the Sith"
             ),
-            DetailListItem(R.string.starships_detail_label, "Millennium Falcon, Imperial shuttle"),
-            DetailListItem(R.string.vehicles_detail_label, "AT-ST")
+            ResourceDetailListItem(
+                R.string.starships_detail_label,
+                "Millennium Falcon, Imperial shuttle"
+            ),
+            ResourceDetailListItem(R.string.vehicles_detail_label, "AT-ST")
         )
         val actualList = viewModel.personDetailsLiveData.value
         Assert.assertEquals(expectedList, actualList)

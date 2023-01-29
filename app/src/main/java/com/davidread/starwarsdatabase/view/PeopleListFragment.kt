@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
-import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModel
 import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
@@ -116,24 +116,24 @@ class PeopleListFragment : Fragment() {
      * entries may be fetched for the dataset.
      */
     private fun setupObserver() {
-        viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personListItems ->
+        viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
             /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
              * new lists. */
-            peopleListAdapter.submitList(personListItems.toList())
+            peopleListAdapter.submitList(personNames.toList())
 
-            when (personListItems.lastOrNull()) {
-                is PersonListItem.PersonItem -> {
+            when (personNames.lastOrNull()) {
+                is ResourceNameListItem.ResourceName -> {
                     binding.peopleList.addOnScrollListener(loadMorePeopleOnScrollListener)
                 }
-                is PersonListItem.LoadingItem -> {
-                    binding.peopleList.smoothScrollToPosition(personListItems.lastIndex)
+                is ResourceNameListItem.Loading -> {
+                    binding.peopleList.smoothScrollToPosition(personNames.lastIndex)
                 }
                 else -> {}
             }
         }
 
-        viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonListItemsRequested ->
-            if (isAllPersonListItemsRequested) {
+        viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
+            if (isAllPersonNamesRequested) {
                 binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
             }
         }

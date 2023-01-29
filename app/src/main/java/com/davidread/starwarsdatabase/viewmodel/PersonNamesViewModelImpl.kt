@@ -5,7 +5,7 @@ import androidx.annotation.IntRange
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
-import com.davidread.starwarsdatabase.model.view.PersonListItem
+import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -22,21 +22,22 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
     PersonNamesViewModel, ViewModel() {
 
     /**
-     * Emits a [List] of [PersonListItem]s that should be shown on the UI.
+     * Emits a [List] of [ResourceNameListItem]s that should be shown on the UI.
      */
-    override val personNamesLiveData: MutableLiveData<List<PersonListItem>> = MutableLiveData()
+    override val personNamesLiveData: MutableLiveData<List<ResourceNameListItem>> =
+        MutableLiveData()
 
     /**
-     * Whether all [PersonListItem]s have been fetched from SWAPI.
+     * Whether all [ResourceNameListItem]s have been fetched from SWAPI.
      */
     override val isAllPersonNamesRequestedLiveData: MutableLiveData<Boolean> =
         MutableLiveData(false)
 
     /**
-     * [MutableList] of [PersonListItem]s to be stored/modified here. Emitted via its `LiveData`
+     * [MutableList] of [ResourceNameListItem]s to be stored/modified here. Emitted via its `LiveData`
      * each time it is updated.
      */
-    private val personNames: MutableList<PersonListItem> = mutableListOf()
+    private val personNames: MutableList<ResourceNameListItem> = mutableListOf()
 
     /**
      * Container for managing resources used by `Disposable`s or their subclasses.
@@ -72,21 +73,21 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
                 personNames.apply {
-                    remove(PersonListItem.ErrorItem)
-                    add(PersonListItem.LoadingItem)
+                    remove(ResourceNameListItem.Error)
+                    add(ResourceNameListItem.Loading)
                 }
                 personNamesLiveData.postValue(personNames)
             }
             .subscribe(
                 { pageResponse ->
                     val newPersonNames = pageResponse.results.map { personResponse ->
-                        PersonListItem.PersonItem(
+                        ResourceNameListItem.ResourceName(
                             id = personResponse.url.extractIDFromURL(),
                             name = personResponse.name
                         )
                     }
                     personNames.apply {
-                        remove(PersonListItem.LoadingItem)
+                        remove(ResourceNameListItem.Loading)
                         addAll(newPersonNames)
                     }
                     personNamesLiveData.postValue(personNames)
@@ -96,8 +97,8 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                 },
                 { throwable ->
                     personNames.apply {
-                        remove(PersonListItem.LoadingItem)
-                        add(PersonListItem.ErrorItem)
+                        remove(ResourceNameListItem.Loading)
+                        add(ResourceNameListItem.Error)
                     }
                     personNamesLiveData.postValue(personNames)
                     Log.e(TAG, throwable.toString())
