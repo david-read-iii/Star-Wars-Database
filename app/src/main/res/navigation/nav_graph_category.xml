@@ -25,7 +25,7 @@
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/films_in_empty_fragment_detail_text"
             app:argType="reference" />
 
@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/starships_in_empty_fragment_detail_text"
             app:argType="reference" />
 
@@ -51,7 +51,7 @@
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/vehicles_in_empty_fragment_detail_text"
             app:argType="reference" />
 
@@ -64,7 +64,7 @@
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/species_in_empty_fragment_detail_text"
             app:argType="reference" />
 
@@ -77,7 +77,7 @@
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/planets_in_empty_fragment_detail_text"
             app:argType="reference" />
 

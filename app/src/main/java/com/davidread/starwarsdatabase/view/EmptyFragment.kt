@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.davidread.starwarsdatabase.databinding.FragmentEmptyBinding
 
 /**
@@ -20,6 +21,11 @@ class EmptyFragment : Fragment() {
     }
 
     /**
+     * Arguments passed into this fragment.
+     */
+    private val arguments: EmptyFragmentArgs by navArgs()
+
+    /**
      * Invoked when this fragment's view is to be created. It displays some detail text in the UI
      * and returns the fragment's view.
      */
@@ -28,10 +34,7 @@ class EmptyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        arguments?.getInt("DETAIL_TEXT_RES_ID")?.let { detailTextResId ->
-            val detailText = getString(detailTextResId)
-            binding.textView.text = detailText
-        }
+        binding.textView.text = getString(arguments.detailText)
         return binding.root
     }
 }
