@@ -32,14 +32,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{personDetailsViewModel.showLoadingLiveData ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{personDetailsViewModel.showLoadingLiveData ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
 
         <!-- Error state. -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/person_details_error_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{personDetailsViewModel.showErrorLiveData ? View.VISIBLE : View.GONE}">
+            android:visibility="@{personDetailsViewModel.showErrorLiveData ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
 
             <TextView
                 android:id="@+id/person_details_error_message"
