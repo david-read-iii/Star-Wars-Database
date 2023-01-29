@@ -63,8 +63,12 @@ class PersonDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
-        setupObservers()
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            personDetailsViewModel = viewModel
+            personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
+        }
+        setupObserver()
         if (savedInstanceState == null) {
             viewModel.getPersonDetails(arguments.id)
         }
@@ -72,30 +76,14 @@ class PersonDetailsFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to [ResourceDetailsAdapter]'s dataset, to this fragment's loading state,
-     * and this fragment's error state.
+     * Sets up observers for the fragment.
      */
-    private fun setupObservers() {
+    private fun setupObserver() {
+        // Updates the adapter with the dataset when it becomes available.
         viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
             binding.personDetailsList.apply {
                 adapter = ResourceDetailsAdapter(personDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            }
-        }
-
-        viewModel.showLoadingLiveData.observe(viewLifecycleOwner) { showLoading ->
-            binding.personDetailsProgressBar.visibility = if (showLoading) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-        }
-
-        viewModel.showErrorLiveData.observe(viewLifecycleOwner) { showError ->
-            binding.personDetailsErrorLayout.visibility = if (showError) {
-                View.VISIBLE
-            } else {
-                View.GONE
             }
         }
     }

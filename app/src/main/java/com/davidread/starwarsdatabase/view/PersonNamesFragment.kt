@@ -96,7 +96,7 @@ class PersonNamesFragment : Fragment() {
             adapter = personNamesAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
-        setupObserver()
+        setupObservers()
         return binding.root
     }
 
@@ -110,17 +110,15 @@ class PersonNamesFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to the [ResourceNamesAdapter]'s dataset. It sets up two observers. The
-     * first one is responsible for updating the adapter with the latest dataset from the
-     * [viewModel]. The second is responsible for removing the scroll listener from the
-     * [RecyclerView] when no more entries may be fetched for the dataset.
+     * Sets up observers for the fragment.
      */
-    private fun setupObserver() {
+    private fun setupObservers() {
         viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
-            /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
-             * new lists. */
+            /* Submit a deep copy of the dataset to the adapter. DiffCallback believes a shallow
+             * copy of the dataset is the same dataset. */
             personNamesAdapter.submitList(personNames.toList())
 
+            // Take some action depending on the last item of the new dataset.
             when (personNames.lastOrNull()) {
                 is ResourceNameListItem.ResourceName -> {
                     binding.personNamesList.addOnScrollListener(loadMorePersonNamesOnScrollListener)
@@ -132,6 +130,7 @@ class PersonNamesFragment : Fragment() {
             }
         }
 
+        // Removes the scroll listener when the dataset has fetched all list items.
         viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
             if (isAllPersonNamesRequested) {
                 binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
