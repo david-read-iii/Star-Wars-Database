@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.databinding.FragmentPeopleListBinding
+import com.davidread.starwarsdatabase.databinding.FragmentPersonNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModel
@@ -19,9 +19,9 @@ import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
 /**
- * Fragment representing a list of entries in the people category.
+ * Fragment representing a list of person names.
  */
-class PeopleListFragment : Fragment() {
+class PersonNamesFragment : Fragment() {
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -32,8 +32,8 @@ class PeopleListFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentPeopleListBinding by lazy {
-        FragmentPeopleListBinding.inflate(layoutInflater)
+    private val binding: FragmentPersonNamesBinding by lazy {
+        FragmentPersonNamesBinding.inflate(layoutInflater)
     }
 
     /**
@@ -46,7 +46,7 @@ class PeopleListFragment : Fragment() {
     /**
      * Adapts a person names list dataset onto the [RecyclerView] in the UI.
      */
-    private val peopleNamesAdapter = ResourceNamesAdapter(
+    private val personNamesAdapter = ResourceNamesAdapter(
         { id -> onPersonNameClick(id) },
         { onErrorRetryClick() }
     )
@@ -56,7 +56,7 @@ class PeopleListFragment : Fragment() {
      * people from the [viewModel] to add onto the dataset from SWAPI. It also removes the on scroll
      * listener so duplicate requests are not made.
      */
-    private val loadMorePeopleOnScrollListener = object : RecyclerView.OnScrollListener() {
+    private val loadMorePersonNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -92,8 +92,8 @@ class PeopleListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.peopleList.apply {
-            adapter = peopleNamesAdapter
+        binding.personNamesList.apply {
+            adapter = personNamesAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         setupObserver()
@@ -106,27 +106,27 @@ class PeopleListFragment : Fragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
+        binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
     }
 
     /**
-     * Sets up an observer to the [ResourceNamesAdapter]'s dataset. It sets up two observers. The first
-     * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
-     * second is responsible for removing the scroll listener from the [RecyclerView] when no more
-     * entries may be fetched for the dataset.
+     * Sets up an observer to the [ResourceNamesAdapter]'s dataset. It sets up two observers. The
+     * first one is responsible for updating the adapter with the latest dataset from the
+     * [viewModel]. The second is responsible for removing the scroll listener from the
+     * [RecyclerView] when no more entries may be fetched for the dataset.
      */
     private fun setupObserver() {
         viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
             /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
              * new lists. */
-            peopleNamesAdapter.submitList(personNames.toList())
+            personNamesAdapter.submitList(personNames.toList())
 
             when (personNames.lastOrNull()) {
                 is ResourceNameListItem.ResourceName -> {
-                    binding.peopleList.addOnScrollListener(loadMorePeopleOnScrollListener)
+                    binding.personNamesList.addOnScrollListener(loadMorePersonNamesOnScrollListener)
                 }
                 is ResourceNameListItem.Loading -> {
-                    binding.peopleList.smoothScrollToPosition(personNames.lastIndex)
+                    binding.personNamesList.smoothScrollToPosition(personNames.lastIndex)
                 }
                 else -> {}
             }
@@ -134,19 +134,20 @@ class PeopleListFragment : Fragment() {
 
         viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
             if (isAllPersonNamesRequested) {
-                binding.peopleList.removeOnScrollListener(loadMorePeopleOnScrollListener)
+                binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
             }
         }
     }
 
     /**
-     * Called when a person item is clicked in the list. Launches [PersonDetailFragment] while
+     * Called when a person name is clicked in the list. Launches [PersonDetailsFragment] while
      * passing the id of the clicked person.
      *
      * @param id Unique id of the person clicked in the list.
      */
     private fun onPersonNameClick(id: Int) {
-        val action = PeopleListFragmentDirections.actionPeopleListFragmentToPersonDetailFragment(id)
+        val action =
+            PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
         findNavController().navigate(action)
     }
 
@@ -155,7 +156,7 @@ class PeopleListFragment : Fragment() {
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorRetryClick() {
-        val page = ((peopleNamesAdapter.itemCount - 2) / 10) + 2
+        val page = ((personNamesAdapter.itemCount - 2) / 10) + 2
         viewModel.getPersonNames(page)
     }
 }

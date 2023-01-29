@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailBinding
+import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailsBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModel
 import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModelImpl
 import javax.inject.Inject
 
 /**
- * Fragment representing the detail view of a person.
+ * Fragment representing the a list of person details.
  */
-class PersonDetailFragment : Fragment() {
+class PersonDetailsFragment : Fragment() {
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -29,8 +29,8 @@ class PersonDetailFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentPersonDetailBinding by lazy {
-        FragmentPersonDetailBinding.inflate(layoutInflater)
+    private val binding: FragmentPersonDetailsBinding by lazy {
+        FragmentPersonDetailsBinding.inflate(layoutInflater)
     }
 
     /**
@@ -43,7 +43,7 @@ class PersonDetailFragment : Fragment() {
     /**
      * Arguments passed into this fragment.
      */
-    private val arguments: PersonDetailFragmentArgs by navArgs()
+    private val arguments: PersonDetailsFragmentArgs by navArgs()
 
     /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
@@ -63,7 +63,7 @@ class PersonDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.personDetailRetryButton.setOnClickListener { onRetryClick() }
+        binding.personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
         setupObservers()
         if (savedInstanceState == null) {
             viewModel.getPersonDetails(arguments.id)
@@ -77,14 +77,14 @@ class PersonDetailFragment : Fragment() {
      */
     private fun setupObservers() {
         viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
-            binding.personDetailList.apply {
+            binding.personDetailsList.apply {
                 adapter = ResourceDetailsAdapter(personDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
 
         viewModel.showLoadingLiveData.observe(viewLifecycleOwner) { showLoading ->
-            binding.personDetailProgressBar.visibility = if (showLoading) {
+            binding.personDetailsProgressBar.visibility = if (showLoading) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -92,7 +92,7 @@ class PersonDetailFragment : Fragment() {
         }
 
         viewModel.showErrorLiveData.observe(viewLifecycleOwner) { showError ->
-            binding.personDetailErrorLayout.visibility = if (showError) {
+            binding.personDetailsErrorLayout.visibility = if (showError) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -104,7 +104,7 @@ class PersonDetailFragment : Fragment() {
      * Called when the retry button is clicked when this fragment is in error mode. It requests the
      * details of the person from SWAPI again.
      */
-    private fun onRetryClick() {
+    private fun onErrorRetryClick() {
         viewModel.getPersonDetails(arguments.id)
     }
 }

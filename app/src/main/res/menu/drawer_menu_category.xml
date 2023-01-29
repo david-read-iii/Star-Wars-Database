@@ -8,8 +8,8 @@
             <group android:checkableBehavior="single">
 
                 <item
-                    android:id="@+id/people_list_fragment"
-                    android:title="@string/people_list_fragment_name" />
+                    android:id="@+id/person_names_fragment"
+                    android:title="@string/person_names_fragment_name" />
 
                 <item
                     android:id="@+id/films_list_fragment"
