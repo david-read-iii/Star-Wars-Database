@@ -72,13 +72,13 @@ class PersonDetailFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to [DetailListAdapter]'s dataset, to this fragment's loading state, and
-     * this fragment's error state.
+     * Sets up an observer to [ResourceDetailsAdapter]'s dataset, to this fragment's loading state,
+     * and this fragment's error state.
      */
     private fun setupObservers() {
-        viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetailListItems ->
+        viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
             binding.personDetailList.apply {
-                adapter = DetailListAdapter(personDetailListItems)
+                adapter = ResourceDetailsAdapter(personDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }

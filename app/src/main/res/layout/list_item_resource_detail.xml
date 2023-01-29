@@ -17,7 +17,7 @@
         android:padding="@dimen/list_item_padding">
 
         <TextView
-            android:id="@+id/detail_label"
+            android:id="@+id/resource_detail_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{resourceDetail.label}"
@@ -28,14 +28,14 @@
             tools:text="@string/name_detail_label" />
 
         <TextView
-            android:id="@+id/detail_value"
+            android:id="@+id/resource_detail_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{resourceDetail.value}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detail_label"
+            app:layout_constraintTop_toBottomOf="@id/resource_detail_label"
             tools:text="Luke Skywalker" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

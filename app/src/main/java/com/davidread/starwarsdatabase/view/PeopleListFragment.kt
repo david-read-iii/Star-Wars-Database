@@ -44,11 +44,11 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Adapts a people list dataset onto the [RecyclerView] in the UI.
+     * Adapts a person names list dataset onto the [RecyclerView] in the UI.
      */
-    private val peopleListAdapter = PeopleListAdapter(
-        { id -> onPersonItemClick(id) },
-        { onErrorItemRetryClick() }
+    private val peopleNamesAdapter = ResourceNamesAdapter(
+        { id -> onPersonNameClick(id) },
+        { onErrorRetryClick() }
     )
 
     /**
@@ -85,7 +85,7 @@ class PeopleListFragment : Fragment() {
 
     /**
      * Invoked when this fragment's view is to be created. It initializes the [RecyclerView], sets
-     * up an observer to the [PeopleListAdapter]'s dataset, and returns the fragment's view.
+     * up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,7 +93,7 @@ class PeopleListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding.peopleList.apply {
-            adapter = peopleListAdapter
+            adapter = peopleNamesAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         setupObserver()
@@ -110,7 +110,7 @@ class PeopleListFragment : Fragment() {
     }
 
     /**
-     * Sets up an observer to the [PeopleListAdapter]'s dataset. It sets up two observers. The first
+     * Sets up an observer to the [ResourceNamesAdapter]'s dataset. It sets up two observers. The first
      * one is responsible for updating the adapter with the latest dataset from the [viewModel]. The
      * second is responsible for removing the scroll listener from the [RecyclerView] when no more
      * entries may be fetched for the dataset.
@@ -119,7 +119,7 @@ class PeopleListFragment : Fragment() {
         viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
             /* Shallow copy of the dataset needed for DiffCallback to calculate diffs of the old and
              * new lists. */
-            peopleListAdapter.submitList(personNames.toList())
+            peopleNamesAdapter.submitList(personNames.toList())
 
             when (personNames.lastOrNull()) {
                 is ResourceNameListItem.ResourceName -> {
@@ -145,7 +145,7 @@ class PeopleListFragment : Fragment() {
      *
      * @param id Unique id of the person clicked in the list.
      */
-    private fun onPersonItemClick(id: Int) {
+    private fun onPersonNameClick(id: Int) {
         val action = PeopleListFragmentDirections.actionPeopleListFragmentToPersonDetailFragment(id)
         findNavController().navigate(action)
     }
@@ -154,8 +154,8 @@ class PeopleListFragment : Fragment() {
      * Called when the retry button of an error item is clicked in the list. It requests more
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
-    private fun onErrorItemRetryClick() {
-        val page = ((peopleListAdapter.itemCount - 2) / 10) + 2
+    private fun onErrorRetryClick() {
+        val page = ((peopleNamesAdapter.itemCount - 2) / 10) + 2
         viewModel.getPersonNames(page)
     }
 }

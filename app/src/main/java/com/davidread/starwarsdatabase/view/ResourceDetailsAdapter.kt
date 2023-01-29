@@ -3,7 +3,7 @@ package com.davidread.starwarsdatabase.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.databinding.ListItemDetailBinding
+import com.davidread.starwarsdatabase.databinding.ListItemResourceDetailBinding
 import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 
 /**
@@ -12,23 +12,23 @@ import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
  *
  * @property resourceDetails Data source for the list.
  */
-class DetailListAdapter(private val resourceDetails: List<ResourceDetailListItem>) :
-    RecyclerView.Adapter<DetailListAdapter.DetailViewHolder>() {
+class ResourceDetailsAdapter(private val resourceDetails: List<ResourceDetailListItem>) :
+    RecyclerView.Adapter<ResourceDetailsAdapter.ResourceDetailViewHolder>() {
 
     /**
-     * Called when [RecyclerView] needs a new [DetailViewHolder] to represent an item.
+     * Called when [RecyclerView] needs a new [ResourceDetailViewHolder] to represent an item.
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceDetailViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemDetailBinding.inflate(inflater, parent, false)
-        return DetailViewHolder(binding)
+        val binding = ListItemResourceDetailBinding.inflate(inflater, parent, false)
+        return ResourceDetailViewHolder(binding)
     }
 
     /**
-     * Called by [RecyclerView] to bind data to the [DetailViewHolder] to reflect the item at
-     * the given position.
+     * Called by [RecyclerView] to bind data to the [ResourceDetailViewHolder] to reflect the item
+     * at the given position.
      */
-    override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ResourceDetailViewHolder, position: Int) {
         val resourceDetail = resourceDetails[position]
         holder.bind(resourceDetail)
     }
@@ -41,11 +41,11 @@ class DetailListAdapter(private val resourceDetails: List<ResourceDetailListItem
     /**
      * Describes a detail view and metadata about its place within the [RecyclerView].
      */
-    class DetailViewHolder(private val binding: ListItemDetailBinding) :
+    class ResourceDetailViewHolder(private val binding: ListItemResourceDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         /**
-         * Binds data to the view held by this [DetailViewHolder].
+         * Binds data to the view held by this [ResourceDetailViewHolder].
          */
         fun bind(resourceDetail: ResourceDetailListItem) {
             binding.resourceDetail = resourceDetail
