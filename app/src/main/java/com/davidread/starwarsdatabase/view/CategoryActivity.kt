@@ -38,11 +38,11 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
      */
     private val topLevelDestinations: Set<Int> = setOf(
         R.id.person_names_fragment,
-        R.id.films_list_fragment,
-        R.id.starships_list_fragment,
-        R.id.vehicles_list_fragment,
-        R.id.species_list_fragment,
-        R.id.planets_list_fragment
+        R.id.film_names_fragment,
+        R.id.starship_names_fragment,
+        R.id.vehicle_names_fragment,
+        R.id.species_names_fragment,
+        R.id.planet_names_fragment
     )
 
     /**
