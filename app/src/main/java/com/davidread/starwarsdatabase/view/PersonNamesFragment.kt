@@ -68,8 +68,7 @@ class PersonNamesFragment : Fragment() {
 
             if (isLastItemVisible) {
                 recyclerView.removeOnScrollListener(this)
-                val page = ((totalItemCount - 1) / 10) + 2
-                viewModel.getPersonNames(page)
+                viewModel.getPersonNames(viewModel.nextPage)
             }
         }
     }
@@ -155,7 +154,6 @@ class PersonNamesFragment : Fragment() {
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorRetryClick() {
-        val page = ((personNamesAdapter.itemCount - 2) / 10) + 2
-        viewModel.getPersonNames(page)
+        viewModel.getPersonNames(viewModel.nextPage)
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
+import com.davidread.starwarsdatabase.util.extractPageFromURL
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -34,6 +35,12 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
         MutableLiveData(false)
 
     /**
+     * Next page of person names to fetch from SWAPI.
+     */
+    @IntRange(from = 1)
+    override var nextPage: Int = 1
+
+    /**
      * [MutableList] of [ResourceNameListItem]s to be stored/modified here. Emitted via its `LiveData`
      * each time it is updated.
      */
@@ -49,7 +56,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
      * getting page 1 of person names to show in the UI.
      */
     init {
-        getPersonNames(1)
+        getPersonNames(nextPage)
     }
 
     /**
@@ -93,6 +100,14 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                     personNamesLiveData.postValue(personNames)
                     if (pageResponse.next == null) {
                         isAllPersonNamesRequestedLiveData.postValue(true)
+                    }
+                    pageResponse.next?.let { next ->
+                        nextPage = try {
+                            next.extractPageFromURL()
+                        } catch (e: IllegalArgumentException) {
+                            Log.e(TAG, e.toString())
+                            nextPage
+                        }
                     }
                 },
                 { throwable ->

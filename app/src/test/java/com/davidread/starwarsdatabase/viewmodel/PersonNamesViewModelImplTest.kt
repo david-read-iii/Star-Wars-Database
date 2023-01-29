@@ -94,6 +94,40 @@ class PersonNamesViewModelImplTest {
         Assert.assertFalse(viewModel.isAllPersonNamesRequestedLiveData.value!!)
     }
 
+    @Test
+    fun `given datasource that returns a success next URL, when viewmodel calls init, then viewmodel increments nextPage`() {
+        val next = "https://swapi.dev/api/people/?page=2"
+        val response = getSuccessfulPageResponseOfPeople(next)
+        val dataSource = mockk<PeopleRemoteDataSource> {
+            every { getPeople(any()) } returns Single.just(response)
+        }
+        val viewModel = PersonNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(2, viewModel.nextPage)
+    }
+
+    @Test
+    fun `given datasource that returns a null next URL, when viewmodel calls init, then viewmodel does not increment nextPage`() {
+        val dataSource = mockk<PeopleRemoteDataSource> {
+            every { getPeople(any()) } returns Single.error(Throwable())
+        }
+        val viewModel = PersonNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(1, viewModel.nextPage)
+    }
+
+    @Test
+    fun `given datasource that returns an incorrect next URL, when viewmodel calls init, then viewmodel does not increment nextPage`() {
+        val next = "Oops I am not a URL"
+        val response = getSuccessfulPageResponseOfPeople(next)
+        val dataSource = mockk<PeopleRemoteDataSource> {
+            every { getPeople(any()) } returns Single.just(response)
+        }
+        val viewModel = PersonNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(1, viewModel.nextPage)
+    }
+
     private fun getSuccessfulPageResponseOfPeople(next: String? = null): PageResponse<ResourceResponse.Person> {
         val results = listOf<ResourceResponse.Person>(
             mockk {
