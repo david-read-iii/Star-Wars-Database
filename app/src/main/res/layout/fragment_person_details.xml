@@ -4,6 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.PersonDetailsFragment">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="personDetailsViewModel"
+            type="com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModel" />
+
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,14 +32,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:visibility="@{personDetailsViewModel.showLoadingLiveData ? View.VISIBLE : View.GONE}" />
 
         <!-- Error state. -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/person_details_error_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="@{personDetailsViewModel.showErrorLiveData ? View.VISIBLE : View.GONE}">
 
             <TextView
                 android:id="@+id/person_details_error_message"

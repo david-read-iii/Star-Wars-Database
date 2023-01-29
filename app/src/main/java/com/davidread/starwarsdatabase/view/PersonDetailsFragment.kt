@@ -63,7 +63,11 @@ class PersonDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            personDetailsViewModel = viewModel
+            personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
+        }
         setupObservers()
         if (savedInstanceState == null) {
             viewModel.getPersonDetails(arguments.id)
@@ -80,22 +84,6 @@ class PersonDetailsFragment : Fragment() {
             binding.personDetailsList.apply {
                 adapter = ResourceDetailsAdapter(personDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            }
-        }
-
-        viewModel.showLoadingLiveData.observe(viewLifecycleOwner) { showLoading ->
-            binding.personDetailsProgressBar.visibility = if (showLoading) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-        }
-
-        viewModel.showErrorLiveData.observe(viewLifecycleOwner) { showError ->
-            binding.personDetailsErrorLayout.visibility = if (showError) {
-                View.VISIBLE
-            } else {
-                View.GONE
             }
         }
     }
