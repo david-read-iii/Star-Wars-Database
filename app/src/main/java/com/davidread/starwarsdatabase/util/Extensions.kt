@@ -44,6 +44,24 @@ fun List<String>.extractIDsFromURLs(): List<Int> {
 }
 
 /**
+ * Takes a [String] that matches the URL `https://swapi.dev/api/{endpoint}/?page={pageInt}` and
+ * returns the `{pageInt}` field as an [Int].
+ *
+ * @throws IllegalArgumentException Thrown when the [String] does not match the URL regular
+ * expression.
+ */
+fun String.extractPageFromURL(): Int {
+    val regex = "https://swapi\\.dev/api/[a-z]+/\\?page=(\\d+)"
+    val pattern = Pattern.compile(regex)
+    val matcher = pattern.matcher(this)
+    return if (matcher.matches()) {
+        matcher.group(1)!!.toInt()
+    } else {
+        throw IllegalArgumentException("$this must match the regular expression $regex")
+    }
+}
+
+/**
  * Takes a [List] of [ResourceResponse] and returns a [String] comma-delimited list of each object's
  * `name` or `title` field.
  */
