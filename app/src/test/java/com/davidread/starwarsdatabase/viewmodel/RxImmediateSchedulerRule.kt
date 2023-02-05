@@ -1,4 +1,4 @@
-package com.davidread.starwarsdatabase
+package com.davidread.starwarsdatabase.viewmodel
 
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.plugins.RxJavaPlugins

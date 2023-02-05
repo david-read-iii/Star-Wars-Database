@@ -1,7 +1,5 @@
 package com.davidread.starwarsdatabase.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
@@ -10,28 +8,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 
 /**
  * Unit tests that verify the correctness of [PersonNamesViewModelImpl].
  */
-class PersonNamesViewModelImplTest {
-
-    /**
-     * Rule that swaps the background executor used by the Architecture Components with one that
-     * executes each task synchronously.
-     */
-    @Rule
-    @JvmField
-    val instantExecutorRule = InstantTaskExecutorRule()
-
-    /**
-     * Rule that forces RxJava to execute it's load on the main thread.
-     */
-    @Rule
-    @JvmField
-    val testSchedulerRule = RxImmediateSchedulerRule()
+class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
     fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 10 person items in the UI list`() {
