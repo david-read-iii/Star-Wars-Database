@@ -1,7 +1,6 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.davidread.starwarsdatabase.RxImmediateSchedulerRule
 import org.junit.Rule
 
 /**
