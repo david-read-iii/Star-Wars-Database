@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.davidread.starwarsdatabase.databinding.FragmentPersonNamesBinding
+import com.davidread.starwarsdatabase.databinding.FragmentResourceNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
@@ -19,9 +19,9 @@ import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
 /**
- * Fragment representing a list of person names.
+ * Fragment representing any list of resource names.
  */
-class PersonNamesFragment : Fragment() {
+class ResourceNamesFragment : Fragment() {
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -32,8 +32,8 @@ class PersonNamesFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentPersonNamesBinding by lazy {
-        FragmentPersonNamesBinding.inflate(layoutInflater)
+    private val binding: FragmentResourceNamesBinding by lazy {
+        FragmentResourceNamesBinding.inflate(layoutInflater)
     }
 
     /**
@@ -44,19 +44,19 @@ class PersonNamesFragment : Fragment() {
     }
 
     /**
-     * Adapts a person names list dataset onto the [RecyclerView] in the UI.
+     * Adapts a resource names list dataset onto the [RecyclerView] in the UI.
      */
-    private val personNamesAdapter = ResourceNamesAdapter(
-        { id -> onPersonNameClick(id) },
+    private val resourceNamesAdapter = ResourceNamesAdapter(
+        { id -> onResourceNameClick(id) },
         { onErrorRetryClick() }
     )
 
     /**
      * Detects whether the last view of the [RecyclerView] is visible. If so, it requests more
-     * people from the [viewModel] to add onto the dataset from SWAPI. It also removes the on scroll
-     * listener so duplicate requests are not made.
+     * resource names from the [viewModel] to add onto the dataset from SWAPI. It also removes the
+     * on scroll listener so duplicate requests are not made.
      */
-    private val loadMorePersonNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
+    private val loadMoreResourceNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -91,8 +91,8 @@ class PersonNamesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.personNamesList.apply {
-            adapter = personNamesAdapter
+        binding.resourceNamesList.apply {
+            adapter = resourceNamesAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         setupObservers()
@@ -105,47 +105,51 @@ class PersonNamesFragment : Fragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
+        binding.resourceNamesList.removeOnScrollListener(loadMoreResourceNamesOnScrollListener)
     }
 
     /**
      * Sets up observers for the fragment.
      */
     private fun setupObservers() {
-        viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { personNames ->
+        viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { resourceNames ->
             /* Submit a deep copy of the dataset to the adapter. DiffCallback believes a shallow
              * copy of the dataset is the same dataset. */
-            personNamesAdapter.submitList(personNames.toList())
+            resourceNamesAdapter.submitList(resourceNames.toList())
 
             // Take some action depending on the last item of the new dataset.
-            when (personNames.lastOrNull()) {
+            when (resourceNames.lastOrNull()) {
                 is ResourceNameListItem.ResourceName -> {
-                    binding.personNamesList.addOnScrollListener(loadMorePersonNamesOnScrollListener)
+                    binding.resourceNamesList.addOnScrollListener(
+                        loadMoreResourceNamesOnScrollListener
+                    )
                 }
                 is ResourceNameListItem.Loading -> {
-                    binding.personNamesList.smoothScrollToPosition(personNames.lastIndex)
+                    binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
                 }
                 else -> {}
             }
         }
 
         // Removes the scroll listener when the dataset has fetched all list items.
-        viewModel.isAllResourceNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
-            if (isAllPersonNamesRequested) {
-                binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
+        viewModel.isAllResourceNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllResourceNamesRequested ->
+            if (isAllResourceNamesRequested) {
+                binding.resourceNamesList.removeOnScrollListener(
+                    loadMoreResourceNamesOnScrollListener
+                )
             }
         }
     }
 
     /**
-     * Called when a person name is clicked in the list. Launches [PersonDetailsFragment] while
-     * passing the id of the clicked person.
+     * Called when a resource name is clicked in the list. Launches [ResourceDetailsFragment] while
+     * passing the id of the clicked resource.
      *
-     * @param id Unique id of the person clicked in the list.
+     * @param id Unique id of the resource clicked in the list.
      */
-    private fun onPersonNameClick(id: Int) {
+    private fun onResourceNameClick(id: Int) {
         val action =
-            PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
+            ResourceNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
         findNavController().navigate(action)
     }
 

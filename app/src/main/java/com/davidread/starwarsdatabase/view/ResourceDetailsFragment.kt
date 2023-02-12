@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailsBinding
+import com.davidread.starwarsdatabase.databinding.FragmentResourceDetailsBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.viewmodel.ResourceDetailsViewModel
 import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModelImpl
 import javax.inject.Inject
 
 /**
- * Fragment representing the a list of person details.
+ * Fragment representing any list of resource details.
  */
-class PersonDetailsFragment : Fragment() {
+class ResourceDetailsFragment : Fragment() {
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -29,8 +29,8 @@ class PersonDetailsFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentPersonDetailsBinding by lazy {
-        FragmentPersonDetailsBinding.inflate(layoutInflater)
+    private val binding: FragmentResourceDetailsBinding by lazy {
+        FragmentResourceDetailsBinding.inflate(layoutInflater)
     }
 
     /**
@@ -43,7 +43,7 @@ class PersonDetailsFragment : Fragment() {
     /**
      * Arguments passed into this fragment.
      */
-    private val arguments: PersonDetailsFragmentArgs by navArgs()
+    private val arguments: ResourceDetailsFragmentArgs by navArgs()
 
     /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
@@ -65,8 +65,8 @@ class PersonDetailsFragment : Fragment() {
     ): View {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            personDetailsViewModel = viewModel
-            personDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
+            resourceDetailsViewModel = viewModel
+            resourceDetailsRetryButton.setOnClickListener { onErrorRetryClick() }
         }
         setupObserver()
         if (savedInstanceState == null) {
@@ -80,9 +80,9 @@ class PersonDetailsFragment : Fragment() {
      */
     private fun setupObserver() {
         // Updates the adapter with the dataset when it becomes available.
-        viewModel.resourceDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
-            binding.personDetailsList.apply {
-                adapter = ResourceDetailsAdapter(personDetails)
+        viewModel.resourceDetailsLiveData.observe(viewLifecycleOwner) { resourceDetails ->
+            binding.resourceDetailsList.apply {
+                adapter = ResourceDetailsAdapter(resourceDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
@@ -90,7 +90,7 @@ class PersonDetailsFragment : Fragment() {
 
     /**
      * Called when the retry button is clicked when this fragment is in error mode. It requests the
-     * details of the person from SWAPI again.
+     * details of the resource from SWAPI again.
      */
     private fun onErrorRetryClick() {
         viewModel.getResourceDetails(arguments.id)

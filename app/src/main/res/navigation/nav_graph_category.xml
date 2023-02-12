@@ -8,9 +8,9 @@
     <!-- Top-level fragment destinations. -->
     <fragment
         android:id="@+id/person_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.PersonNamesFragment"
+        android:name="com.davidread.starwarsdatabase.view.ResourceNamesFragment"
         android:label="@string/person_names_fragment_name"
-        tools:layout="@layout/fragment_person_names">
+        tools:layout="@layout/fragment_resource_names">
 
         <action
             android:id="@+id/action_personNamesFragment_to_personDetailsFragment"
@@ -86,9 +86,9 @@
     <!-- 2nd-level fragment destinations. -->
     <fragment
         android:id="@+id/person_details_fragment"
-        android:name="com.davidread.starwarsdatabase.view.PersonDetailsFragment"
+        android:name="com.davidread.starwarsdatabase.view.ResourceDetailsFragment"
         android:label="@string/person_details_fragment_name"
-        tools:layout="@layout/fragment_person_details">
+        tools:layout="@layout/fragment_resource_details">
 
         <argument
             android:name="id"
