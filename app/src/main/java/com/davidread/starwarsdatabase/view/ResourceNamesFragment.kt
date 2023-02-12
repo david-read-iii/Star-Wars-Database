@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,13 +14,18 @@ import com.davidread.starwarsdatabase.databinding.FragmentResourceNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
-import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
 /**
  * Fragment representing any list of resource names.
  */
-class ResourceNamesFragment : Fragment() {
+abstract class ResourceNamesFragment : Fragment() {
+
+    /**
+     * Exposes state to the UI and encapsulates business logic for this fragment. To be initialized
+     * by the inheriting class.
+     */
+    abstract val viewModel: ResourceNamesViewModel
 
     /**
      * Factory for instantiating `ViewModel` instances.
@@ -34,13 +38,6 @@ class ResourceNamesFragment : Fragment() {
      */
     private val binding: FragmentResourceNamesBinding by lazy {
         FragmentResourceNamesBinding.inflate(layoutInflater)
-    }
-
-    /**
-     * Exposes state to the UI and encapsulates business logic for this fragment.
-     */
-    private val viewModel: ResourceNamesViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PersonNamesViewModelImpl::class.java]
     }
 
     /**
@@ -72,6 +69,13 @@ class ResourceNamesFragment : Fragment() {
             }
         }
     }
+
+    /**
+     * Called when a resource name is clicked in the list. To be defined by the inheriting class.
+     *
+     * @param id Unique id of the resource clicked in the list.
+     */
+    abstract fun onResourceNameClick(id: Int)
 
     /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
@@ -139,18 +143,6 @@ class ResourceNamesFragment : Fragment() {
                 )
             }
         }
-    }
-
-    /**
-     * Called when a resource name is clicked in the list. Launches [ResourceDetailsFragment] while
-     * passing the id of the clicked resource.
-     *
-     * @param id Unique id of the resource clicked in the list.
-     */
-    private fun onResourceNameClick(id: Int) {
-        val action =
-            ResourceNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
-        findNavController().navigate(action)
     }
 
     /**
