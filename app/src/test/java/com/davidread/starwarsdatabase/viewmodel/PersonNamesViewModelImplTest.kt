@@ -23,7 +23,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
-        val actualList = viewModel.personNamesLiveData.value
+        val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(response.results.size, actualList!!.size)
         for (item in actualList) {
             Assert.assertTrue(item is ResourceNameListItem.ResourceName)
@@ -37,7 +37,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
-        val actualList = viewModel.personNamesLiveData.value
+        val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(1, actualList!!.size)
         Assert.assertTrue(actualList.first() is ResourceNameListItem.Error)
     }
@@ -51,7 +51,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllPersonNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
     }
 
     @Test
@@ -63,7 +63,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
-        Assert.assertTrue(viewModel.isAllPersonNamesRequestedLiveData.value!!)
+        Assert.assertTrue(viewModel.isAllResourceNamesRequestedLiveData.value!!)
     }
 
     @Test
@@ -73,7 +73,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllPersonNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
     }
 
     @Test

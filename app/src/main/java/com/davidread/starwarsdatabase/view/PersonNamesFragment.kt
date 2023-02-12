@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentPersonNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
-import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModel
+import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class PersonNamesFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PersonNamesViewModel by lazy {
+    private val viewModel: ResourceNamesViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[PersonNamesViewModelImpl::class.java]
     }
 
@@ -68,7 +68,7 @@ class PersonNamesFragment : Fragment() {
 
             if (isLastItemVisible) {
                 recyclerView.removeOnScrollListener(this)
-                viewModel.getPersonNames(viewModel.nextPage)
+                viewModel.getResourceNames(viewModel.nextPage)
             }
         }
     }
@@ -112,7 +112,7 @@ class PersonNamesFragment : Fragment() {
      * Sets up observers for the fragment.
      */
     private fun setupObservers() {
-        viewModel.personNamesLiveData.observe(viewLifecycleOwner) { personNames ->
+        viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { personNames ->
             /* Submit a deep copy of the dataset to the adapter. DiffCallback believes a shallow
              * copy of the dataset is the same dataset. */
             personNamesAdapter.submitList(personNames.toList())
@@ -130,7 +130,7 @@ class PersonNamesFragment : Fragment() {
         }
 
         // Removes the scroll listener when the dataset has fetched all list items.
-        viewModel.isAllPersonNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
+        viewModel.isAllResourceNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllPersonNamesRequested ->
             if (isAllPersonNamesRequested) {
                 binding.personNamesList.removeOnScrollListener(loadMorePersonNamesOnScrollListener)
             }
@@ -154,6 +154,6 @@ class PersonNamesFragment : Fragment() {
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorRetryClick() {
-        viewModel.getPersonNames(viewModel.nextPage)
+        viewModel.getResourceNames(viewModel.nextPage)
     }
 }

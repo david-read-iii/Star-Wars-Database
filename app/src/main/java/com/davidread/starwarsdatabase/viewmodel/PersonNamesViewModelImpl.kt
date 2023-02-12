@@ -20,18 +20,18 @@ import javax.inject.Inject
  * fetching people data from SWAPI.
  */
 class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    PersonNamesViewModel, ViewModel() {
+    ResourceNamesViewModel, ViewModel() {
 
     /**
      * Emits a [List] of [ResourceNameListItem]s that should be shown on the UI.
      */
-    override val personNamesLiveData: MutableLiveData<List<ResourceNameListItem>> =
+    override val resourceNamesLiveData: MutableLiveData<List<ResourceNameListItem>> =
         MutableLiveData()
 
     /**
      * Whether all [ResourceNameListItem]s have been fetched from SWAPI.
      */
-    override val isAllPersonNamesRequestedLiveData: MutableLiveData<Boolean> =
+    override val isAllResourceNamesRequestedLiveData: MutableLiveData<Boolean> =
         MutableLiveData(false)
 
     /**
@@ -56,7 +56,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
      * getting page 1 of person names to show in the UI.
      */
     init {
-        getPersonNames(nextPage)
+        getResourceNames(nextPage)
     }
 
     /**
@@ -70,11 +70,11 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
 
     /**
      * Sets up a subscription for getting a page of person names (10 in each page) from SWAPI to
-     * show in the UI. Exposes the data via [personNamesLiveData] when done.
+     * show in the UI. Exposes the data via [resourceNamesLiveData] when done.
      *
      * @param page Which page of person names to fetch.
      */
-    override fun getPersonNames(@IntRange(from = 1) page: Int) {
+    override fun getResourceNames(@IntRange(from = 1) page: Int) {
         disposable.add(peopleRemoteDataSource.getPeople(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -83,7 +83,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                     remove(ResourceNameListItem.Error)
                     add(ResourceNameListItem.Loading)
                 }
-                personNamesLiveData.postValue(personNames)
+                resourceNamesLiveData.postValue(personNames)
             }
             .subscribe(
                 { pageResponse ->
@@ -97,9 +97,9 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                         remove(ResourceNameListItem.Loading)
                         addAll(newPersonNames)
                     }
-                    personNamesLiveData.postValue(personNames)
+                    resourceNamesLiveData.postValue(personNames)
                     if (pageResponse.next == null) {
-                        isAllPersonNamesRequestedLiveData.postValue(true)
+                        isAllResourceNamesRequestedLiveData.postValue(true)
                     }
                     pageResponse.next?.let { next ->
                         nextPage = try {
@@ -115,7 +115,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                         remove(ResourceNameListItem.Loading)
                         add(ResourceNameListItem.Error)
                     }
-                    personNamesLiveData.postValue(personNames)
+                    resourceNamesLiveData.postValue(personNames)
                     Log.e(TAG, throwable.toString())
                 }
             )

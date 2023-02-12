@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.davidread.starwarsdatabase.databinding.FragmentPersonDetailsBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
-import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModel
+import com.davidread.starwarsdatabase.viewmodel.ResourceDetailsViewModel
 import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModelImpl
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class PersonDetailsFragment : Fragment() {
     /**
      * Exposes state to the UI and encapsulates business logic for this fragment.
      */
-    private val viewModel: PersonDetailsViewModel by lazy {
+    private val viewModel: ResourceDetailsViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[PersonDetailsViewModelImpl::class.java]
     }
 
@@ -70,7 +70,7 @@ class PersonDetailsFragment : Fragment() {
         }
         setupObserver()
         if (savedInstanceState == null) {
-            viewModel.getPersonDetails(arguments.id)
+            viewModel.getResourceDetails(arguments.id)
         }
         return binding.root
     }
@@ -80,7 +80,7 @@ class PersonDetailsFragment : Fragment() {
      */
     private fun setupObserver() {
         // Updates the adapter with the dataset when it becomes available.
-        viewModel.personDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
+        viewModel.resourceDetailsLiveData.observe(viewLifecycleOwner) { personDetails ->
             binding.personDetailsList.apply {
                 adapter = ResourceDetailsAdapter(personDetails)
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -93,6 +93,6 @@ class PersonDetailsFragment : Fragment() {
      * details of the person from SWAPI again.
      */
     private fun onErrorRetryClick() {
-        viewModel.getPersonDetails(arguments.id)
+        viewModel.getResourceDetails(arguments.id)
     }
 }

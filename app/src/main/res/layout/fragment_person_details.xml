@@ -10,7 +10,7 @@
 
         <variable
             name="personDetailsViewModel"
-            type="com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModel" />
+            type="com.davidread.starwarsdatabase.viewmodel.ResourceDetailsViewModel" />
 
     </data>
 

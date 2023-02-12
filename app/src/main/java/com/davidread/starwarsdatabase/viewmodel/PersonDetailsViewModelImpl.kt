@@ -42,12 +42,12 @@ class PersonDetailsViewModelImpl @Inject constructor(
     private val filmsRemoteDataSource: FilmsRemoteDataSource,
     private val starshipsRemoteDataSource: StarshipsRemoteDataSource,
     private val vehiclesRemoteDataSource: VehiclesRemoteDataSource
-) : PersonDetailsViewModel, ViewModel() {
+) : ResourceDetailsViewModel, ViewModel() {
 
     /**
      * Emits a [List] of [ResourceDetailListItem]s that should be shown on the UI.
      */
-    override val personDetailsLiveData: MutableLiveData<List<ResourceDetailListItem>> =
+    override val resourceDetailsLiveData: MutableLiveData<List<ResourceDetailListItem>> =
         MutableLiveData()
 
     /**
@@ -76,11 +76,11 @@ class PersonDetailsViewModelImpl @Inject constructor(
 
     /**
      * Sets up a subscription for getting the details of a single person from SWAPI to show in the
-     * UI. Exposes the data via [personDetailsLiveData] when done.
+     * UI. Exposes the data via [resourceDetailsLiveData] when done.
      *
      * @param id Unique id of the person to fetch.
      */
-    override fun getPersonDetails(@IntRange(from = 1) id: Int) {
+    override fun getResourceDetails(@IntRange(from = 1) id: Int) {
         disposable.add(peopleRemoteDataSource.getPerson(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -149,7 +149,7 @@ class PersonDetailsViewModelImpl @Inject constructor(
                         )
                     )
                     showLoadingLiveData.postValue(false)
-                    personDetailsLiveData.postValue(newPersonDetails)
+                    resourceDetailsLiveData.postValue(newPersonDetails)
                 },
                 { throwable ->
                     showLoadingLiveData.postValue(false)
