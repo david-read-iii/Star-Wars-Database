@@ -3,76 +3,96 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_category"
-    app:startDestination="@id/people_list_fragment">
+    app:startDestination="@id/person_names_fragment">
+
+    <!-- Top-level fragment destinations. -->
+    <fragment
+        android:id="@+id/person_names_fragment"
+        android:name="com.davidread.starwarsdatabase.view.PersonNamesFragment"
+        android:label="@string/person_names_fragment_name"
+        tools:layout="@layout/fragment_resource_names">
+
+        <action
+            android:id="@+id/action_personNamesFragment_to_personDetailsFragment"
+            app:destination="@id/person_details_fragment" />
+
+    </fragment>
 
     <fragment
-        android:id="@+id/people_list_fragment"
-        android:name="com.davidread.starwarsdatabase.view.PeopleListFragment"
-        android:label="@string/people_list_fragment_name"
-        tools:layout="@layout/fragment_people_list" />
-
-    <fragment
-        android:id="@+id/films_list_fragment"
+        android:id="@+id/film_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/films_list_fragment_name"
+        android:label="@string/film_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/films_in_empty_fragment_detail_text"
             app:argType="reference" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/starships_list_fragment"
+        android:id="@+id/starship_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/starships_list_fragment_name"
+        android:label="@string/starship_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/starships_in_empty_fragment_detail_text"
             app:argType="reference" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/vehicles_list_fragment"
+        android:id="@+id/vehicle_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/vehicles_list_fragment_name"
+        android:label="@string/vehicle_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/vehicles_in_empty_fragment_detail_text"
             app:argType="reference" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/species_list_fragment"
+        android:id="@+id/species_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/species_list_fragment_name"
+        android:label="@string/species_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/species_in_empty_fragment_detail_text"
             app:argType="reference" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/planets_list_fragment"
+        android:id="@+id/planet_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
-        android:label="@string/planets_list_fragment_name"
+        android:label="@string/planet_names_fragment_name"
         tools:layout="@layout/fragment_empty">
 
         <argument
-            android:name="DETAIL_TEXT_RES_ID"
+            android:name="detailText"
             android:defaultValue="@string/planets_in_empty_fragment_detail_text"
             app:argType="reference" />
+
+    </fragment>
+
+    <!-- 2nd-level fragment destinations. -->
+    <fragment
+        android:id="@+id/person_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.PersonDetailsFragment"
+        android:label="@string/person_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
 
     </fragment>
 

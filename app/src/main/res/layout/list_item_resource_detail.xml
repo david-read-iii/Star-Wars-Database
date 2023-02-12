@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.ResourceNamesAdapter">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="resourceDetail"
+            type="com.davidread.starwarsdatabase.model.view.ResourceDetailListItem" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,24 +17,26 @@
         android:padding="@dimen/list_item_padding">
 
         <TextView
-            android:id="@+id/error_message"
+            android:id="@+id/resource_detail_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fetch_items_error_message"
-            app:layout_constraintBottom_toTopOf="@id/retry_button"
+            android:text="@{resourceDetail.label}"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/name_detail_label" />
 
-        <Button
-            android:id="@+id/retry_button"
+        <TextView
+            android:id="@+id/resource_detail_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/list_item_error_view_vertical_spacing"
-            android:text="@string/retry_button_label"
+            android:text="@{resourceDetail.value}"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/error_message" />
+            app:layout_constraintTop_toBottomOf="@id/resource_detail_label"
+            tools:text="Luke Skywalker" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

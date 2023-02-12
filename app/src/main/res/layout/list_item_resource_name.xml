@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.PeopleListAdapter">
+    tools:context=".view.ResourceNamesAdapter">
 
     <data>
 
         <variable
-            name="personItem"
-            type="com.davidread.starwarsdatabase.model.view.PersonListItem.PersonItem" />
+            name="resourceName"
+            type="com.davidread.starwarsdatabase.model.view.ResourceNameListItem.ResourceName" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:padding="@dimen/list_item_padding"
-        android:text="@{personItem.name}"
+        android:text="@{resourceName.name}"
         tools:text="Luke Skywalker" />
 
 </layout>

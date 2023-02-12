@@ -17,25 +17,33 @@
     <string name="species_in_empty_fragment_detail_text">Species launched in EmptyFragment!</string>
     <string name="planets_in_empty_fragment_detail_text">Planets launched in EmptyFragment!</string>
 
-    <!-- PeopleListFragment strings. -->
-    <string name="people_list_fragment_name">People</string>
+    <!-- Top-level fragment names. -->
+    <string name="person_names_fragment_name">People</string>
+    <string name="film_names_fragment_name">Films</string>
+    <string name="starship_names_fragment_name">Starships</string>
+    <string name="vehicle_names_fragment_name">Vehicles</string>
+    <string name="species_names_fragment_name">Species</string>
+    <string name="planet_names_fragment_name">Planets</string>
 
-    <!-- FilmsListFragment strings. -->
-    <string name="films_list_fragment_name">Films</string>
+    <!-- 2nd-level fragment names. -->
+    <string name="person_details_fragment_name">Person Details</string>
 
-    <!-- StarshipsListFragment strings. -->
-    <string name="starships_list_fragment_name">Starships</string>
+    <!-- Detail label strings. -->
+    <string name="name_detail_label">Name</string>
+    <string name="homeworld_detail_label">Homeworld</string>
+    <string name="birth_year_detail_label">Birth Year</string>
+    <string name="species_detail_label">Species</string>
+    <string name="gender_detail_label">Gender</string>
+    <string name="height_detail_label">Height</string>
+    <string name="mass_detail_label">Mass</string>
+    <string name="hair_color_detail_label">Hair Color</string>
+    <string name="eye_color_detail_label">Eye Color</string>
+    <string name="skin_color_detail_label">Skin Color</string>
+    <string name="films_detail_label">Films</string>
+    <string name="starships_detail_label">Starships</string>
+    <string name="vehicles_detail_label">Vehicles</string>
 
-    <!-- VehiclesListFragment strings. -->
-    <string name="vehicles_list_fragment_name">Vehicles</string>
-
-    <!-- SpeciesListFragment strings. -->
-    <string name="species_list_fragment_name">Species</string>
-
-    <!-- PlanetsListFragment strings. -->
-    <string name="planets_list_fragment_name">Planets</string>
-
-    <!-- List item strings. -->
+    <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
     <string name="retry_button_label">Retry</string>
 

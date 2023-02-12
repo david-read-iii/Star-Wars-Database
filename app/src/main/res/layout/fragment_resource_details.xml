@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.ResourceDetailsFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="resourceDetailsViewModel"
+            type="com.davidread.starwarsdatabase.viewmodel.ResourceDetailsViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Person list. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resource_details_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/list_item_resource_detail" />
+
+        <!-- Loading state. -->
+        <ProgressBar
+            android:id="@+id/resource_details_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{resourceDetailsViewModel.showLoadingLiveData ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
+
+        <!-- Error state. -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resource_details_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{resourceDetailsViewModel.showErrorLiveData ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/resource_details_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fetch_items_error_message"
+                app:layout_constraintBottom_toTopOf="@id/resource_details_retry_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <Button
+                android:id="@+id/resource_details_retry_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_item_error_view_vertical_spacing"
+                android:text="@string/retry_button_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/resource_details_error_message" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>
