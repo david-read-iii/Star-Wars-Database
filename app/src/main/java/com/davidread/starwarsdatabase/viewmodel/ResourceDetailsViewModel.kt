@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 
 /**
- * Defines the structure of [PersonDetailsViewModelImpl].
+ * Defines the structure of any `{ResourceName}DetailsViewModelImpl`.
  */
-interface PersonDetailsViewModel {
-    val personDetailsLiveData: LiveData<List<ResourceDetailListItem>>
+interface ResourceDetailsViewModel {
+    val resourceDetailsLiveData: LiveData<List<ResourceDetailListItem>>
     val showLoadingLiveData: LiveData<Boolean>
     val showErrorLiveData: LiveData<Boolean>
-    fun getPersonDetails(@IntRange(from = 1) id: Int)
+    fun getResourceDetails(@IntRange(from = 1) id: Int)
 }

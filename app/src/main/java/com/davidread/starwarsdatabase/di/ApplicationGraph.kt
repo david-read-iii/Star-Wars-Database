@@ -2,8 +2,8 @@ package com.davidread.starwarsdatabase.di
 
 import android.app.Application
 import android.content.Context
-import com.davidread.starwarsdatabase.view.PersonNamesFragment
-import com.davidread.starwarsdatabase.view.PersonDetailsFragment
+import com.davidread.starwarsdatabase.view.ResourceNamesFragment
+import com.davidread.starwarsdatabase.view.ResourceDetailsFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -31,6 +31,6 @@ interface ApplicationGraph {
     }
 
     // Activities and fragments requesting injection.
-    fun inject(fragment: PersonNamesFragment)
-    fun inject(fragment: PersonDetailsFragment)
+    fun inject(fragment: ResourceNamesFragment)
+    fun inject(fragment: ResourceDetailsFragment)
 }

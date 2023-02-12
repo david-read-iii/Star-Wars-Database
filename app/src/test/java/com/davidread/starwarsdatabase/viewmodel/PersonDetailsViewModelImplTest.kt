@@ -47,7 +47,7 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPersonDetails(1)
+        viewModel.getResourceDetails(1)
 
         val expectedList = listOf(
             ResourceDetailListItem(R.string.name_detail_label, "Chewbacca"),
@@ -70,7 +70,7 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
             ),
             ResourceDetailListItem(R.string.vehicles_detail_label, "AT-ST")
         )
-        val actualList = viewModel.personDetailsLiveData.value
+        val actualList = viewModel.resourceDetailsLiveData.value
         Assert.assertEquals(expectedList, actualList)
     }
 
@@ -102,7 +102,7 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPersonDetails(1)
+        viewModel.getResourceDetails(1)
 
         val actual = viewModel.showErrorLiveData.value
         Assert.assertFalse(actual!!)
@@ -136,7 +136,7 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
-        viewModel.getPersonDetails(1)
+        viewModel.getResourceDetails(1)
 
         val actual = viewModel.showErrorLiveData.value
         Assert.assertTrue(actual!!)

@@ -2,14 +2,11 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
 import androidx.annotation.IntRange
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractPageFromURL
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -20,70 +17,32 @@ import javax.inject.Inject
  * fetching people data from SWAPI.
  */
 class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
-    PersonNamesViewModel, ViewModel() {
-
-    /**
-     * Emits a [List] of [ResourceNameListItem]s that should be shown on the UI.
-     */
-    override val personNamesLiveData: MutableLiveData<List<ResourceNameListItem>> =
-        MutableLiveData()
-
-    /**
-     * Whether all [ResourceNameListItem]s have been fetched from SWAPI.
-     */
-    override val isAllPersonNamesRequestedLiveData: MutableLiveData<Boolean> =
-        MutableLiveData(false)
-
-    /**
-     * Next page of person names to fetch from SWAPI.
-     */
-    @IntRange(from = 1)
-    override var nextPage: Int = 1
-
-    /**
-     * [MutableList] of [ResourceNameListItem]s to be stored/modified here. Emitted via its `LiveData`
-     * each time it is updated.
-     */
-    private val personNames: MutableList<ResourceNameListItem> = mutableListOf()
-
-    /**
-     * Container for managing resources used by `Disposable`s or their subclasses.
-     */
-    private val disposable: CompositeDisposable = CompositeDisposable()
+    ResourceNamesViewModelImpl() {
 
     /**
      * Called when this `ViewModel` is initially created. It sets up the initial subscription for
      * getting page 1 of person names to show in the UI.
      */
     init {
-        getPersonNames(nextPage)
-    }
-
-    /**
-     * Called when this `ViewModel` is no longer used and will be destroyed. Clears any
-     * subscriptions held by [disposable] to prevent this `ViewModel` from leaking.
-     */
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
+        getResourceNames(nextPage)
     }
 
     /**
      * Sets up a subscription for getting a page of person names (10 in each page) from SWAPI to
-     * show in the UI. Exposes the data via [personNamesLiveData] when done.
+     * show in the UI. Exposes the data via [resourceNamesLiveData] when done.
      *
      * @param page Which page of person names to fetch.
      */
-    override fun getPersonNames(@IntRange(from = 1) page: Int) {
+    override fun getResourceNames(@IntRange(from = 1) page: Int) {
         disposable.add(peopleRemoteDataSource.getPeople(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
-                personNames.apply {
+                resourceNames.apply {
                     remove(ResourceNameListItem.Error)
                     add(ResourceNameListItem.Loading)
                 }
-                personNamesLiveData.postValue(personNames)
+                resourceNamesLiveData.postValue(resourceNames)
             }
             .subscribe(
                 { pageResponse ->
@@ -93,13 +52,13 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                             name = personResponse.name
                         )
                     }
-                    personNames.apply {
+                    resourceNames.apply {
                         remove(ResourceNameListItem.Loading)
                         addAll(newPersonNames)
                     }
-                    personNamesLiveData.postValue(personNames)
+                    resourceNamesLiveData.postValue(resourceNames)
                     if (pageResponse.next == null) {
-                        isAllPersonNamesRequestedLiveData.postValue(true)
+                        isAllResourceNamesRequestedLiveData.postValue(true)
                     }
                     pageResponse.next?.let { next ->
                         nextPage = try {
@@ -111,11 +70,11 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                     }
                 },
                 { throwable ->
-                    personNames.apply {
+                    resourceNames.apply {
                         remove(ResourceNameListItem.Loading)
                         add(ResourceNameListItem.Error)
                     }
-                    personNamesLiveData.postValue(personNames)
+                    resourceNamesLiveData.postValue(resourceNames)
                     Log.e(TAG, throwable.toString())
                 }
             )
