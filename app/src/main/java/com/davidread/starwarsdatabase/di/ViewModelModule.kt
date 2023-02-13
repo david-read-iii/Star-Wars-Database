@@ -3,8 +3,9 @@ package com.davidread.starwarsdatabase.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davidread.starwarsdatabase.util.ViewModelFactory
-import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.FilmNamesViewModelImpl
 import com.davidread.starwarsdatabase.viewmodel.PersonDetailsViewModelImpl
+import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -28,4 +29,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PersonDetailsViewModelImpl::class)
     abstract fun bindPersonDetailsViewModelImpl(viewModel: PersonDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FilmNamesViewModelImpl::class)
+    abstract fun bindFilmNamesViewModelImpl(viewModel: FilmNamesViewModelImpl): ViewModel
 }
