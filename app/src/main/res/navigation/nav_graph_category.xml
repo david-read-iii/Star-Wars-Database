@@ -20,16 +20,9 @@
 
     <fragment
         android:id="@+id/film_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.FilmNamesFragment"
         android:label="@string/film_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
-
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/films_in_empty_fragment_detail_text"
-            app:argType="reference" />
-
-    </fragment>
+        tools:layout="@layout/fragment_resource_names" />
 
     <fragment
         android:id="@+id/starship_names_fragment"
