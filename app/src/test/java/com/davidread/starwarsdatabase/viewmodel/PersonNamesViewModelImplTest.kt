@@ -16,7 +16,7 @@ import org.junit.Test
 class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
-    fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 10 person items in the UI list`() {
+    fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 10 resource names in the UI list`() {
         val response = getSuccessfulPageResponseOfPeople()
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.just(response)
@@ -31,7 +31,7 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
     }
 
     @Test
-    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits an error item in the UI list`() {
+    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits an error in the UI list`() {
         val dataSource = mockk<PeopleRemoteDataSource> {
             every { getPeople(any()) } returns Single.error(Throwable())
         }
