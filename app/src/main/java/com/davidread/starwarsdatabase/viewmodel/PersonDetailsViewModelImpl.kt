@@ -2,20 +2,17 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
 import androidx.annotation.IntRange
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.R
 import com.davidread.starwarsdatabase.datasource.*
+import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
-import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -27,13 +24,13 @@ import javax.inject.Inject
  * @property planetsRemoteDataSource [PlanetsRemoteDataSource] implementation by `Retrofit` for
  * fetching planet data from SWAPI.
  * @property speciesRemoteDataSource [SpeciesRemoteDataSource] implementation by `Retrofit` for
- * fetching planet data from SWAPI.
+ * fetching species data from SWAPI.
  * @property filmsRemoteDataSource [FilmsRemoteDataSource] implementation by `Retrofit` for
- * fetching planet data from SWAPI.
+ * fetching film data from SWAPI.
  * @property starshipsRemoteDataSource [StarshipsRemoteDataSource] implementation by `Retrofit` for
- * fetching planet data from SWAPI.
+ * fetching starship data from SWAPI.
  * @property vehiclesRemoteDataSource [VehiclesRemoteDataSource] implementation by `Retrofit` for
- * fetching planet data from SWAPI.
+ * fetching vehicle data from SWAPI.
  */
 class PersonDetailsViewModelImpl @Inject constructor(
     private val peopleRemoteDataSource: PeopleRemoteDataSource,
