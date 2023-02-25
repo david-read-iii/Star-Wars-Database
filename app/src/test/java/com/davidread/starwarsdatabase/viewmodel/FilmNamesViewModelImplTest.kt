@@ -2,7 +2,6 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
-import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import io.mockk.every
 import io.mockk.mockk
@@ -16,18 +15,18 @@ import org.junit.Test
 class FilmNamesViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
-    fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits 6 resource names in the UI list`() {
+    fun `given datasource that returns success response, when viewmodel calls init, then viewmodel emits the expected resource names in the UI list`() {
         val response = getSuccessfulPageResponseOfFilms()
         val dataSource = mockk<FilmsRemoteDataSource> {
             every { getFilms(any()) } returns Single.just(response)
         }
         val viewModel = FilmNamesViewModelImpl(dataSource)
 
-        val actualList = viewModel.resourceNamesLiveData.value
-        Assert.assertEquals(response.results.size, actualList!!.size)
-        for (item in actualList) {
-            Assert.assertTrue(item is ResourceNameListItem.ResourceName)
+        val expectedList = IntRange(1, 10).map { id ->
+            ResourceNameListItem.ResourceName(id = id, name = "Film $id")
         }
+        val actualList = viewModel.resourceNamesLiveData.value
+        Assert.assertEquals(expectedList, actualList)
     }
 
     @Test
@@ -110,33 +109,10 @@ class FilmNamesViewModelImplTest : BaseViewModelImplTest() {
         Assert.assertEquals(1, viewModel.nextPage)
     }
 
-    private fun getSuccessfulPageResponseOfFilms(next: String? = null): PageResponse<ResourceResponse.Film> {
-        val results = listOf<ResourceResponse.Film>(
-            mockk {
-                every { title } returns "A New Hope"
-                every { url } returns "https://swapi.dev/api/films/1/"
-            },
-            mockk {
-                every { title } returns "The Empire Strikes Back"
-                every { url } returns "https://swapi.dev/api/films/2/"
-            },
-            mockk {
-                every { title } returns "Return of the Jedi"
-                every { url } returns "https://swapi.dev/api/films/3/"
-            },
-            mockk {
-                every { title } returns "The Phantom Menace"
-                every { url } returns "https://swapi.dev/api/films/4/"
-            },
-            mockk {
-                every { title } returns "Attack of the Clones"
-                every { url } returns "https://swapi.dev/api/films/5/"
-            },
-            mockk {
-                every { title } returns "Revenge of the Sith"
-                every { url } returns "https://swapi.dev/api/films/6/"
-            }
-        )
-        return PageResponse(results, next)
-    }
+    private fun getSuccessfulPageResponseOfFilms(next: String? = null) = PageResponse(
+        results = IntRange(1, 10).map { id ->
+            BaseViewModelImplTestConstants.getSuccessfulFilmResponse(id)
+        },
+        next = next
+    )
 }
