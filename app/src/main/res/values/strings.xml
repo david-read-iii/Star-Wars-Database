@@ -51,6 +51,19 @@
     <string name="opening_crawl_detail_label">Opening Crawl</string>
     <string name="characters_detail_label">Characters</string>
     <string name="planets_detail_label">Planets</string>
+    <string name="model_detail_label">Model</string>
+    <string name="starship_class_detail_label">Starship Class</string>
+    <string name="manufacturer_detail_label">Manufacturer</string>
+    <string name="cost_detail_label">Cost</string>
+    <string name="length_detail_label">Length</string>
+    <string name="hyperdrive_rating_detail_label">Hyperdrive Rating</string>
+    <string name="mglt_detail_label">MGLT</string>
+    <string name="max_atmosphering_speed_detail_label">Max Atmosphering Speed</string>
+    <string name="crew_detail_label">Crew</string>
+    <string name="passengers_detail_label">Passengers</string>
+    <string name="cargo_capacity_detail_label">Cargo Capacity</string>
+    <string name="consumables_detail_label">Consumables</string>
+    <string name="pilots_detail_label">Pilots</string>
 
     <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
