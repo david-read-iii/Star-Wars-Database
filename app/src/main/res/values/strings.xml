@@ -27,6 +27,7 @@
 
     <!-- 2nd-level fragment names. -->
     <string name="person_details_fragment_name">Person Details</string>
+    <string name="film_details_fragment_name">Film Details</string>
 
     <!-- Detail label strings. -->
     <string name="name_detail_label">Name</string>
@@ -42,6 +43,14 @@
     <string name="films_detail_label">Films</string>
     <string name="starships_detail_label">Starships</string>
     <string name="vehicles_detail_label">Vehicles</string>
+    <string name="title_detail_label">Title</string>
+    <string name="episode_detail_label">Episode</string>
+    <string name="release_date_detail_label">Release Date</string>
+    <string name="director_detail_label">Director</string>
+    <string name="producer_detail_label">Producer</string>
+    <string name="opening_crawl_detail_label">Opening Crawl</string>
+    <string name="characters_detail_label">Characters</string>
+    <string name="planets_detail_label">Planets</string>
 
     <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>

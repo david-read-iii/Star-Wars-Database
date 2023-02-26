@@ -10,22 +10,26 @@ import org.junit.Assert
 import org.junit.Test
 
 /**
- * Unit tests that verify the correctness of [PersonDetailsViewModelImpl].
+ * Unit tests that verify the correctness of [FilmDetailsViewModelImpl].
  */
-class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
+class FilmDetailsViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
     fun `given that all datasources return success response, when viewmodel calls getResourceDetails(), then viewmodel emits the expected detail list items in the UI list`() {
+        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilm(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulFilmResponse())
+        }
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
-            every { getPerson(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulPersonResponse())
+            for (id in 1..3) {
+                every { getPerson(id) } returns Single.just(
+                    BaseViewModelImplTestConstants.getSuccessfulPersonResponse(id)
+                )
+            }
         }
         val planetsRemoteDataSource = mockk<PlanetsRemoteDataSource> {
-            every { getPlanet(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulPlanetResponse())
-        }
-        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
             for (id in 1..3) {
-                every { getFilm(id) } returns Single.just(
-                    BaseViewModelImplTestConstants.getSuccessfulFilmResponse(id)
+                every { getPlanet(id) } returns Single.just(
+                    BaseViewModelImplTestConstants.getSuccessfulPlanetResponse(id)
                 )
             }
         }
@@ -36,13 +40,6 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
                 )
             }
         }
-        val vehiclesRemoteDataSource = mockk<VehiclesRemoteDataSource> {
-            for (id in 1..3) {
-                every { getVehicle(id) } returns Single.just(
-                    BaseViewModelImplTestConstants.getSuccessfulVehicleResponse(id)
-                )
-            }
-        }
         val starshipsRemoteDataSource = mockk<StarshipsRemoteDataSource> {
             for (id in 1..3) {
                 every { getStarship(id) } returns Single.just(
@@ -50,31 +47,42 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
                 )
             }
         }
-        val viewModel = PersonDetailsViewModelImpl(
+        val vehiclesRemoteDataSource = mockk<VehiclesRemoteDataSource> {
+            for (id in 1..3) {
+                every { getVehicle(id) } returns Single.just(
+                    BaseViewModelImplTestConstants.getSuccessfulVehicleResponse(id)
+                )
+            }
+        }
+        val viewModel = FilmDetailsViewModelImpl(
+            filmsRemoteDataSource,
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
-            filmsRemoteDataSource,
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
         viewModel.getResourceDetails(1)
 
         val expectedList = listOf(
-            ResourceDetailListItem(R.string.name_detail_label, "Person 1"),
-            ResourceDetailListItem(R.string.homeworld_detail_label, "Planet 1"),
-            ResourceDetailListItem(R.string.birth_year_detail_label, "200BBY"),
+            ResourceDetailListItem(R.string.title_detail_label, "Film 1"),
+            ResourceDetailListItem(R.string.episode_detail_label, "1"),
+            ResourceDetailListItem(R.string.release_date_detail_label, "1977-05-25"),
+            ResourceDetailListItem(R.string.director_detail_label, "George Lucas"),
+            ResourceDetailListItem(R.string.producer_detail_label, "Gary Kurtz, Rick McCallum"),
+            ResourceDetailListItem(
+                R.string.opening_crawl_detail_label,
+                "Very long opening crawl. Tells a lot of story. Always three paragraphs."
+            ),
+            ResourceDetailListItem(
+                R.string.characters_detail_label,
+                "Person 1, Person 2, Person 3"
+            ),
+            ResourceDetailListItem(R.string.planets_detail_label, "Planet 1, Planet 2, Planet 3"),
             ResourceDetailListItem(
                 R.string.species_detail_label,
                 "Species 1, Species 2, Species 3"
             ),
-            ResourceDetailListItem(R.string.gender_detail_label, "male"),
-            ResourceDetailListItem(R.string.height_detail_label, "200"),
-            ResourceDetailListItem(R.string.mass_detail_label, "100"),
-            ResourceDetailListItem(R.string.hair_color_detail_label, "brown"),
-            ResourceDetailListItem(R.string.eye_color_detail_label, "blue"),
-            ResourceDetailListItem(R.string.skin_color_detail_label, "unknown"),
-            ResourceDetailListItem(R.string.films_detail_label, "Film 1, Film 2, Film 3"),
             ResourceDetailListItem(
                 R.string.starships_detail_label,
                 "Starship 1, Starship 2, Starship 3"
@@ -90,15 +98,16 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
     fun `given that all datasources return success response, when viewmodel calls getResourceDetails(), then viewmodel does not emit an error status to the UI`() {
+        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilm(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulFilmResponse())
+        }
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
             every { getPerson(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulPersonResponse())
         }
         val planetsRemoteDataSource = mockk<PlanetsRemoteDataSource> {
             every { getPlanet(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulPlanetResponse())
         }
-        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
-            every { getFilm(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulFilmResponse())
-        }
+
         val speciesRemoteDataSource = mockk<SpeciesRemoteDataSource> {
             every { getSingleSpecies(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulSpeciesResponse())
         }
@@ -108,11 +117,11 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
         val starshipsRemoteDataSource = mockk<StarshipsRemoteDataSource> {
             every { getStarship(any()) } returns Single.just(BaseViewModelImplTestConstants.getSuccessfulStarshipResponse())
         }
-        val viewModel = PersonDetailsViewModelImpl(
+        val viewModel = FilmDetailsViewModelImpl(
+            filmsRemoteDataSource,
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
-            filmsRemoteDataSource,
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
@@ -124,14 +133,14 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
 
     @Test
     fun `given all datasources return error response, when viewmodel calls getResourceDetails(), then viewmodel emits an error status to the UI`() {
+        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilm(any()) } returns Single.error(Throwable())
+        }
         val peopleRemoteDataSource = mockk<PeopleRemoteDataSource> {
             every { getPerson(any()) } returns Single.error(Throwable())
         }
         val planetsRemoteDataSource = mockk<PlanetsRemoteDataSource> {
             every { getPlanet(any()) } returns Single.error(Throwable())
-        }
-        val filmsRemoteDataSource = mockk<FilmsRemoteDataSource> {
-            every { getFilm(any()) } returns Single.error(Throwable())
         }
         val speciesRemoteDataSource = mockk<SpeciesRemoteDataSource> {
             every { getSingleSpecies(any()) } returns Single.error(Throwable())
@@ -142,11 +151,11 @@ class PersonDetailsViewModelImplTest : BaseViewModelImplTest() {
         val starshipsRemoteDataSource = mockk<StarshipsRemoteDataSource> {
             every { getStarship(any()) } returns Single.error(Throwable())
         }
-        val viewModel = PersonDetailsViewModelImpl(
+        val viewModel = FilmDetailsViewModelImpl(
+            filmsRemoteDataSource,
             peopleRemoteDataSource,
             planetsRemoteDataSource,
             speciesRemoteDataSource,
-            filmsRemoteDataSource,
             starshipsRemoteDataSource,
             vehiclesRemoteDataSource
         )
