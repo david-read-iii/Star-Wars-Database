@@ -20,9 +20,7 @@ class PersonDetailsFragment : ResourceDetailsFragment() {
     /**
      * Id of the resource represented by this fragment.
      */
-    override val resourceId: Int by lazy {
-        arguments.id
-    }
+    override val resourceId: Int by lazy { arguments.id }
 
     /**
      * Arguments passed into this fragment.
