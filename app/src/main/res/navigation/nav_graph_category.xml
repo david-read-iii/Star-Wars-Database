@@ -22,7 +22,13 @@
         android:id="@+id/film_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.FilmNamesFragment"
         android:label="@string/film_names_fragment_name"
-        tools:layout="@layout/fragment_resource_names" />
+        tools:layout="@layout/fragment_resource_names">
+
+        <action
+            android:id="@+id/action_filmNamesFragment_to_filmDetailsFragment"
+            app:destination="@id/film_details_fragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/starship_names_fragment"
@@ -81,6 +87,18 @@
         android:id="@+id/person_details_fragment"
         android:name="com.davidread.starwarsdatabase.view.PersonDetailsFragment"
         android:label="@string/person_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/film_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.FilmDetailsFragment"
+        android:label="@string/film_details_fragment_name"
         tools:layout="@layout/fragment_resource_details">
 
         <argument

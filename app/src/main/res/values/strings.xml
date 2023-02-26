@@ -27,6 +27,7 @@
 
     <!-- 2nd-level fragment names. -->
     <string name="person_details_fragment_name">Person Details</string>
+    <string name="film_details_fragment_name">Film Details</string>
 
     <!-- Detail label strings. -->
     <string name="name_detail_label">Name</string>
