@@ -42,4 +42,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StarshipNamesViewModelImpl::class)
     abstract fun bindStarshipNamesViewModelImpl(viewModel: StarshipNamesViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StarshipDetailsViewModelImpl::class)
+    abstract fun bindStarshipDetailsViewModelImpl(viewModel: StarshipDetailsViewModelImpl): ViewModel
 }
