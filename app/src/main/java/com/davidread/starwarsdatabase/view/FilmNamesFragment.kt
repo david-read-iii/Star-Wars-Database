@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.view
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.davidread.starwarsdatabase.viewmodel.FilmNamesViewModelImpl
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 
@@ -17,11 +18,13 @@ class FilmNamesFragment : ResourceNamesFragment() {
     }
 
     /**
-     * Called when a film name is clicked in the list.
+     * Called when a film name is clicked in the list. Launches [FilmDetailsFragment] while passing
+     * the id of the clicked film.
      *
      * @param id Unique id of the film clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
-        // TODO: Launch FilmDetailsFragment.
+        val action = FilmNamesFragmentDirections.actionFilmNamesFragmentToFilmDetailsFragment(id)
+        findNavController().navigate(action)
     }
 }
