@@ -32,14 +32,13 @@
 
     <fragment
         android:id="@+id/starship_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.StarshipNamesFragment"
         android:label="@string/starship_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/starships_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_starshipNamesFragment_to_starshipDetailsFragment"
+            app:destination="@id/starship_details_fragment" />
 
     </fragment>
 
@@ -99,6 +98,18 @@
         android:id="@+id/film_details_fragment"
         android:name="com.davidread.starwarsdatabase.view.FilmDetailsFragment"
         android:label="@string/film_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/starship_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.StarshipDetailsFragment"
+        android:label="@string/starship_details_fragment_name"
         tools:layout="@layout/fragment_resource_details">
 
         <argument
