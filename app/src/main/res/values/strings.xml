@@ -9,14 +9,6 @@
     <string name="drawer_close_action_label">Close navigation drawer</string>
     <string name="categories_label">Categories</string>
 
-    <!-- EmptyFragment strings. -->
-    <string name="people_in_empty_fragment_detail_text">People launched in EmptyFragment!</string>
-    <string name="films_in_empty_fragment_detail_text">Films launched in EmptyFragment!</string>
-    <string name="starships_in_empty_fragment_detail_text">Starships launched in EmptyFragment!</string>
-    <string name="vehicles_in_empty_fragment_detail_text">Vehicles launched in EmptyFragment!</string>
-    <string name="species_in_empty_fragment_detail_text">Species launched in EmptyFragment!</string>
-    <string name="planets_in_empty_fragment_detail_text">Planets launched in EmptyFragment!</string>
-
     <!-- Top-level fragment names. -->
     <string name="person_names_fragment_name">People</string>
     <string name="film_names_fragment_name">Films</string>
