@@ -97,4 +97,40 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/vehicle_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.VehicleDetailsFragment"
+        android:label="@string/vehicle_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/species_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.SpeciesDetailsFragment"
+        android:label="@string/species_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/planet_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.PlanetDetailsFragment"
+        android:label="@string/planet_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
 </navigation>
