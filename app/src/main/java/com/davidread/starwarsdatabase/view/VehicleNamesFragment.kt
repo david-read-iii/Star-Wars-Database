@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.view
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 import com.davidread.starwarsdatabase.viewmodel.VehicleNamesViewModelImpl
 
@@ -22,6 +23,8 @@ class VehicleNamesFragment : ResourceNamesFragment() {
      * @param id Unique id of the vehicle clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
-        TODO("Not yet implemented")
+        val action =
+            VehicleNamesFragmentDirections.actionVehicleNamesFragmentToVehicleDetailsFragment(id)
+        findNavController().navigate(action)
     }
 }

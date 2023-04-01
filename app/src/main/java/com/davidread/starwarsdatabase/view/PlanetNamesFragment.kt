@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.view
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.davidread.starwarsdatabase.viewmodel.PlanetNamesViewModelImpl
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 
@@ -22,6 +23,8 @@ class PlanetNamesFragment : ResourceNamesFragment() {
      * @param id Unique id of the planet clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
-        TODO("Not yet implemented")
+        val action =
+            PlanetNamesFragmentDirections.actionPlanetNamesFragmentToPlanetDetailsFragment(id)
+        findNavController().navigate(action)
     }
 }

@@ -46,19 +46,37 @@
         android:id="@+id/vehicle_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.VehicleNamesFragment"
         android:label="@string/vehicle_names_fragment_name"
-        tools:layout="@layout/fragment_resource_names" />
+        tools:layout="@layout/fragment_resource_names">
+
+        <action
+            android:id="@+id/action_vehicleNamesFragment_to_vehicleDetailsFragment"
+            app:destination="@id/vehicle_details_fragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/species_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.SpeciesNamesFragment"
         android:label="@string/species_names_fragment_name"
-        tools:layout="@layout/fragment_resource_names" />
+        tools:layout="@layout/fragment_resource_names">
+
+        <action
+            android:id="@+id/action_speciesNamesFragment_to_speciesDetailsFragment"
+            app:destination="@id/species_details_fragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/planet_names_fragment"
         android:name="com.davidread.starwarsdatabase.view.PlanetNamesFragment"
         android:label="@string/planet_names_fragment_name"
-        tools:layout="@layout/fragment_resource_names" />
+        tools:layout="@layout/fragment_resource_names">
+
+        <action
+            android:id="@+id/action_planetNamesFragment_to_planetDetailsFragment"
+            app:destination="@id/planet_details_fragment" />
+
+    </fragment>
 
     <!-- 2nd-level fragment destinations. -->
     <fragment
