@@ -57,6 +57,25 @@
     <string name="cargo_capacity_detail_label">Cargo Capacity</string>
     <string name="consumables_detail_label">Consumables</string>
     <string name="pilots_detail_label">Pilots</string>
+    <string name="vehicle_class_detail_label">Vehicle Class</string>
+    <string name="classification_detail_label">Classification</string>
+    <string name="designation_detail_label">Designation</string>
+    <string name="average_height_detail_label">Average Height</string>
+    <string name="skin_colors_detail_label">Skin Colors</string>
+    <string name="hair_colors_detail_label">Hair Colors</string>
+    <string name="eye_colors_detail_label">Eye Colors</string>
+    <string name="average_lifespan_detail_label">Average Lifespan</string>
+    <string name="language_detail_label">Language</string>
+    <string name="people_detail_label">People</string>
+    <string name="rotation_period_detail_label">Rotation Period</string>
+    <string name="orbital_period_detail_label">Orbital Period</string>
+    <string name="diameter_detail_label">Diameter</string>
+    <string name="climate_detail_label">Climate</string>
+    <string name="gravity_detail_label">Gravity</string>
+    <string name="terrain_detail_label">Terrain</string>
+    <string name="surface_water_detail_label">Surface Water</string>
+    <string name="population_detail_label">Population</string>
+    <string name="residents_detail_label">Residents</string>
 
     <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
