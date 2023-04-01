@@ -140,7 +140,7 @@ object BaseViewModelImplTestConstants {
         language = "Galactic Basic",
         peopleURLs = listOf(
             "https://swapi.dev/api/people/1/",
-            "https://swapi.dev/api/people/1/",
+            "https://swapi.dev/api/people/2/",
             "https://swapi.dev/api/people/3/"
         ),
         filmURLs = listOf(
