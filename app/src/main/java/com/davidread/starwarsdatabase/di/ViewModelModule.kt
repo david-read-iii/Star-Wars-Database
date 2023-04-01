@@ -47,4 +47,34 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StarshipDetailsViewModelImpl::class)
     abstract fun bindStarshipDetailsViewModelImpl(viewModel: StarshipDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(VehicleNamesViewModelImpl::class)
+    abstract fun bindVehicleNamesViewModelImpl(viewModel: VehicleNamesViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(VehicleDetailsViewModelImpl::class)
+    abstract fun bindVehicleDetailsViewModelImpl(viewModel: VehicleDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SpeciesNamesViewModelImpl::class)
+    abstract fun bindSpeciesNamesViewModelImpl(viewModel: SpeciesNamesViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SpeciesDetailsViewModelImpl::class)
+    abstract fun bindSpeciesDetailsViewModelImpl(viewModel: SpeciesDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlanetNamesViewModelImpl::class)
+    abstract fun bindPlanetNamesViewModelImpl(viewModel: PlanetNamesViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlanetDetailsViewModelImpl::class)
+    abstract fun bindPlanetDetailsViewModelImpl(viewModel: PlanetDetailsViewModelImpl): ViewModel
 }
