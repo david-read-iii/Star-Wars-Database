@@ -2,7 +2,7 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
 import androidx.annotation.IntRange
-import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractPageFromURL
@@ -11,30 +11,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * Exposes state and encapsulates business logic related to the person names list.
+ * Exposes state and encapsulates business logic related to the vehicle names list.
  *
- * @property peopleRemoteDataSource [PeopleRemoteDataSource] implementation by `Retrofit` for
- * fetching people data from SWAPI.
+ * @property vehiclesRemoteDataSource [VehiclesRemoteDataSource] implementation by `Retrofit` for
+ * fetching vehicle data from SWAPI.
  */
-class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataSource: PeopleRemoteDataSource) :
+class VehicleNamesViewModelImpl @Inject constructor(private val vehiclesRemoteDataSource: VehiclesRemoteDataSource) :
     ResourceNamesViewModelImpl() {
 
     /**
      * Called when this `ViewModel` is initially created. It sets up the initial subscription for
-     * getting page 1 of person names to show in the UI.
+     * getting page 1 of planet names to show in the UI.
      */
     init {
         getResourceNames(nextPage)
     }
 
     /**
-     * Sets up a subscription for getting a page of person names (10 in each page) from SWAPI to
+     * Sets up a subscription for getting a page of vehicle names (10 in each page) from SWAPI to
      * show in the UI. Exposes the data via [resourceNamesLiveData] when done.
      *
-     * @param page Which page of person names to fetch.
+     * @param page Which page of vehicle names to fetch.
      */
     override fun getResourceNames(@IntRange(from = 1) page: Int) {
-        disposable.add(peopleRemoteDataSource.getPeople(page)
+        disposable.add(vehiclesRemoteDataSource.getVehicles(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
@@ -46,15 +46,15 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
             }
             .subscribe(
                 { pageResponse ->
-                    val newPersonNames = pageResponse.results.map { personResponse ->
+                    val newVehicleNames = pageResponse.results.map { vehicleResponse ->
                         ResourceNameListItem.ResourceName(
-                            id = personResponse.url.extractIDFromURL(),
-                            name = personResponse.name
+                            id = vehicleResponse.url.extractIDFromURL(),
+                            name = vehicleResponse.name
                         )
                     }
                     resourceNames.apply {
                         remove(ResourceNameListItem.Loading)
-                        addAll(newPersonNames)
+                        addAll(newVehicleNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
                     pageResponse.next?.let { next ->
@@ -81,6 +81,6 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
     }
 
     companion object {
-        private const val TAG = "PersonNamesViewModelImpl"
+        private const val TAG = "VehicleNamesViewModelImpl"
     }
 }

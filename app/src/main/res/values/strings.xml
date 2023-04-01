@@ -9,14 +9,6 @@
     <string name="drawer_close_action_label">Close navigation drawer</string>
     <string name="categories_label">Categories</string>
 
-    <!-- EmptyFragment strings. -->
-    <string name="people_in_empty_fragment_detail_text">People launched in EmptyFragment!</string>
-    <string name="films_in_empty_fragment_detail_text">Films launched in EmptyFragment!</string>
-    <string name="starships_in_empty_fragment_detail_text">Starships launched in EmptyFragment!</string>
-    <string name="vehicles_in_empty_fragment_detail_text">Vehicles launched in EmptyFragment!</string>
-    <string name="species_in_empty_fragment_detail_text">Species launched in EmptyFragment!</string>
-    <string name="planets_in_empty_fragment_detail_text">Planets launched in EmptyFragment!</string>
-
     <!-- Top-level fragment names. -->
     <string name="person_names_fragment_name">People</string>
     <string name="film_names_fragment_name">Films</string>
@@ -27,6 +19,11 @@
 
     <!-- 2nd-level fragment names. -->
     <string name="person_details_fragment_name">Person Details</string>
+    <string name="film_details_fragment_name">Film Details</string>
+    <string name="starship_details_fragment_name">Starship Details</string>
+    <string name="vehicle_details_fragment_name">Vehicle Details</string>
+    <string name="species_details_fragment_name">Species Details</string>
+    <string name="planet_details_fragment_name">Planet Details</string>
 
     <!-- Detail label strings. -->
     <string name="name_detail_label">Name</string>
@@ -42,6 +39,46 @@
     <string name="films_detail_label">Films</string>
     <string name="starships_detail_label">Starships</string>
     <string name="vehicles_detail_label">Vehicles</string>
+    <string name="title_detail_label">Title</string>
+    <string name="episode_detail_label">Episode</string>
+    <string name="release_date_detail_label">Release Date</string>
+    <string name="director_detail_label">Director</string>
+    <string name="producer_detail_label">Producer</string>
+    <string name="opening_crawl_detail_label">Opening Crawl</string>
+    <string name="characters_detail_label">Characters</string>
+    <string name="planets_detail_label">Planets</string>
+    <string name="model_detail_label">Model</string>
+    <string name="starship_class_detail_label">Starship Class</string>
+    <string name="manufacturer_detail_label">Manufacturer</string>
+    <string name="cost_detail_label">Cost</string>
+    <string name="length_detail_label">Length</string>
+    <string name="hyperdrive_rating_detail_label">Hyperdrive Rating</string>
+    <string name="mglt_detail_label">MGLT</string>
+    <string name="max_atmosphering_speed_detail_label">Max Atmosphering Speed</string>
+    <string name="crew_detail_label">Crew</string>
+    <string name="passengers_detail_label">Passengers</string>
+    <string name="cargo_capacity_detail_label">Cargo Capacity</string>
+    <string name="consumables_detail_label">Consumables</string>
+    <string name="pilots_detail_label">Pilots</string>
+    <string name="vehicle_class_detail_label">Vehicle Class</string>
+    <string name="classification_detail_label">Classification</string>
+    <string name="designation_detail_label">Designation</string>
+    <string name="average_height_detail_label">Average Height</string>
+    <string name="skin_colors_detail_label">Skin Colors</string>
+    <string name="hair_colors_detail_label">Hair Colors</string>
+    <string name="eye_colors_detail_label">Eye Colors</string>
+    <string name="average_lifespan_detail_label">Average Lifespan</string>
+    <string name="language_detail_label">Language</string>
+    <string name="people_detail_label">People</string>
+    <string name="rotation_period_detail_label">Rotation Period</string>
+    <string name="orbital_period_detail_label">Orbital Period</string>
+    <string name="diameter_detail_label">Diameter</string>
+    <string name="climate_detail_label">Climate</string>
+    <string name="gravity_detail_label">Gravity</string>
+    <string name="terrain_detail_label">Terrain</string>
+    <string name="surface_water_detail_label">Surface Water</string>
+    <string name="population_detail_label">Population</string>
+    <string name="residents_detail_label">Residents</string>
 
     <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>

@@ -20,66 +20,61 @@
 
     <fragment
         android:id="@+id/film_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.FilmNamesFragment"
         android:label="@string/film_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/films_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_filmNamesFragment_to_filmDetailsFragment"
+            app:destination="@id/film_details_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/starship_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.StarshipNamesFragment"
         android:label="@string/starship_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/starships_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_starshipNamesFragment_to_starshipDetailsFragment"
+            app:destination="@id/starship_details_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/vehicle_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.VehicleNamesFragment"
         android:label="@string/vehicle_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/vehicles_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_vehicleNamesFragment_to_vehicleDetailsFragment"
+            app:destination="@id/vehicle_details_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/species_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.SpeciesNamesFragment"
         android:label="@string/species_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/species_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_speciesNamesFragment_to_speciesDetailsFragment"
+            app:destination="@id/species_details_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/planet_names_fragment"
-        android:name="com.davidread.starwarsdatabase.view.EmptyFragment"
+        android:name="com.davidread.starwarsdatabase.view.PlanetNamesFragment"
         android:label="@string/planet_names_fragment_name"
-        tools:layout="@layout/fragment_empty">
+        tools:layout="@layout/fragment_resource_names">
 
-        <argument
-            android:name="detailText"
-            android:defaultValue="@string/planets_in_empty_fragment_detail_text"
-            app:argType="reference" />
+        <action
+            android:id="@+id/action_planetNamesFragment_to_planetDetailsFragment"
+            app:destination="@id/planet_details_fragment" />
 
     </fragment>
 
@@ -88,6 +83,66 @@
         android:id="@+id/person_details_fragment"
         android:name="com.davidread.starwarsdatabase.view.PersonDetailsFragment"
         android:label="@string/person_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/film_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.FilmDetailsFragment"
+        android:label="@string/film_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/starship_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.StarshipDetailsFragment"
+        android:label="@string/starship_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/vehicle_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.VehicleDetailsFragment"
+        android:label="@string/vehicle_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/species_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.SpeciesDetailsFragment"
+        android:label="@string/species_details_fragment_name"
+        tools:layout="@layout/fragment_resource_details">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/planet_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.PlanetDetailsFragment"
+        android:label="@string/planet_details_fragment_name"
         tools:layout="@layout/fragment_resource_details">
 
         <argument
