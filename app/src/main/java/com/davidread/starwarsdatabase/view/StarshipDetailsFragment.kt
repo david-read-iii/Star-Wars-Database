@@ -25,5 +25,5 @@ class StarshipDetailsFragment : ResourceDetailsFragment() {
     /**
      * Arguments passed into this fragment.
      */
-    private val arguments: FilmDetailsFragmentArgs by navArgs()
+    private val arguments: StarshipDetailsFragmentArgs by navArgs()
 }
