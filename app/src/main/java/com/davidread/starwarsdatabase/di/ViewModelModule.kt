@@ -55,11 +55,26 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(VehicleDetailsViewModelImpl::class)
+    abstract fun bindVehicleDetailsViewModelImpl(viewModel: VehicleDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(SpeciesNamesViewModelImpl::class)
     abstract fun bindSpeciesNamesViewModelImpl(viewModel: SpeciesNamesViewModelImpl): ViewModel
 
     @Binds
     @IntoMap
+    @ViewModelKey(SpeciesDetailsViewModelImpl::class)
+    abstract fun bindSpeciesDetailsViewModelImpl(viewModel: SpeciesDetailsViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(PlanetNamesViewModelImpl::class)
     abstract fun bindPlanetNamesViewModelImpl(viewModel: PlanetNamesViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlanetDetailsViewModelImpl::class)
+    abstract fun bindPlanetDetailsViewModelImpl(viewModel: PlanetDetailsViewModelImpl): ViewModel
 }
