@@ -36,7 +36,7 @@ abstract class ResourceNamesFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentResourceNamesBinding by lazy {
+    val binding: FragmentResourceNamesBinding by lazy {
         FragmentResourceNamesBinding.inflate(layoutInflater)
     }
 

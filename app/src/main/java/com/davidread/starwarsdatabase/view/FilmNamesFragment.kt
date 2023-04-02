@@ -1,7 +1,9 @@
 package com.davidread.starwarsdatabase.view
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.davidread.starwarsdatabase.NavGraphSubDirections
 import com.davidread.starwarsdatabase.viewmodel.FilmNamesViewModelImpl
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 
@@ -18,13 +20,20 @@ class FilmNamesFragment : ResourceNamesFragment() {
     }
 
     /**
-     * Called when a film name is clicked in the list. Launches [FilmDetailsFragment] while passing
-     * the id of the clicked film.
+     * Called when a film name is clicked in the list. It launches [FilmDetailsFragment] while
+     * passing the id of the clicked film. If the master-detail layout is being used, then the
+     * fragment is inflated next to the list instead of in its own screen.
      *
      * @param id Unique id of the film clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
-        val action = FilmNamesFragmentDirections.actionFilmNamesFragmentToFilmDetailsFragment(id)
-        findNavController().navigate(action)
+        binding.subNavHostFragment?.let {
+            val action = NavGraphSubDirections.actionGlobalFilmDetailsFragment(id)
+            it.findNavController().navigate(action)
+        } ?: run {
+            val action =
+                FilmNamesFragmentDirections.actionFilmNamesFragmentToFilmDetailsFragment(id)
+            findNavController().navigate(action)
+        }
     }
 }
