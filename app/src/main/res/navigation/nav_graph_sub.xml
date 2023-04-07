@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_sub"
-    app:startDestination="@id/person_details_fragment">
+    app:startDestination="@id/empty_details_fragment">
 
     <action
         android:id="@+id/action_global_personDetailsFragment"
@@ -30,6 +30,12 @@
         app:destination="@id/planet_details_fragment" />
 
     <fragment
+        android:id="@+id/empty_details_fragment"
+        android:name="com.davidread.starwarsdatabase.view.EmptyDetailsFragment"
+        android:label="@string/empty_details_fragment_name"
+        tools:layout="@layout/fragment_empty_details" />
+
+    <fragment
         android:id="@+id/person_details_fragment"
         android:name="com.davidread.starwarsdatabase.view.PersonDetailsFragment"
         android:label="@string/person_details_fragment_name"
@@ -37,7 +43,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>
@@ -50,7 +55,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>
@@ -63,7 +67,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>
@@ -76,7 +79,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>
@@ -89,7 +91,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>
@@ -102,7 +103,6 @@
 
         <argument
             android:name="id"
-            android:defaultValue="-1"
             app:argType="integer" />
 
     </fragment>

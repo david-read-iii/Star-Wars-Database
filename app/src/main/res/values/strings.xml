@@ -18,6 +18,7 @@
     <string name="planet_names_fragment_name">Planets</string>
 
     <!-- 2nd-level fragment names. -->
+    <string name="empty_details_fragment_name">Empty Details</string>
     <string name="person_details_fragment_name">Person Details</string>
     <string name="film_details_fragment_name">Film Details</string>
     <string name="starship_details_fragment_name">Starship Details</string>
@@ -83,5 +84,8 @@
     <!-- Error strings. -->
     <string name="fetch_items_error_message">Error fetching items</string>
     <string name="retry_button_label">Retry</string>
+
+    <!-- Empty strings. -->
+    <string name="empty_details_message">No item selected. Select one from the list!</string>
 
 </resources>
