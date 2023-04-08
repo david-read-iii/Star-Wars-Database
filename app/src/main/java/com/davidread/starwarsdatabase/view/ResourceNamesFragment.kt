@@ -87,17 +87,21 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be created. It initializes the [RecyclerView], sets
-     * up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
+     * Invoked when this fragment's view is to be created. It initializes this fragment's binding,
+     * sets up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.resourceNamesList.apply {
-            adapter = resourceNamesAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = this@ResourceNamesFragment.viewModel
+            resourceNamesList.apply {
+                adapter = resourceNamesAdapter
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
         }
         setupObservers()
         return binding.root

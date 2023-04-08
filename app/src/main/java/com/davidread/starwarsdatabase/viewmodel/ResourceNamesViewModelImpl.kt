@@ -1,5 +1,6 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import android.view.View
 import androidx.annotation.IntRange
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,11 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
      */
     override val isAllResourceNamesRequestedLiveData: MutableLiveData<Boolean> =
         MutableLiveData(false)
+
+    /**
+     * The view visibility of `subNavHostFragment`.
+     */
+    override val subNavHostFragmentVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     /**
      * Next page of resource names to fetch from SWAPI.

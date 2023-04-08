@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.annotation.IntRange
 import com.davidread.starwarsdatabase.datasource.StarshipsRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -57,6 +58,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                         addAll(newStarshipNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
+                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
                     pageResponse.next?.let { next ->
                         nextPage = try {
                             next.extractPageFromURL()
