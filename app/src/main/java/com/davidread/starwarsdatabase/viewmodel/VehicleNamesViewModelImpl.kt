@@ -50,7 +50,8 @@ class VehicleNamesViewModelImpl @Inject constructor(private val vehiclesRemoteDa
                     val newVehicleNames = pageResponse.results.map { vehicleResponse ->
                         ResourceNameListItem.ResourceName(
                             id = vehicleResponse.url.extractIDFromURL(),
-                            name = vehicleResponse.name
+                            name = vehicleResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {

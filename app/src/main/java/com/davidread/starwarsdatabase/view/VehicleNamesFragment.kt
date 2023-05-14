@@ -27,6 +27,7 @@ class VehicleNamesFragment : ResourceNamesFragment() {
      * @param id Unique id of the vehicle clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
+        viewModel.onResourceNameClick(id, resources.configuration.screenWidthDp)
         binding.subNavHostFragment?.let {
             val action = NavGraphSubDirections.actionGlobalVehicleDetailsFragment(id)
             it.findNavController().navigate(action)

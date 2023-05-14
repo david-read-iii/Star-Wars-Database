@@ -27,6 +27,7 @@ class PersonNamesFragment : ResourceNamesFragment() {
      * @param id Unique id of the person clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
+        viewModel.onResourceNameClick(id, resources.configuration.screenWidthDp)
         binding.subNavHostFragment?.let {
             val action = NavGraphSubDirections.actionGlobalPersonDetailsFragment(id)
             it.findNavController().navigate(action)

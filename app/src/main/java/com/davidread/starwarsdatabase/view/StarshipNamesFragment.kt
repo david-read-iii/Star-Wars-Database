@@ -27,6 +27,7 @@ class StarshipNamesFragment : ResourceNamesFragment() {
      * @param id Unique id of the starship clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
+        viewModel.onResourceNameClick(id, resources.configuration.screenWidthDp)
         binding.subNavHostFragment?.let {
             val action = NavGraphSubDirections.actionGlobalStarshipDetailsFragment(id)
             it.findNavController().navigate(action)

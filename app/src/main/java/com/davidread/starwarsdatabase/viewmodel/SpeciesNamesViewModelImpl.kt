@@ -50,7 +50,8 @@ class SpeciesNamesViewModelImpl @Inject constructor(private val speciesRemoteDat
                     val newSpeciesNames = pageResponse.results.map { speciesResponse ->
                         ResourceNameListItem.ResourceName(
                             id = speciesResponse.url.extractIDFromURL(),
-                            name = speciesResponse.name
+                            name = speciesResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {

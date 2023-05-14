@@ -50,7 +50,8 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                     val newStarshipNames = pageResponse.results.map { starshipResponse ->
                         ResourceNameListItem.ResourceName(
                             id = starshipResponse.url.extractIDFromURL(),
-                            name = starshipResponse.name
+                            name = starshipResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {

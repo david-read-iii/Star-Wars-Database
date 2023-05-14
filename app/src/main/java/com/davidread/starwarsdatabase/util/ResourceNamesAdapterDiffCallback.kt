@@ -25,12 +25,19 @@ class ResourceNamesAdapterDiffCallback : DiffUtil.ItemCallback<ResourceNameListI
         }
 
     /**
-     * Called to check if two items have the same data. List items contain static content, so this
-     * function defaults to `true`.
+     * Called to check if two objects hold the same data. Only the
+     * [ResourceNameListItem.ResourceName.backgroundAttrResId] property will ever mutate, so only
+     * check for that case and otherwise always return `true`.
      */
     override fun areContentsTheSame(
         oldItem: ResourceNameListItem,
         newItem: ResourceNameListItem
     ): Boolean =
-        true
+        if (oldItem is ResourceNameListItem.ResourceName && newItem is ResourceNameListItem.ResourceName) {
+            // Two ResourceNames with the same backgroundAttrResId contain the same data.
+            oldItem.backgroundAttrResId == newItem.backgroundAttrResId
+        } else {
+            // In every other case, two ResourceNameListItems will contain the same data.
+            true
+        }
 }

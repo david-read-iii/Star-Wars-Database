@@ -50,7 +50,8 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                     val newPlanetNames = pageResponse.results.map { planetResponse ->
                         ResourceNameListItem.ResourceName(
                             id = planetResponse.url.extractIDFromURL(),
-                            name = planetResponse.name
+                            name = planetResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {

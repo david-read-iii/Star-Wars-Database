@@ -50,7 +50,8 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                     val newPersonNames = pageResponse.results.map { personResponse ->
                         ResourceNameListItem.ResourceName(
                             id = personResponse.url.extractIDFromURL(),
-                            name = personResponse.name
+                            name = personResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {

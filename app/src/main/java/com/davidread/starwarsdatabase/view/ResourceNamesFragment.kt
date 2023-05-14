@@ -95,6 +95,7 @@ abstract class ResourceNamesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.onFragmentCreateView(resources.configuration.screenWidthDp)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ResourceNamesFragment.viewModel
@@ -121,9 +122,10 @@ abstract class ResourceNamesFragment : Fragment() {
      */
     private fun setupObservers() {
         viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { resourceNames ->
-            /* Submit a deep copy of the dataset to the adapter. DiffCallback believes a shallow
-             * copy of the dataset is the same dataset. */
-            resourceNamesAdapter.submitList(resourceNames.toList())
+            /* Submit a deep copy of the dataset to the adapter. DiffCallback will not notify the
+             * adapter to update its values otherwise. */
+            val resourceNamesDeepCopy = resourceNames.map { it.copySealedObject() }
+            resourceNamesAdapter.submitList(resourceNamesDeepCopy)
 
             // Take some action depending on the last item of the new dataset.
             when (resourceNames.lastOrNull()) {
@@ -132,9 +134,11 @@ abstract class ResourceNamesFragment : Fragment() {
                         loadMoreResourceNamesOnScrollListener
                     )
                 }
+
                 is ResourceNameListItem.Loading -> {
                     binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
                 }
+
                 else -> {}
             }
         }

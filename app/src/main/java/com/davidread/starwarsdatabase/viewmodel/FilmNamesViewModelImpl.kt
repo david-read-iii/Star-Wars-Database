@@ -50,7 +50,8 @@ class FilmNamesViewModelImpl @Inject constructor(private val filmsRemoteDataSour
                     val newFilmNames = pageResponse.results.map { filmResponse ->
                         ResourceNameListItem.ResourceName(
                             id = filmResponse.url.extractIDFromURL(),
-                            name = filmResponse.title
+                            name = filmResponse.title,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {
