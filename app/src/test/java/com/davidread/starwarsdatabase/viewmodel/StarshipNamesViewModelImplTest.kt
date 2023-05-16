@@ -24,7 +24,7 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
         val expectedList = IntRange(1, 10).map { id ->
-            ResourceNameListItem.ResourceName(id = id, name = "Starship $id")
+            ResourceNameListItem.ResourceName(id = id, name = "Starship $id", backgroundAttrResId = android.R.attr.selectableItemBackground)
         }
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(expectedList, actualList)
