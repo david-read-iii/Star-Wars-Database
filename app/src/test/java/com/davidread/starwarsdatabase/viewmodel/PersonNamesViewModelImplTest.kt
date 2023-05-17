@@ -135,15 +135,6 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         Assert.assertEquals(1, viewModel.nextPage)
     }
 
-//    @Test
-//    fun `given SINGLE_FRAGMENT, when viewModel calls onFragmentCreateView(), then viewModel emits ResourceNames with selectableItemBackground only`() {
-//        val response = getSuccessfulPageResponseOfPeople()
-//        val dataSource = mockk<PeopleRemoteDataSource> {
-//            every { getPeople(any()) } returns Single.just(response)
-//        }
-//
-//    }
-
     private fun getSuccessfulPageResponseOfPeople(next: String? = null) = PageResponse(
         results = IntRange(1, 10).map { id ->
             BaseViewModelImplTestConstants.getSuccessfulPersonResponse(id)
