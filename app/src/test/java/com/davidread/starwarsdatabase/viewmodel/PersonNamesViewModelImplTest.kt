@@ -1,5 +1,6 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import android.view.View
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -23,7 +24,11 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
         val expectedList = IntRange(1, 10).map { id ->
-            ResourceNameListItem.ResourceName(id = id, name = "Person $id")
+            ResourceNameListItem.ResourceName(
+                id = id,
+                name = "Person $id",
+                backgroundAttrResId = android.R.attr.selectableItemBackground
+            )
         }
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(expectedList, actualList)
@@ -73,6 +78,27 @@ class PersonNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = PersonNamesViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+    }
+
+    @Test
+    fun `given datasource that returns a success response, when viewmodel calls init, then viewmodel emits visible status for subNavHostFragment`() {
+        val response = getSuccessfulPageResponseOfPeople()
+        val dataSource = mockk<PeopleRemoteDataSource> {
+            every { getPeople(any()) } returns Single.just(response)
+        }
+        val viewModel = PersonNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.VISIBLE, viewModel.subNavHostFragmentVisibility.value)
+    }
+
+    @Test
+    fun `given datasource that returns an error response, when viewmodel calls init, then viewmodel emits gone status for subNavHostFragment`() {
+        val dataSource = mockk<PeopleRemoteDataSource> {
+            every { getPeople(any()) } returns Single.error(Throwable())
+        }
+        val viewModel = PersonNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.GONE, viewModel.subNavHostFragmentVisibility.value)
     }
 
     @Test

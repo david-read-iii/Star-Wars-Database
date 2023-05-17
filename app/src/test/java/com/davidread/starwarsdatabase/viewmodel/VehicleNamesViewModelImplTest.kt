@@ -1,5 +1,6 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import android.view.View
 import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -23,7 +24,7 @@ class VehicleNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = VehicleNamesViewModelImpl(dataSource)
 
         val expectedList = IntRange(1, 10).map { id ->
-            ResourceNameListItem.ResourceName(id = id, name = "Vehicle $id")
+            ResourceNameListItem.ResourceName(id = id, name = "Vehicle $id", backgroundAttrResId = android.R.attr.selectableItemBackground)
         }
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(expectedList, actualList)
@@ -73,6 +74,27 @@ class VehicleNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = VehicleNamesViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+    }
+
+    @Test
+    fun `given datasource that returns a success response, when viewmodel calls init, then viewmodel emits visible status for subNavHostFragment`() {
+        val response = getSuccessfulPageResponseOfVehicles()
+        val dataSource = mockk<VehiclesRemoteDataSource> {
+            every { getVehicles(any()) } returns Single.just(response)
+        }
+        val viewModel = VehicleNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.VISIBLE, viewModel.subNavHostFragmentVisibility.value)
+    }
+
+    @Test
+    fun `given datasource that returns an error response, when viewmodel calls init, then viewmodel emits gone status for subNavHostFragment`() {
+        val dataSource = mockk<VehiclesRemoteDataSource> {
+            every { getVehicles(any()) } returns Single.error(Throwable())
+        }
+        val viewModel = VehicleNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.GONE, viewModel.subNavHostFragmentVisibility.value)
     }
 
     @Test

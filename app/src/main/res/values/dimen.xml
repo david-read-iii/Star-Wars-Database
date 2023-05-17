@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="match_constraint">0dp</dimen>
+
+    <!-- Fragment layout dimens. -->
+    <dimen name="resource_names_list_fixed_width">250dp</dimen>
+
     <!-- List item dimens. -->
     <dimen name="list_item_padding">16dp</dimen>
     <dimen name="list_item_error_view_vertical_spacing">8dp</dimen>

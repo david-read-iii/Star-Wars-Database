@@ -1,5 +1,6 @@
 package com.davidread.starwarsdatabase.viewmodel
 
+import android.view.View
 import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -23,7 +24,11 @@ class FilmNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = FilmNamesViewModelImpl(dataSource)
 
         val expectedList = IntRange(1, 10).map { id ->
-            ResourceNameListItem.ResourceName(id = id, name = "Film $id")
+            ResourceNameListItem.ResourceName(
+                id = id,
+                name = "Film $id",
+                backgroundAttrResId = android.R.attr.selectableItemBackground
+            )
         }
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(expectedList, actualList)
@@ -73,6 +78,28 @@ class FilmNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = FilmNamesViewModelImpl(dataSource)
 
         Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+    }
+
+
+    @Test
+    fun `given datasource that returns a success response, when viewmodel calls init, then viewmodel emits visible status for subNavHostFragment`() {
+        val response = getSuccessfulPageResponseOfFilms()
+        val dataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilms(any()) } returns Single.just(response)
+        }
+        val viewModel = FilmNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.VISIBLE, viewModel.subNavHostFragmentVisibility.value)
+    }
+
+    @Test
+    fun `given datasource that returns an error response, when viewmodel calls init, then viewmodel emits gone status for subNavHostFragment`() {
+        val dataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilms(any()) } returns Single.error(Throwable())
+        }
+        val viewModel = FilmNamesViewModelImpl(dataSource)
+
+        Assert.assertEquals(View.GONE, viewModel.subNavHostFragmentVisibility.value)
     }
 
     @Test

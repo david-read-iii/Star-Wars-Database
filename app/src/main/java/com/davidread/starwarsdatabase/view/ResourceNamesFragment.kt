@@ -36,7 +36,7 @@ abstract class ResourceNamesFragment : Fragment() {
     /**
      * Binding object for this fragment's layout.
      */
-    private val binding: FragmentResourceNamesBinding by lazy {
+    val binding: FragmentResourceNamesBinding by lazy {
         FragmentResourceNamesBinding.inflate(layoutInflater)
     }
 
@@ -87,17 +87,22 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be created. It initializes the [RecyclerView], sets
-     * up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
+     * Invoked when this fragment's view is to be created. It initializes this fragment's binding,
+     * sets up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.resourceNamesList.apply {
-            adapter = resourceNamesAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        viewModel.onFragmentCreateView(resources.configuration.screenWidthDp)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = this@ResourceNamesFragment.viewModel
+            resourceNamesList.apply {
+                adapter = resourceNamesAdapter
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
         }
         setupObservers()
         return binding.root
@@ -117,9 +122,10 @@ abstract class ResourceNamesFragment : Fragment() {
      */
     private fun setupObservers() {
         viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { resourceNames ->
-            /* Submit a deep copy of the dataset to the adapter. DiffCallback believes a shallow
-             * copy of the dataset is the same dataset. */
-            resourceNamesAdapter.submitList(resourceNames.toList())
+            /* Submit a deep copy of the dataset to the adapter. DiffCallback will not notify the
+             * adapter to update its values otherwise. */
+            val resourceNamesDeepCopy = resourceNames.map { it.copySealedObject() }
+            resourceNamesAdapter.submitList(resourceNamesDeepCopy)
 
             // Take some action depending on the last item of the new dataset.
             when (resourceNames.lastOrNull()) {
@@ -128,9 +134,11 @@ abstract class ResourceNamesFragment : Fragment() {
                         loadMoreResourceNamesOnScrollListener
                     )
                 }
+
                 is ResourceNameListItem.Loading -> {
                     binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
                 }
+
                 else -> {}
             }
         }

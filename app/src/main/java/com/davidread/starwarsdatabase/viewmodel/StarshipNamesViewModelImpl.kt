@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.annotation.IntRange
 import com.davidread.starwarsdatabase.datasource.StarshipsRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -49,7 +50,8 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                     val newStarshipNames = pageResponse.results.map { starshipResponse ->
                         ResourceNameListItem.ResourceName(
                             id = starshipResponse.url.extractIDFromURL(),
-                            name = starshipResponse.name
+                            name = starshipResponse.name,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {
@@ -57,6 +59,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                         addAll(newStarshipNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
+                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
                     pageResponse.next?.let { next ->
                         nextPage = try {
                             next.extractPageFromURL()

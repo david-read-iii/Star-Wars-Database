@@ -1,7 +1,9 @@
 package com.davidread.starwarsdatabase.view
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.davidread.starwarsdatabase.NavGraphSubDirections
 import com.davidread.starwarsdatabase.viewmodel.PersonNamesViewModelImpl
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 
@@ -18,14 +20,21 @@ class PersonNamesFragment : ResourceNamesFragment() {
     }
 
     /**
-     * Called when a person name is clicked in the list. Launches [PersonDetailsFragment] while
-     * passing the id of the clicked person.
+     * Called when a person name is clicked in the list. It launches [PersonDetailsFragment] while
+     * passing the id of the clicked person. If the master-detail layout is being used, then the
+     * fragment is inflated next to the list instead of in its own screen.
      *
      * @param id Unique id of the person clicked in the list.
      */
     override fun onResourceNameClick(id: Int) {
-        val action =
-            PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
-        findNavController().navigate(action)
+        viewModel.onResourceNameClick(id, resources.configuration.screenWidthDp)
+        binding.subNavHostFragment?.let {
+            val action = NavGraphSubDirections.actionGlobalPersonDetailsFragment(id)
+            it.findNavController().navigate(action)
+        } ?: run {
+            val action =
+                PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
+            findNavController().navigate(action)
+        }
     }
 }

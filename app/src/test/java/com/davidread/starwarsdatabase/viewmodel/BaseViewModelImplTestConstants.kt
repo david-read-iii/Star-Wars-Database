@@ -7,6 +7,9 @@ import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
  */
 object BaseViewModelImplTestConstants {
 
+    const val SINGLE_FRAGMENT_SCREEN_WIDTH_DP = 400
+    const val MASTER_DETAIL_SCREEN_WIDTH_DP = 800
+
     fun getSuccessfulPersonResponse(id: Int = 1) = ResourceResponse.Person(
         name = "Person $id",
         height = "200",
