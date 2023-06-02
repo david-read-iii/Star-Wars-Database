@@ -9,10 +9,10 @@ import com.davidread.starwarsdatabase.datasource.PlanetsRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.SpeciesRemoteDataSource
 import com.davidread.starwarsdatabase.model.Quad
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -62,56 +62,22 @@ class SpeciesDetailsViewModelImpl @Inject constructor(
                     val peopleResponse = response.third
                     val filmsResponse = response.fourth
 
-                    val newSpeciesDetails = listOf(
-                        ResourceDetailListItem(
-                            R.string.name_detail_label,
-                            speciesResponse.name
-                        ),
-                        ResourceDetailListItem(
-                            R.string.classification_detail_label,
-                            speciesResponse.classification
-                        ),
-                        ResourceDetailListItem(
-                            R.string.designation_detail_label,
-                            speciesResponse.designation
-                        ),
-                        ResourceDetailListItem(
-                            R.string.average_height_detail_label,
-                            speciesResponse.averageHeight
-                        ),
-                        ResourceDetailListItem(
-                            R.string.skin_colors_detail_label,
-                            speciesResponse.skinColors
-                        ),
-                        ResourceDetailListItem(
-                            R.string.hair_colors_detail_label,
-                            speciesResponse.hairColors
-                        ),
-                        ResourceDetailListItem(
-                            R.string.eye_colors_detail_label,
-                            speciesResponse.eyeColors
-                        ),
-                        ResourceDetailListItem(
-                            R.string.average_lifespan_detail_label,
-                            speciesResponse.averageLifespan
-                        ),
-                        ResourceDetailListItem(
-                            R.string.homeworld_detail_label,
-                            homeworldResponse.name
-                        ),
-                        ResourceDetailListItem(
-                            R.string.language_detail_label,
-                            speciesResponse.language
-                        ),
-                        ResourceDetailListItem(
-                            R.string.people_detail_label,
-                            peopleResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.films_detail_label,
-                            filmsResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.name_detail_label to speciesResponse.name,
+                        R.string.classification_detail_label to speciesResponse.classification,
+                        R.string.designation_detail_label to speciesResponse.designation,
+                        R.string.average_height_detail_label to speciesResponse.averageHeight,
+                        R.string.skin_colors_detail_label to speciesResponse.skinColors,
+                        R.string.hair_colors_detail_label to speciesResponse.hairColors,
+                        R.string.eye_colors_detail_label to speciesResponse.eyeColors,
+                        R.string.average_lifespan_detail_label to speciesResponse.averageLifespan,
+                        R.string.homeworld_detail_label to homeworldResponse.name,
+                        R.string.language_detail_label to speciesResponse.language,
+                        R.string.people_detail_label to peopleResponse.extractNames(),
+                        R.string.films_detail_label to filmsResponse.extractNames()
                     )
+                    val newSpeciesDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newSpeciesDetails)
                 },

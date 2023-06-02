@@ -7,9 +7,9 @@ import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.StarshipsRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -55,68 +55,25 @@ class StarshipDetailsViewModelImpl @Inject constructor(
                     val pilotsResponse = response.second
                     val filmsResponse = response.third
 
-                    val newStarshipDetails = listOf(
-                        ResourceDetailListItem(
-                            R.string.name_detail_label,
-                            starshipResponse.name
-                        ),
-                        ResourceDetailListItem(
-                            R.string.model_detail_label,
-                            starshipResponse.model
-                        ),
-                        ResourceDetailListItem(
-                            R.string.starship_class_detail_label,
-                            starshipResponse.starshipClass
-                        ),
-                        ResourceDetailListItem(
-                            R.string.manufacturer_detail_label,
-                            starshipResponse.manufacturer
-                        ),
-                        ResourceDetailListItem(
-                            R.string.cost_detail_label,
-                            starshipResponse.costInCredits
-                        ),
-                        ResourceDetailListItem(
-                            R.string.length_detail_label,
-                            starshipResponse.length
-                        ),
-                        ResourceDetailListItem(
-                            R.string.hyperdrive_rating_detail_label,
-                            starshipResponse.hyperdriveRating
-                        ),
-                        ResourceDetailListItem(
-                            R.string.mglt_detail_label,
-                            starshipResponse.mglt
-                        ),
-                        ResourceDetailListItem(
-                            R.string.max_atmosphering_speed_detail_label,
-                            starshipResponse.maxAtmospheringSpeed
-                        ),
-                        ResourceDetailListItem(
-                            R.string.crew_detail_label,
-                            starshipResponse.crew
-                        ),
-                        ResourceDetailListItem(
-                            R.string.passengers_detail_label,
-                            starshipResponse.passengers
-                        ),
-                        ResourceDetailListItem(
-                            R.string.cargo_capacity_detail_label,
-                            starshipResponse.cargoCapacity
-                        ),
-                        ResourceDetailListItem(
-                            R.string.consumables_detail_label,
-                            starshipResponse.consumables
-                        ),
-                        ResourceDetailListItem(
-                            R.string.pilots_detail_label,
-                            pilotsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.films_detail_label,
-                            filmsResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.name_detail_label to starshipResponse.name,
+                        R.string.model_detail_label to starshipResponse.model,
+                        R.string.starship_class_detail_label to starshipResponse.starshipClass,
+                        R.string.manufacturer_detail_label to starshipResponse.manufacturer,
+                        R.string.cost_detail_label to starshipResponse.costInCredits,
+                        R.string.length_detail_label to starshipResponse.length,
+                        R.string.hyperdrive_rating_detail_label to starshipResponse.hyperdriveRating,
+                        R.string.mglt_detail_label to starshipResponse.mglt,
+                        R.string.max_atmosphering_speed_detail_label to starshipResponse.maxAtmospheringSpeed,
+                        R.string.crew_detail_label to starshipResponse.crew,
+                        R.string.passengers_detail_label to starshipResponse.passengers,
+                        R.string.cargo_capacity_detail_label to starshipResponse.cargoCapacity,
+                        R.string.consumables_detail_label to starshipResponse.consumables,
+                        R.string.pilots_detail_label to pilotsResponse.extractNames(),
+                        R.string.films_detail_label to filmsResponse.extractNames()
                     )
+                    val newStarshipDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newStarshipDetails)
                 },

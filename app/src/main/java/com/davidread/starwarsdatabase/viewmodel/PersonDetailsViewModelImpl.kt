@@ -3,13 +3,18 @@ package com.davidread.starwarsdatabase.viewmodel
 import android.util.Log
 import androidx.annotation.IntRange
 import com.davidread.starwarsdatabase.R
-import com.davidread.starwarsdatabase.datasource.*
+import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.PlanetsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.SpeciesRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.StarshipsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDFromURL
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -67,54 +72,23 @@ class PersonDetailsViewModelImpl @Inject constructor(
                     val starshipsResponse = response.fifth
                     val vehiclesResponse = response.sixth
 
-                    val newPersonDetails = listOf(
-                        ResourceDetailListItem(R.string.name_detail_label, personResponse.name),
-                        ResourceDetailListItem(
-                            R.string.homeworld_detail_label,
-                            homeworldResponse.name
-                        ),
-                        ResourceDetailListItem(
-                            R.string.birth_year_detail_label,
-                            personResponse.birthYear
-                        ),
-                        ResourceDetailListItem(
-                            R.string.species_detail_label,
-                            speciesResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.gender_detail_label,
-                            personResponse.gender
-                        ),
-                        ResourceDetailListItem(
-                            R.string.height_detail_label,
-                            personResponse.height
-                        ),
-                        ResourceDetailListItem(R.string.mass_detail_label, personResponse.mass),
-                        ResourceDetailListItem(
-                            R.string.hair_color_detail_label,
-                            personResponse.hairColor
-                        ),
-                        ResourceDetailListItem(
-                            R.string.eye_color_detail_label,
-                            personResponse.eyeColor
-                        ),
-                        ResourceDetailListItem(
-                            R.string.skin_color_detail_label,
-                            personResponse.skinColor
-                        ),
-                        ResourceDetailListItem(
-                            R.string.films_detail_label,
-                            filmsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.starships_detail_label,
-                            starshipsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.vehicles_detail_label,
-                            vehiclesResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.name_detail_label to personResponse.name,
+                        R.string.homeworld_detail_label to homeworldResponse.name,
+                        R.string.birth_year_detail_label to personResponse.birthYear,
+                        R.string.species_detail_label to speciesResponse.extractNames(),
+                        R.string.gender_detail_label to personResponse.gender,
+                        R.string.height_detail_label to personResponse.height,
+                        R.string.mass_detail_label to personResponse.mass,
+                        R.string.hair_color_detail_label to personResponse.hairColor,
+                        R.string.eye_color_detail_label to personResponse.eyeColor,
+                        R.string.skin_color_detail_label to personResponse.skinColor,
+                        R.string.films_detail_label to filmsResponse.extractNames(),
+                        R.string.starships_detail_label to starshipsResponse.extractNames(),
+                        R.string.vehicles_detail_label to vehiclesResponse.extractNames()
                     )
+                    val newPersonDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newPersonDetails)
                 },

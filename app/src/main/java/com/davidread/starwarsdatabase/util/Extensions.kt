@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.util
 
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
+import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import java.util.regex.Pattern
 
 /**
@@ -80,3 +81,18 @@ fun List<ResourceResponse>.extractNames(): String {
     }
     return nameList.toString().removeSurrounding("[", "]")
 }
+
+/**
+ * Returns a [List] of [ResourceDetailListItem] given a [Map] containing the necessary data to build
+ * the list. Each [Int] represents a string resource id pointing to a string to be used as a label
+ * for a list item. Each [String] represents the value to be used in the list item. If a value is
+ * empty, the list item is excluded from the return list.
+ */
+fun Map<Int, String>.toResourceDetailListItems(): List<ResourceDetailListItem> =
+    this.map { (label, value) ->
+        if (value.isNotEmpty()) {
+            ResourceDetailListItem(label, value)
+        } else {
+            null
+        }
+    }.filterNotNull()
