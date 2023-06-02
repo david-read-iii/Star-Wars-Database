@@ -3,12 +3,17 @@ package com.davidread.starwarsdatabase.viewmodel
 import android.util.Log
 import androidx.annotation.IntRange
 import com.davidread.starwarsdatabase.R
-import com.davidread.starwarsdatabase.datasource.*
+import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.PlanetsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.SpeciesRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.StarshipsRemoteDataSource
+import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.Sextuple
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -66,49 +71,21 @@ class FilmDetailsViewModelImpl @Inject constructor(
                     val starshipsResponse = response.fifth
                     val vehicleResponse = response.sixth
 
-                    val newFilmDetails = listOf(
-                        ResourceDetailListItem(R.string.title_detail_label, filmResponse.title),
-                        ResourceDetailListItem(
-                            R.string.episode_detail_label,
-                            filmResponse.episodeID
-                        ),
-                        ResourceDetailListItem(
-                            R.string.release_date_detail_label,
-                            filmResponse.releaseDate
-                        ),
-                        ResourceDetailListItem(
-                            R.string.director_detail_label,
-                            filmResponse.director
-                        ),
-                        ResourceDetailListItem(
-                            R.string.producer_detail_label,
-                            filmResponse.producer
-                        ),
-                        ResourceDetailListItem(
-                            R.string.opening_crawl_detail_label,
-                            filmResponse.openingCrawl
-                        ),
-                        ResourceDetailListItem(
-                            R.string.characters_detail_label,
-                            charactersResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.planets_detail_label,
-                            planetsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.species_detail_label,
-                            speciesResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.starships_detail_label,
-                            starshipsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.vehicles_detail_label,
-                            vehicleResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.title_detail_label to filmResponse.title,
+                        R.string.episode_detail_label to filmResponse.episodeID,
+                        R.string.release_date_detail_label to filmResponse.releaseDate,
+                        R.string.director_detail_label to filmResponse.director,
+                        R.string.producer_detail_label to filmResponse.producer,
+                        R.string.opening_crawl_detail_label to filmResponse.openingCrawl,
+                        R.string.characters_detail_label to charactersResponse.extractNames(),
+                        R.string.planets_detail_label to planetsResponse.extractNames(),
+                        R.string.species_detail_label to speciesResponse.extractNames(),
+                        R.string.starships_detail_label to starshipsResponse.extractNames(),
+                        R.string.vehicles_detail_label to vehicleResponse.extractNames()
                     )
+                    val newFilmDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newFilmDetails)
                 },

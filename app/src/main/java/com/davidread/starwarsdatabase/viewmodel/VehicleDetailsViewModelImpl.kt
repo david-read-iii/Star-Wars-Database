@@ -7,9 +7,9 @@ import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -55,60 +55,23 @@ class VehicleDetailsViewModelImpl @Inject constructor(
                     val pilotsResponse = response.second
                     val filmsResponse = response.third
 
-                    val newVehicleDetails = listOf(
-                        ResourceDetailListItem(
-                            R.string.name_detail_label,
-                            vehiclesResponse.name
-                        ),
-                        ResourceDetailListItem(
-                            R.string.model_detail_label,
-                            vehiclesResponse.model
-                        ),
-                        ResourceDetailListItem(
-                            R.string.manufacturer_detail_label,
-                            vehiclesResponse.manufacturer
-                        ),
-                        ResourceDetailListItem(
-                            R.string.cost_detail_label,
-                            vehiclesResponse.costInCredits
-                        ),
-                        ResourceDetailListItem(
-                            R.string.length_detail_label,
-                            vehiclesResponse.length
-                        ),
-                        ResourceDetailListItem(
-                            R.string.max_atmosphering_speed_detail_label,
-                            vehiclesResponse.maxAtmospheringSpeed
-                        ),
-                        ResourceDetailListItem(
-                            R.string.crew_detail_label,
-                            vehiclesResponse.crew
-                        ),
-                        ResourceDetailListItem(
-                            R.string.passengers_detail_label,
-                            vehiclesResponse.passengers
-                        ),
-                        ResourceDetailListItem(
-                            R.string.cargo_capacity_detail_label,
-                            vehiclesResponse.cargoCapacity
-                        ),
-                        ResourceDetailListItem(
-                            R.string.consumables_detail_label,
-                            vehiclesResponse.consumables
-                        ),
-                        ResourceDetailListItem(
-                            R.string.vehicle_class_detail_label,
-                            vehiclesResponse.vehicleClass
-                        ),
-                        ResourceDetailListItem(
-                            R.string.pilots_detail_label,
-                            pilotsResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.films_detail_label,
-                            filmsResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.name_detail_label to vehiclesResponse.name,
+                        R.string.model_detail_label to vehiclesResponse.model,
+                        R.string.manufacturer_detail_label to vehiclesResponse.manufacturer,
+                        R.string.cost_detail_label to vehiclesResponse.costInCredits,
+                        R.string.length_detail_label to vehiclesResponse.length,
+                        R.string.max_atmosphering_speed_detail_label to vehiclesResponse.maxAtmospheringSpeed,
+                        R.string.crew_detail_label to vehiclesResponse.crew,
+                        R.string.passengers_detail_label to vehiclesResponse.passengers,
+                        R.string.cargo_capacity_detail_label to vehiclesResponse.cargoCapacity,
+                        R.string.consumables_detail_label to vehiclesResponse.consumables,
+                        R.string.vehicle_class_detail_label to vehiclesResponse.vehicleClass,
+                        R.string.pilots_detail_label to pilotsResponse.extractNames(),
+                        R.string.films_detail_label to filmsResponse.extractNames()
                     )
+                    val newVehicleDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newVehicleDetails)
                 },

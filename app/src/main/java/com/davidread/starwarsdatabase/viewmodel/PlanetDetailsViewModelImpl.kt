@@ -7,9 +7,9 @@ import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.PeopleRemoteDataSource
 import com.davidread.starwarsdatabase.datasource.PlanetsRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.ResourceResponse
-import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import com.davidread.starwarsdatabase.util.extractIDsFromURLs
 import com.davidread.starwarsdatabase.util.extractNames
+import com.davidread.starwarsdatabase.util.toResourceDetailListItems
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -55,49 +55,21 @@ class PlanetDetailsViewModelImpl @Inject constructor(
                     val peopleResponse = response.second
                     val filmsResponse = response.third
 
-                    val newPlanetDetails = listOf(
-                        ResourceDetailListItem(R.string.name_detail_label, planetResponse.name),
-                        ResourceDetailListItem(
-                            R.string.rotation_period_detail_label,
-                            planetResponse.rotationPeriod
-                        ),
-                        ResourceDetailListItem(
-                            R.string.orbital_period_detail_label,
-                            planetResponse.orbitalPeriod
-                        ),
-                        ResourceDetailListItem(
-                            R.string.diameter_detail_label,
-                            planetResponse.diameter
-                        ),
-                        ResourceDetailListItem(
-                            R.string.climate_detail_label,
-                            planetResponse.climate
-                        ),
-                        ResourceDetailListItem(
-                            R.string.gravity_detail_label,
-                            planetResponse.gravity
-                        ),
-                        ResourceDetailListItem(
-                            R.string.terrain_detail_label,
-                            planetResponse.terrain
-                        ),
-                        ResourceDetailListItem(
-                            R.string.surface_water_detail_label,
-                            planetResponse.surfaceWater
-                        ),
-                        ResourceDetailListItem(
-                            R.string.population_detail_label,
-                            planetResponse.population
-                        ),
-                        ResourceDetailListItem(
-                            R.string.residents_detail_label,
-                            peopleResponse.extractNames()
-                        ),
-                        ResourceDetailListItem(
-                            R.string.films_detail_label,
-                            filmsResponse.extractNames()
-                        )
+                    val labelsToValues = mapOf(
+                        R.string.name_detail_label to planetResponse.name,
+                        R.string.rotation_period_detail_label to planetResponse.rotationPeriod,
+                        R.string.orbital_period_detail_label to planetResponse.orbitalPeriod,
+                        R.string.diameter_detail_label to planetResponse.diameter,
+                        R.string.climate_detail_label to planetResponse.climate,
+                        R.string.gravity_detail_label to planetResponse.gravity,
+                        R.string.terrain_detail_label to planetResponse.terrain,
+                        R.string.surface_water_detail_label to planetResponse.surfaceWater,
+                        R.string.population_detail_label to planetResponse.population,
+                        R.string.residents_detail_label to peopleResponse.extractNames(),
+                        R.string.films_detail_label to filmsResponse.extractNames()
                     )
+                    val newPlanetDetails = labelsToValues.toResourceDetailListItems()
+
                     showLoadingLiveData.postValue(false)
                     resourceDetailsLiveData.postValue(newPlanetDetails)
                 },
