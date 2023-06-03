@@ -44,6 +44,7 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                     add(ResourceNameListItem.Loading)
                 }
                 resourceNamesLiveData.postValue(resourceNames)
+                isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
             }
             .subscribe(
                 { pageResponse ->
@@ -67,8 +68,7 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                             Log.e(TAG, e.toString())
                             nextPage
                         }
-                    } ?: run {
-                        isAllResourceNamesRequestedLiveData.postValue(true)
+                        isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(true)
                     }
                 },
                 { throwable ->

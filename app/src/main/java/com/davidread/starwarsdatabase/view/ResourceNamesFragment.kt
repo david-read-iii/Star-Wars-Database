@@ -109,15 +109,6 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
-     * Invoked when this fragment's view is to be destroyed. It removes the on scroll listener so
-     * duplicate requests don't happen when the user navigates back to this fragment.
-     */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.resourceNamesList.removeOnScrollListener(loadMoreResourceNamesOnScrollListener)
-    }
-
-    /**
      * Sets up observers for the fragment.
      */
     private fun setupObservers() {
@@ -129,28 +120,21 @@ abstract class ResourceNamesFragment : Fragment() {
 
             // Take some action depending on the last item of the new dataset.
             when (resourceNames.lastOrNull()) {
-                is ResourceNameListItem.ResourceName -> {
-                    if (viewModel.isAllResourceNamesRequestedLiveData.value == false) {
-                        binding.resourceNamesList.addOnScrollListener(
-                            loadMoreResourceNamesOnScrollListener
-                        )
-                    }
-                }
-
                 is ResourceNameListItem.Loading -> {
                     binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
                 }
-
                 else -> Unit
             }
         }
 
-        // Removes the scroll listener when the dataset has fetched all list items.
-        viewModel.isAllResourceNamesRequestedLiveData.observe(viewLifecycleOwner) { isAllResourceNamesRequested ->
-            if (isAllResourceNamesRequested) {
-                binding.resourceNamesList.removeOnScrollListener(
-                    loadMoreResourceNamesOnScrollListener
-                )
+        viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.observe(viewLifecycleOwner) { isLoadMoreResourceNamesOnScrollListenerEnabled ->
+            if (isLoadMoreResourceNamesOnScrollListenerEnabled) {
+                binding.resourceNamesList.apply {
+                    clearOnScrollListeners()
+                    addOnScrollListener(loadMoreResourceNamesOnScrollListener)
+                }
+            } else {
+                binding.resourceNamesList.clearOnScrollListeners()
             }
         }
     }

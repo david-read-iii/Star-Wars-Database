@@ -44,6 +44,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                     add(ResourceNameListItem.Loading)
                 }
                 resourceNamesLiveData.postValue(resourceNames)
+                isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
             }
             .subscribe(
                 { pageResponse ->
@@ -67,8 +68,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                             Log.e(TAG, e.toString())
                             nextPage
                         }
-                    } ?: run {
-                        isAllResourceNamesRequestedLiveData.postValue(true)
+                        isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(true)
                     }
                 },
                 { throwable ->

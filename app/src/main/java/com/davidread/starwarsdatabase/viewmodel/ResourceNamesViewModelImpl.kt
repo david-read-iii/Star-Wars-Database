@@ -2,6 +2,7 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import android.view.View
 import androidx.annotation.IntRange
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.model.FragmentResourceNamesLayoutType
@@ -21,9 +22,9 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
         MutableLiveData()
 
     /**
-     * Whether all [ResourceNameListItem]s have been fetched from SWAPI.
+     * Whether the scroll listener is enabled.
      */
-    override val isAllResourceNamesRequestedLiveData: MutableLiveData<Boolean> =
+    override val isLoadMoreResourceNamesOnScrollListenerEnabledLiveData: MutableLiveData<Boolean> =
         MutableLiveData(false)
 
     /**

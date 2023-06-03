@@ -44,6 +44,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                     add(ResourceNameListItem.Loading)
                 }
                 resourceNamesLiveData.postValue(resourceNames)
+                isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
             }
             .subscribe(
                 { pageResponse ->
@@ -67,8 +68,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                             Log.e(TAG, e.toString())
                             nextPage
                         }
-                    } ?: run {
-                        isAllResourceNamesRequestedLiveData.postValue(true)
+                        isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(true)
                     }
                 },
                 { throwable ->

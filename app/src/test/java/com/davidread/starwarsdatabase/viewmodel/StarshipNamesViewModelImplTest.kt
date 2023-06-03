@@ -43,7 +43,7 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
     }
 
     @Test
-    fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits list not full status`() {
+    fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits true isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val next = "https://swapi.dev/api/starships/?page=2"
         val response = getSuccessfulPageResponseOfStarships(next)
         val dataSource = mockk<StarshipsRemoteDataSource> {
@@ -51,11 +51,11 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertTrue(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test
-    fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits list full status`() {
+    fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits false isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val next = null
         val response = getSuccessfulPageResponseOfStarships(next)
         val dataSource = mockk<StarshipsRemoteDataSource> {
@@ -63,17 +63,17 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
-        Assert.assertTrue(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test
-    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits list not full status`() {
+    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits false isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val dataSource = mockk<StarshipsRemoteDataSource> {
             every { getStarships(any()) } returns Single.error(Throwable())
         }
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test

@@ -47,7 +47,7 @@ class PlanetNamesViewModelImplTest : BaseViewModelImplTest() {
     }
 
     @Test
-    fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits list not full status`() {
+    fun `given datasource that returns a non-null next status, when viewmodel calls init, then viewmodel emits true isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val next = "https://swapi.dev/api/planets/?page=2"
         val response = getSuccessfulPageResponseOfPlanets(next)
         val dataSource = mockk<PlanetsRemoteDataSource> {
@@ -55,11 +55,11 @@ class PlanetNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PlanetNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertTrue(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test
-    fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits list full status`() {
+    fun `given datasource that returns a null next status, when viewmodel calls init, then viewmodel emits false isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val next = null
         val response = getSuccessfulPageResponseOfPlanets(next)
         val dataSource = mockk<PlanetsRemoteDataSource> {
@@ -67,17 +67,17 @@ class PlanetNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = PlanetNamesViewModelImpl(dataSource)
 
-        Assert.assertTrue(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test
-    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits list not full status`() {
+    fun `given datasource that returns error response, when viewmodel calls init, then viewmodel emits false isLoadMoreResourceNamesOnScrollListenerEnabledLiveData`() {
         val dataSource = mockk<PlanetsRemoteDataSource> {
             every { getPlanets(any()) } returns Single.error(Throwable())
         }
         val viewModel = PlanetNamesViewModelImpl(dataSource)
 
-        Assert.assertFalse(viewModel.isAllResourceNamesRequestedLiveData.value!!)
+        Assert.assertFalse(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
     }
 
     @Test
