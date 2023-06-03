@@ -130,16 +130,18 @@ abstract class ResourceNamesFragment : Fragment() {
             // Take some action depending on the last item of the new dataset.
             when (resourceNames.lastOrNull()) {
                 is ResourceNameListItem.ResourceName -> {
-                    binding.resourceNamesList.addOnScrollListener(
-                        loadMoreResourceNamesOnScrollListener
-                    )
+                    if (viewModel.isAllResourceNamesRequestedLiveData.value == false) {
+                        binding.resourceNamesList.addOnScrollListener(
+                            loadMoreResourceNamesOnScrollListener
+                        )
+                    }
                 }
 
                 is ResourceNameListItem.Loading -> {
                     binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
                 }
 
-                else -> {}
+                else -> Unit
             }
         }
 
