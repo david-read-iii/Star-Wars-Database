@@ -102,7 +102,8 @@ abstract class ResourceNamesFragment : Fragment() {
             binding.resourceNamesList.smoothScrollToPosition(position)
         }
 
-        viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.observe(viewLifecycleOwner) { isLoadMoreResourceNamesOnScrollListenerEnabled ->
+        viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.observe(viewLifecycleOwner)
+        { isLoadMoreResourceNamesOnScrollListenerEnabled ->
             if (isLoadMoreResourceNamesOnScrollListenerEnabled) {
                 binding.resourceNamesList.apply {
                     clearOnScrollListeners()
@@ -112,7 +113,8 @@ abstract class ResourceNamesFragment : Fragment() {
 
                             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                             val totalItemCount = layoutManager.itemCount
-                            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                            val lastVisibleItemPosition =
+                                layoutManager.findLastVisibleItemPosition()
                             val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
 
                             if (isLastItemVisible) {
