@@ -2,6 +2,7 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.annotation.IntRange
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 
 /**
@@ -10,11 +11,11 @@ import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 interface ResourceNamesViewModel {
     val resourceNamesLiveData: LiveData<List<ResourceNameListItem>>
     val smoothScrollToPositionInListLiveData: LiveData<Int>
-    val isLoadMoreResourceNamesOnScrollListenerEnabledLiveData: LiveData<Boolean>
     val subNavHostFragmentVisibility: LiveData<Int>
     @setparam:IntRange(from = 1)
-    var nextPage: Int
+    var nextPage: Int?
     fun onFragmentCreateView(screenWidthDp: Int)
+    fun onResourceNamesListScroll(recyclerView: RecyclerView)
     fun onResourceNameClick(@IntRange(from = 1) id: Int, screenWidthDp: Int)
     fun getResourceNames(@IntRange(from = 1) page: Int)
 }

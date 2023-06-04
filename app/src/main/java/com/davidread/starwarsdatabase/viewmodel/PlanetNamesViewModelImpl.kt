@@ -25,7 +25,11 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
      * getting page 1 of planet names to show in the UI.
      */
     init {
-        getResourceNames(nextPage)
+        resourceNames.add(ResourceNameListItem.Loading)
+        resourceNamesLiveData.postValue(resourceNames)
+
+        // TODO: Refactor not to use !!
+        getResourceNames(nextPage!!)
     }
 
     /**
@@ -38,15 +42,6 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
         disposable.add(planetsRemoteDataSource.getPlanets(page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe {
-                resourceNames.apply {
-                    remove(ResourceNameListItem.Error)
-                    add(ResourceNameListItem.Loading)
-                }
-                resourceNamesLiveData.postValue(resourceNames)
-                isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
-                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
-            }
             .subscribe(
                 { pageResponse ->
                     val newPlanetNames = pageResponse.results.map { planetResponse ->
@@ -62,14 +57,13 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                     }
                     resourceNamesLiveData.postValue(resourceNames)
                     subNavHostFragmentVisibility.postValue(View.VISIBLE)
-                    pageResponse.next?.let { next ->
-                        nextPage = try {
-                            next.extractPageFromURL()
+                    nextPage = pageResponse.next?.let {
+                        try {
+                            it.extractPageFromURL()
                         } catch (e: IllegalArgumentException) {
                             Log.e(TAG, e.toString())
                             nextPage
                         }
-                        isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(true)
                     }
                 },
                 { throwable ->

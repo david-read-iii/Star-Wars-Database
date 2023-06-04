@@ -2,12 +2,14 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import android.view.View
 import androidx.annotation.IntRange
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.model.FragmentResourceNamesLayoutType
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.MutableSingleEventLiveData
+import com.davidread.starwarsdatabase.view.ResourceNamesAdapter
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
@@ -29,12 +31,6 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
         MutableSingleEventLiveData()
 
     /**
-     * Whether the scroll listener is enabled.
-     */
-    override val isLoadMoreResourceNamesOnScrollListenerEnabledLiveData: MutableLiveData<Boolean> =
-        MutableLiveData(false)
-
-    /**
      * The view visibility of `subNavHostFragment`.
      */
     override val subNavHostFragmentVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
@@ -43,7 +39,7 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
      * Next page of resource names to fetch from SWAPI.
      */
     @IntRange(from = 1)
-    override var nextPage: Int = 1
+    override var nextPage: Int? = 1
 
     /**
      * [MutableList] of [ResourceNameListItem]s to be stored/modified here. Emitted via its
@@ -76,6 +72,33 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
         if (getFragmentLayoutType(screenWidthDp) == FragmentResourceNamesLayoutType.SINGLE_FRAGMENT) {
             setSelectableItemBackgroundOnAllResourceNames()
             resourceNamesLiveData.postValue(resourceNames)
+        }
+    }
+
+    /**
+     * Called when the `Fragment` resource name list is scrolled on. If the last list item is
+     * visible, the last list item represents a [ResourceNameListItem.ResourceName], and the data
+     * source has another page to get, then loading will be shown on the UI and a subscription will
+     * be started to get another page from the data source.
+     *
+     * @param recyclerView [RecyclerView] that experienced the scroll event.
+     */
+    override fun onResourceNamesListScroll(recyclerView: RecyclerView) {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val adapter = recyclerView.adapter as ResourceNamesAdapter
+
+        val isLastItemVisible =
+            adapter.currentList.lastIndex == layoutManager.findLastVisibleItemPosition()
+        val isLastItemResourceName = adapter.currentList.last() is ResourceNameListItem.ResourceName
+        val doesDataSourceHaveNextPage = nextPage != null
+
+        if (isLastItemVisible && isLastItemResourceName && doesDataSourceHaveNextPage) {
+            resourceNames.add(ResourceNameListItem.Loading)
+            resourceNamesLiveData.postValue(resourceNames)
+            smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
+
+            // TODO: Refactor not to use !!
+            getResourceNames(nextPage!!)
         }
     }
 

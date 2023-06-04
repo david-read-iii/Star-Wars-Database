@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentResourceNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
@@ -71,6 +70,14 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
+     * Invoked when this fragment's view is to be destroyed.
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        destroyBinding()
+    }
+
+    /**
      * Sets up binding for the fragment.
      */
     private fun setupBinding() {
@@ -82,9 +89,22 @@ abstract class ResourceNamesFragment : Fragment() {
                     onResourceNameClick = { id -> onResourceNameClick(id) },
                     onErrorRetryClick = { onErrorRetryClick() }
                 )
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        this@ResourceNamesFragment.viewModel.onResourceNamesListScroll(recyclerView = recyclerView)
+                    }
+                })
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
+    }
+
+    /**
+     * Destroys the binding for the fragment.
+     */
+    private fun destroyBinding() {
+        binding.resourceNamesList.clearOnScrollListeners()
     }
 
     /**
@@ -101,32 +121,6 @@ abstract class ResourceNamesFragment : Fragment() {
         viewModel.smoothScrollToPositionInListLiveData.observe(viewLifecycleOwner) { position ->
             binding.resourceNamesList.smoothScrollToPosition(position)
         }
-
-        viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.observe(viewLifecycleOwner)
-        { isLoadMoreResourceNamesOnScrollListenerEnabled ->
-            if (isLoadMoreResourceNamesOnScrollListenerEnabled) {
-                binding.resourceNamesList.apply {
-                    clearOnScrollListeners()
-                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            super.onScrolled(recyclerView, dx, dy)
-
-                            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                            val totalItemCount = layoutManager.itemCount
-                            val lastVisibleItemPosition =
-                                layoutManager.findLastVisibleItemPosition()
-                            val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
-
-                            if (isLastItemVisible) {
-                                viewModel.getResourceNames(viewModel.nextPage)
-                            }
-                        }
-                    })
-                }
-            } else {
-                binding.resourceNamesList.clearOnScrollListeners()
-            }
-        }
     }
 
     /**
@@ -134,6 +128,7 @@ abstract class ResourceNamesFragment : Fragment() {
      * people from the [viewModel] to be added onto the dataset from SWAPI.
      */
     private fun onErrorRetryClick() {
-        viewModel.getResourceNames(viewModel.nextPage)
+        // TODO: Refactor not to use !!
+        viewModel.getResourceNames(viewModel.nextPage!!)
     }
 }
