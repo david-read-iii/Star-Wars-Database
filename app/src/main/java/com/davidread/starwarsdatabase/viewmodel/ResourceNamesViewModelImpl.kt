@@ -36,6 +36,20 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
     override val subNavHostFragmentVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     /**
+     * Emits event when the the details fragment should be navigated to. Passes the `id` of the
+     * resource to show.
+     */
+    override val onNavigateToDetailsFragmentLiveData: MutableSingleEventLiveData<Int> =
+        MutableSingleEventLiveData()
+
+    /**
+     * Emits event when the details fragment should be shown in `subNavHostFragment`. Passes the
+     * `id` of the resource to show.
+     */
+    override val onShowDetailsFragmentInSubNavHostFragmentLiveData: MutableSingleEventLiveData<Int> =
+        MutableSingleEventLiveData()
+
+    /**
      * Next page of resource names to fetch from SWAPI.
      */
     @IntRange(from = 1)
@@ -103,23 +117,30 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
     }
 
     /**
-     * Called when a resource name is clicked. If the device is using a master-detail fragment
-     * layout, then it sets [android.R.attr.selectableItemBackground] on all [ResourceNameListItem]s
-     * and then sets [android.R.attr.colorControlHighlight] on the clicked [ResourceNameListItem].
+     * Called when a resource name is clicked. If a single fragment layout is being used, then it
+     * just emits an event to show the details fragment in the UI. If a master-detail fragment
+     * layout is being used, it emits an event to show the details fragment in `subNavHostFragment`.
+     * It also will emit a new resource names list where the selected resource name is highlighted.
      *
      * @param id Id of the clicked [ResourceNameListItem.ResourceName].
      * @param screenWidthDp Screen width dp of the 'Fragment'.
      */
     override fun onResourceNameClick(@IntRange(from = 1) id: Int, screenWidthDp: Int) {
-        if (getFragmentLayoutType(screenWidthDp) == FragmentResourceNamesLayoutType.MASTER_DETAIL) {
-            setSelectableItemBackgroundOnAllResourceNames()
-            resourceNames.filterIsInstance<ResourceNameListItem.ResourceName>()
-                .filter { resourceName ->
-                    resourceName.id == id
-                }.map { resourceName ->
-                    resourceName.backgroundAttrResId = android.R.attr.colorControlHighlight
-                }
-            resourceNamesLiveData.postValue(resourceNames)
+        when (getFragmentLayoutType(screenWidthDp)) {
+            FragmentResourceNamesLayoutType.SINGLE_FRAGMENT -> {
+                onNavigateToDetailsFragmentLiveData.postValue(id)
+            }
+            FragmentResourceNamesLayoutType.MASTER_DETAIL -> {
+                setSelectableItemBackgroundOnAllResourceNames()
+                resourceNames.filterIsInstance<ResourceNameListItem.ResourceName>()
+                    .filter { resourceName ->
+                        resourceName.id == id
+                    }.map { resourceName ->
+                        resourceName.backgroundAttrResId = android.R.attr.colorControlHighlight
+                    }
+                resourceNamesLiveData.postValue(resourceNames)
+                onShowDetailsFragmentInSubNavHostFragmentLiveData.postValue(id)
+            }
         }
     }
 

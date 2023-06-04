@@ -1,5 +1,9 @@
 package com.davidread.starwarsdatabase.view
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -20,21 +24,34 @@ class PersonNamesFragment : ResourceNamesFragment() {
     }
 
     /**
-     * Called when a person name is clicked in the list. It launches [PersonDetailsFragment] while
-     * passing the id of the clicked person. If the master-detail layout is being used, then the
-     * fragment is inflated next to the list instead of in its own screen.
-     *
-     * @param id Unique id of the person clicked in the list.
+     * Invoked when this fragment's view is to be created.
      */
-    override fun onResourceNameClick(id: Int) {
-        viewModel.onResourceNameClick(id, resources.configuration.screenWidthDp)
-        binding.subNavHostFragment?.let {
-            val action = NavGraphSubDirections.actionGlobalPersonDetailsFragment(id)
-            it.findNavController().navigate(action)
-        } ?: run {
-            val action =
-                PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(id)
-            findNavController().navigate(action)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        setupObservers()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    /**
+     * Sets up observers for the fragment.
+     */
+    private fun setupObservers() {
+        viewModel.apply {
+            onNavigateToDetailsFragmentLiveData.observe(viewLifecycleOwner) { id ->
+                val action =
+                    PersonNamesFragmentDirections.actionPersonNamesFragmentToPersonDetailsFragment(
+                        id
+                    )
+                findNavController().navigate(action)
+            }
+
+            onShowDetailsFragmentInSubNavHostFragmentLiveData.observe(viewLifecycleOwner) { id ->
+                val action = NavGraphSubDirections.actionGlobalPersonDetailsFragment(id)
+                binding.subNavHostFragment?.findNavController()?.navigate(action)
+            }
         }
     }
 }

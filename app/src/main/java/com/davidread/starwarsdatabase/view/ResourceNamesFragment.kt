@@ -39,13 +39,6 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
-     * Called when a resource name is clicked in the list. To be defined by the inheriting class.
-     *
-     * @param id Unique id of the resource clicked in the list.
-     */
-    abstract fun onResourceNameClick(id: Int)
-
-    /**
      * Invoked when this fragment is attached to it's associated activity. It just requests
      * dependency injection.
      */
@@ -86,7 +79,12 @@ abstract class ResourceNamesFragment : Fragment() {
             viewModel = this@ResourceNamesFragment.viewModel
             resourceNamesList.apply {
                 adapter = ResourceNamesAdapter(
-                    onResourceNameClick = { id -> onResourceNameClick(id) },
+                    onResourceNameClick = { id ->
+                        this@ResourceNamesFragment.viewModel.onResourceNameClick(
+                            id = id,
+                            screenWidthDp = resources.configuration.screenWidthDp
+                        )
+                    },
                     onErrorRetryClick = { this@ResourceNamesFragment.viewModel.onErrorRetryClick() }
                 )
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
