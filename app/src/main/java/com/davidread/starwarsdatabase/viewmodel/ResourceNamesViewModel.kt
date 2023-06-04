@@ -12,10 +12,8 @@ interface ResourceNamesViewModel {
     val resourceNamesLiveData: LiveData<List<ResourceNameListItem>>
     val smoothScrollToPositionInListLiveData: LiveData<Int>
     val subNavHostFragmentVisibility: LiveData<Int>
-    @setparam:IntRange(from = 1)
-    var nextPage: Int?
     fun onFragmentCreateView(screenWidthDp: Int)
     fun onResourceNamesListScroll(recyclerView: RecyclerView)
     fun onResourceNameClick(@IntRange(from = 1) id: Int, screenWidthDp: Int)
-    fun getResourceNames(@IntRange(from = 1) page: Int)
+    fun onErrorRetryClick()
 }

@@ -87,7 +87,7 @@ abstract class ResourceNamesFragment : Fragment() {
             resourceNamesList.apply {
                 adapter = ResourceNamesAdapter(
                     onResourceNameClick = { id -> onResourceNameClick(id) },
-                    onErrorRetryClick = { onErrorRetryClick() }
+                    onErrorRetryClick = { this@ResourceNamesFragment.viewModel.onErrorRetryClick() }
                 )
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -121,14 +121,5 @@ abstract class ResourceNamesFragment : Fragment() {
         viewModel.smoothScrollToPositionInListLiveData.observe(viewLifecycleOwner) { position ->
             binding.resourceNamesList.smoothScrollToPosition(position)
         }
-    }
-
-    /**
-     * Called when the retry button of an error item is clicked in the list. It requests more
-     * people from the [viewModel] to be added onto the dataset from SWAPI.
-     */
-    private fun onErrorRetryClick() {
-        // TODO: Refactor not to use !!
-        viewModel.getResourceNames(viewModel.nextPage!!)
     }
 }

@@ -39,18 +39,18 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
      * Next page of resource names to fetch from SWAPI.
      */
     @IntRange(from = 1)
-    override var nextPage: Int? = 1
+    protected var nextPage: Int? = 1
 
     /**
      * [MutableList] of [ResourceNameListItem]s to be stored/modified here. Emitted via its
      * `LiveData` each time it is updated.
      */
-    val resourceNames: MutableList<ResourceNameListItem> = mutableListOf()
+    protected val resourceNames: MutableList<ResourceNameListItem> = mutableListOf()
 
     /**
      * Container for managing resources used by `Disposable`s or their subclasses.
      */
-    val disposable: CompositeDisposable = CompositeDisposable()
+    protected val disposable: CompositeDisposable = CompositeDisposable()
 
     /**
      * Called when this `ViewModel` is no longer used and will be destroyed. Clears any
@@ -122,6 +122,26 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
             resourceNamesLiveData.postValue(resourceNames)
         }
     }
+
+    /**
+     * Called when the retry button of an error item is clicked in the list. It replaces the error
+     * UI with a loading UI and starts a subscription for getting another page from the data source.
+     */
+    override fun onErrorRetryClick() {
+        resourceNames.apply {
+            remove(ResourceNameListItem.Error)
+            add(ResourceNameListItem.Loading)
+        }
+        resourceNamesLiveData.postValue(resourceNames)
+
+        getResourceNames(nextPage!!)
+    }
+
+    /**
+     * Invoked when a subscription to get another page of resource names should be made. Should be
+     * defined by the subclass as each subclass gets different types of resource name.
+     */
+    protected abstract fun getResourceNames(@IntRange(from = 1) page: Int)
 
     /**
      * Returns a [FragmentResourceNamesLayoutType] that corresponds with the given [screenWidthDp].
