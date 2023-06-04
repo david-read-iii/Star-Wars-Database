@@ -40,34 +40,6 @@ abstract class ResourceNamesFragment : Fragment() {
     }
 
     /**
-     * Adapts a resource names list dataset onto the [RecyclerView] in the UI.
-     */
-    private val resourceNamesAdapter = ResourceNamesAdapter(
-        { id -> onResourceNameClick(id) },
-        { onErrorRetryClick() }
-    )
-
-    /**
-     * Detects whether the last view of the [RecyclerView] is visible. If so, it requests more
-     * resource names from the [viewModel] to add onto the dataset from SWAPI.
-     */
-    private val loadMoreResourceNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val totalItemCount = layoutManager.itemCount
-            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-            val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
-
-            if (isLastItemVisible) {
-                viewModel.getResourceNames(viewModel.nextPage)
-            }
-        }
-    }
-
-    /**
      * Called when a resource name is clicked in the list. To be defined by the inheriting class.
      *
      * @param id Unique id of the resource clicked in the list.
@@ -85,24 +57,34 @@ abstract class ResourceNamesFragment : Fragment() {
 
     /**
      * Invoked when this fragment's view is to be created. It initializes this fragment's binding,
-     * sets up an observer to the [ResourceNamesAdapter]'s dataset, and returns the fragment's view.
+     * sets up observers, and returns the fragment's view.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.onFragmentCreateView(resources.configuration.screenWidthDp)
+        setupBinding()
+        setupObservers()
+        viewModel.onFragmentCreateView(screenWidthDp = resources.configuration.screenWidthDp)
+        return binding.root
+    }
+
+    /**
+     * Sets up binding for the fragment.
+     */
+    private fun setupBinding() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ResourceNamesFragment.viewModel
             resourceNamesList.apply {
-                adapter = resourceNamesAdapter
+                adapter = ResourceNamesAdapter(
+                    onResourceNameClick = { id -> onResourceNameClick(id) },
+                    onErrorRetryClick = { onErrorRetryClick() }
+                )
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
-        setupObservers()
-        return binding.root
     }
 
     /**
@@ -112,7 +94,8 @@ abstract class ResourceNamesFragment : Fragment() {
         viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { resourceNames ->
             // Deep copy required otherwise DiffCallback will not notify adapter of changes.
             val resourceNamesDeepCopy = resourceNames.map { it.copySealedObject() }
-            resourceNamesAdapter.submitList(resourceNamesDeepCopy)
+            val adapter = binding.resourceNamesList.adapter as ResourceNamesAdapter
+            adapter.submitList(resourceNamesDeepCopy)
         }
 
         viewModel.smoothScrollToPositionInListLiveData.observe(viewLifecycleOwner) { position ->
@@ -123,7 +106,20 @@ abstract class ResourceNamesFragment : Fragment() {
             if (isLoadMoreResourceNamesOnScrollListenerEnabled) {
                 binding.resourceNamesList.apply {
                     clearOnScrollListeners()
-                    addOnScrollListener(loadMoreResourceNamesOnScrollListener)
+                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            super.onScrolled(recyclerView, dx, dy)
+
+                            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                            val totalItemCount = layoutManager.itemCount
+                            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                            val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
+
+                            if (isLastItemVisible) {
+                                viewModel.getResourceNames(viewModel.nextPage)
+                            }
+                        }
+                    })
                 }
             } else {
                 binding.resourceNamesList.clearOnScrollListeners()
