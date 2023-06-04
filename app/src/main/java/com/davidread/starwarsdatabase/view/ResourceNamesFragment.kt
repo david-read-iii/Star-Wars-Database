@@ -49,8 +49,7 @@ abstract class ResourceNamesFragment : Fragment() {
 
     /**
      * Detects whether the last view of the [RecyclerView] is visible. If so, it requests more
-     * resource names from the [viewModel] to add onto the dataset from SWAPI. It also removes the
-     * on scroll listener so duplicate requests are not made.
+     * resource names from the [viewModel] to add onto the dataset from SWAPI.
      */
     private val loadMoreResourceNamesOnScrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -63,7 +62,6 @@ abstract class ResourceNamesFragment : Fragment() {
             val isLastItemVisible = lastVisibleItemPosition == totalItemCount - 1
 
             if (isLastItemVisible) {
-                recyclerView.removeOnScrollListener(this)
                 viewModel.getResourceNames(viewModel.nextPage)
             }
         }
