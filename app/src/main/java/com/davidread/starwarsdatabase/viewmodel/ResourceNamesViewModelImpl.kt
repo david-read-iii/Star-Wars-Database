@@ -51,7 +51,8 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
         MutableSingleEventLiveData()
 
     /**
-     * Next page of resource names to fetch from SWAPI.
+     * Next page of resource names to fetch from SWAPI. Holds `null` when no more resource names
+     * can be fetched.
      */
     @IntRange(from = 1)
     protected var nextPage: Int? = 1
@@ -111,9 +112,7 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
             resourceNames.add(ResourceNameListItem.Loading)
             resourceNamesLiveData.postValue(resourceNames)
             smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
-
-            // TODO: Refactor not to use !!
-            getResourceNames(nextPage!!)
+            nextPage?.let { getResourceNames(it) }
         }
     }
 
@@ -155,8 +154,7 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
             add(ResourceNameListItem.Loading)
         }
         resourceNamesLiveData.postValue(resourceNames)
-
-        getResourceNames(nextPage!!)
+        nextPage?.let { getResourceNames(it) }
     }
 
     /**

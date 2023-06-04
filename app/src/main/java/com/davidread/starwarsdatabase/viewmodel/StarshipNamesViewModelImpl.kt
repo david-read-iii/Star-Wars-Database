@@ -27,9 +27,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
     init {
         resourceNames.add(ResourceNameListItem.Loading)
         resourceNamesLiveData.postValue(resourceNames)
-
-        // TODO: Refactor not to use !!
-        getResourceNames(nextPage!!)
+        nextPage?.let { getResourceNames(it) }
     }
 
     /**

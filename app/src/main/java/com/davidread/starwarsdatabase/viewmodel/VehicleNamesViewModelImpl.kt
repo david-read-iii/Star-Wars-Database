@@ -27,9 +27,7 @@ class VehicleNamesViewModelImpl @Inject constructor(private val vehiclesRemoteDa
     init {
         resourceNames.add(ResourceNameListItem.Loading)
         resourceNamesLiveData.postValue(resourceNames)
-
-        // TODO: Refactor not to use !!
-        getResourceNames(nextPage!!)
+        nextPage?.let { getResourceNames(it) }
     }
 
     /**

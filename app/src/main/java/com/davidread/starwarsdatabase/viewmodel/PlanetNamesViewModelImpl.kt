@@ -27,9 +27,7 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
     init {
         resourceNames.add(ResourceNameListItem.Loading)
         resourceNamesLiveData.postValue(resourceNames)
-
-        // TODO: Refactor not to use !!
-        getResourceNames(nextPage!!)
+        nextPage?.let { getResourceNames(it) }
     }
 
     /**
