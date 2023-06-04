@@ -33,7 +33,7 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/match_constraint"
-            android:visibility="@{viewModel.subNavHostFragmentVisibility}"
+            android:visibility="@{viewModel.subNavHostFragmentVisibilityLiveData}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/resource_names_list"

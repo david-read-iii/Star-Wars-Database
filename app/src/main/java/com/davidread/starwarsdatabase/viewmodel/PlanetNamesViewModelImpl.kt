@@ -56,7 +56,7 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                         addAll(newPlanetNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
-                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
+                    subNavHostFragmentVisibilityLiveData.postValue(View.VISIBLE)
                     nextPage = pageResponse.next?.let {
                         try {
                             it.extractPageFromURL()

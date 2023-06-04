@@ -25,15 +25,16 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
         MutableLiveData()
 
     /**
+     * Emits the view visibility of `subNavHostFragment`.
+     */
+    override val subNavHostFragmentVisibilityLiveData: MutableLiveData<Int> =
+        MutableLiveData(View.GONE)
+
+    /**
      * Emits event when the end of the list should be smooth scrolled to.
      */
     override val smoothScrollToPositionInListLiveData: MutableSingleEventLiveData<Int> =
         MutableSingleEventLiveData()
-
-    /**
-     * The view visibility of `subNavHostFragment`.
-     */
-    override val subNavHostFragmentVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     /**
      * Emits event when the the details fragment should be navigated to. Passes the `id` of the

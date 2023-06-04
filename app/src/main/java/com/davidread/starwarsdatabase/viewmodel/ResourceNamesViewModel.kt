@@ -10,8 +10,8 @@ import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
  */
 interface ResourceNamesViewModel {
     val resourceNamesLiveData: LiveData<List<ResourceNameListItem>>
+    val subNavHostFragmentVisibilityLiveData: LiveData<Int>
     val smoothScrollToPositionInListLiveData: LiveData<Int>
-    val subNavHostFragmentVisibility: LiveData<Int>
     val onNavigateToDetailsFragmentLiveData: LiveData<Int>
     val onShowDetailsFragmentInSubNavHostFragmentLiveData: LiveData<Int>
     fun onFragmentCreateView(screenWidthDp: Int)

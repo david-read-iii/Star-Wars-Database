@@ -56,7 +56,7 @@ class FilmNamesViewModelImpl @Inject constructor(private val filmsRemoteDataSour
                         addAll(newFilmNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
-                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
+                    subNavHostFragmentVisibilityLiveData.postValue(View.VISIBLE)
                     nextPage = pageResponse.next?.let {
                         try {
                             it.extractPageFromURL()

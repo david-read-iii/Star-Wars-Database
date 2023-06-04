@@ -56,7 +56,7 @@ class VehicleNamesViewModelImpl @Inject constructor(private val vehiclesRemoteDa
                         addAll(newVehicleNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
-                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
+                    subNavHostFragmentVisibilityLiveData.postValue(View.VISIBLE)
                     nextPage = pageResponse.next?.let {
                         try {
                             it.extractPageFromURL()

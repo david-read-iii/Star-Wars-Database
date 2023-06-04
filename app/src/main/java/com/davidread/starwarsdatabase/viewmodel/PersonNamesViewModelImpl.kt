@@ -56,7 +56,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                         addAll(newPersonNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
-                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
+                    subNavHostFragmentVisibilityLiveData.postValue(View.VISIBLE)
                     nextPage = pageResponse.next?.let {
                         try {
                             it.extractPageFromURL()

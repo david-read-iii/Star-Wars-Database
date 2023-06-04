@@ -106,7 +106,7 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
-        Assert.assertEquals(View.VISIBLE, viewModel.subNavHostFragmentVisibility.value)
+        Assert.assertEquals(View.VISIBLE, viewModel.subNavHostFragmentVisibilityLiveData.value)
     }
 
     @Test
@@ -116,7 +116,7 @@ class StarshipNamesViewModelImplTest : BaseViewModelImplTest() {
         }
         val viewModel = StarshipNamesViewModelImpl(dataSource)
 
-        Assert.assertEquals(View.GONE, viewModel.subNavHostFragmentVisibility.value)
+        Assert.assertEquals(View.GONE, viewModel.subNavHostFragmentVisibilityLiveData.value)
     }
 
     @Test
