@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentResourceNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
-import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.viewmodel.ResourceNamesViewModel
 import javax.inject.Inject
 
@@ -113,18 +112,13 @@ abstract class ResourceNamesFragment : Fragment() {
      */
     private fun setupObservers() {
         viewModel.resourceNamesLiveData.observe(viewLifecycleOwner) { resourceNames ->
-            /* Submit a deep copy of the dataset to the adapter. DiffCallback will not notify the
-             * adapter to update its values otherwise. */
+            // Deep copy required otherwise DiffCallback will not notify adapter of changes.
             val resourceNamesDeepCopy = resourceNames.map { it.copySealedObject() }
             resourceNamesAdapter.submitList(resourceNamesDeepCopy)
+        }
 
-            // Take some action depending on the last item of the new dataset.
-            when (resourceNames.lastOrNull()) {
-                is ResourceNameListItem.Loading -> {
-                    binding.resourceNamesList.smoothScrollToPosition(resourceNames.lastIndex)
-                }
-                else -> Unit
-            }
+        viewModel.smoothScrollToPositionInListLiveData.observe(viewLifecycleOwner) { position ->
+            binding.resourceNamesList.smoothScrollToPosition(position)
         }
 
         viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.observe(viewLifecycleOwner) { isLoadMoreResourceNamesOnScrollListenerEnabled ->

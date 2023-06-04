@@ -45,6 +45,7 @@ class StarshipNamesViewModelImpl @Inject constructor(private val starshipsRemote
                 }
                 resourceNamesLiveData.postValue(resourceNames)
                 isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
+                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
             }
             .subscribe(
                 { pageResponse ->

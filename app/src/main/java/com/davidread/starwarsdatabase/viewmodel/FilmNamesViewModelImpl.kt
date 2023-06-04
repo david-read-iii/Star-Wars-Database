@@ -45,6 +45,7 @@ class FilmNamesViewModelImpl @Inject constructor(private val filmsRemoteDataSour
                 }
                 resourceNamesLiveData.postValue(resourceNames)
                 isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
+                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
             }
             .subscribe(
                 { pageResponse ->

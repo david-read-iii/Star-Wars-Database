@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.davidread.starwarsdatabase.model.FragmentResourceNamesLayoutType
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
+import com.davidread.starwarsdatabase.util.MutableSingleEventLiveData
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
@@ -20,6 +21,12 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
      */
     override val resourceNamesLiveData: MutableLiveData<List<ResourceNameListItem>> =
         MutableLiveData()
+
+    /**
+     * Emits event when the end of the list should be smooth scrolled to.
+     */
+    override val smoothScrollToPositionInListLiveData: MutableSingleEventLiveData<Int> =
+        MutableSingleEventLiveData()
 
     /**
      * Whether the scroll listener is enabled.

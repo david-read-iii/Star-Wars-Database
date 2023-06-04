@@ -45,6 +45,7 @@ class SpeciesNamesViewModelImpl @Inject constructor(private val speciesRemoteDat
                 }
                 resourceNamesLiveData.postValue(resourceNames)
                 isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
+                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
             }
             .subscribe(
                 { pageResponse ->

@@ -45,6 +45,7 @@ class PersonNamesViewModelImpl @Inject constructor(private val peopleRemoteDataS
                 }
                 resourceNamesLiveData.postValue(resourceNames)
                 isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
+                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
             }
             .subscribe(
                 { pageResponse ->

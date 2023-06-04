@@ -9,6 +9,7 @@ import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
  */
 interface ResourceNamesViewModel {
     val resourceNamesLiveData: LiveData<List<ResourceNameListItem>>
+    val smoothScrollToPositionInListLiveData: LiveData<Int>
     val isLoadMoreResourceNamesOnScrollListenerEnabledLiveData: LiveData<Boolean>
     val subNavHostFragmentVisibility: LiveData<Int>
     @setparam:IntRange(from = 1)

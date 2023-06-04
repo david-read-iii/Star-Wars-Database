@@ -45,6 +45,7 @@ class PlanetNamesViewModelImpl @Inject constructor(private val planetsRemoteData
                 }
                 resourceNamesLiveData.postValue(resourceNames)
                 isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.postValue(false)
+                smoothScrollToPositionInListLiveData.postValue(resourceNames.lastIndex)
             }
             .subscribe(
                 { pageResponse ->

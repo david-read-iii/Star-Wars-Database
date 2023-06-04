@@ -1,11 +1,13 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.view.View
+import androidx.lifecycle.Observer
 import com.davidread.starwarsdatabase.datasource.VehiclesRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
 import org.junit.Assert
 import org.junit.Test
@@ -24,7 +26,11 @@ class VehicleNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = VehicleNamesViewModelImpl(dataSource)
 
         val expectedList = IntRange(1, 10).map { id ->
-            ResourceNameListItem.ResourceName(id = id, name = "Vehicle $id", backgroundAttrResId = android.R.attr.selectableItemBackground)
+            ResourceNameListItem.ResourceName(
+                id = id,
+                name = "Vehicle $id",
+                backgroundAttrResId = android.R.attr.selectableItemBackground
+            )
         }
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(expectedList, actualList)
@@ -40,6 +46,22 @@ class VehicleNamesViewModelImplTest : BaseViewModelImplTest() {
         val actualList = viewModel.resourceNamesLiveData.value
         Assert.assertEquals(1, actualList!!.size)
         Assert.assertTrue(actualList.first() is ResourceNameListItem.Error)
+    }
+
+    @Test
+    fun `when viewmodel calls init, then viewmodel emits exactly one event via smoothScrollToPositionInListLiveData`() {
+        val response = getSuccessfulPageResponseOfVehicles()
+        val dataSource = mockk<VehiclesRemoteDataSource> {
+            every { getVehicles(any()) } returns Single.just(response)
+        }
+        val liveDataObserver = mockk<Observer<in Int>>(relaxed = true)
+        VehicleNamesViewModelImpl(dataSource).apply {
+            smoothScrollToPositionInListLiveData.observeForever(liveDataObserver)
+        }
+
+        verify(exactly = 1) {
+            liveDataObserver.onChanged(0)
+        }
     }
 
     @Test

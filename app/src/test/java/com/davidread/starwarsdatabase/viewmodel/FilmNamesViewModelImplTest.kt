@@ -1,11 +1,13 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.view.View
+import androidx.lifecycle.Observer
 import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.model.datasource.PageResponse
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
 import org.junit.Assert
 import org.junit.Test
@@ -56,6 +58,22 @@ class FilmNamesViewModelImplTest : BaseViewModelImplTest() {
         val viewModel = FilmNamesViewModelImpl(dataSource)
 
         Assert.assertTrue(viewModel.isLoadMoreResourceNamesOnScrollListenerEnabledLiveData.value!!)
+    }
+
+    @Test
+    fun `when viewmodel calls init, then viewmodel emits exactly one event via smoothScrollToPositionInListLiveData`() {
+        val response = getSuccessfulPageResponseOfFilms()
+        val dataSource = mockk<FilmsRemoteDataSource> {
+            every { getFilms(any()) } returns Single.just(response)
+        }
+        val liveDataObserver = mockk<Observer<in Int>>(relaxed = true)
+        FilmNamesViewModelImpl(dataSource).apply {
+            smoothScrollToPositionInListLiveData.observeForever(liveDataObserver)
+        }
+
+        verify(exactly = 1) {
+            liveDataObserver.onChanged(0)
+        }
     }
 
     @Test
