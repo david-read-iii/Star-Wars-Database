@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.databinding.FragmentResourceNamesBinding
 import com.davidread.starwarsdatabase.di.ApplicationController
@@ -90,7 +91,12 @@ abstract class ResourceNamesFragment : Fragment() {
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
-                        this@ResourceNamesFragment.viewModel.onResourceNamesListScroll(recyclerView = recyclerView)
+                        val adapter = recyclerView.adapter as ResourceNamesAdapter
+                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                        this@ResourceNamesFragment.viewModel.onResourceNamesListScroll(
+                            isLastItemVisible = adapter.currentList.lastIndex
+                                    == layoutManager.findLastVisibleItemPosition()
+                        )
                     }
                 })
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))

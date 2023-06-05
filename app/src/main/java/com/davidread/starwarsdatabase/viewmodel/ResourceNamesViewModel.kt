@@ -2,7 +2,6 @@ package com.davidread.starwarsdatabase.viewmodel
 
 import androidx.annotation.IntRange
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 
 /**
@@ -15,7 +14,7 @@ interface ResourceNamesViewModel {
     val onNavigateToDetailsFragmentLiveData: LiveData<Int>
     val onShowDetailsFragmentInSubNavHostFragmentLiveData: LiveData<Int>
     fun onFragmentCreateView(screenWidthDp: Int)
-    fun onResourceNamesListScroll(recyclerView: RecyclerView)
+    fun onResourceNamesListScroll(isLastItemVisible: Boolean)
     fun onResourceNameClick(@IntRange(from = 1) id: Int, screenWidthDp: Int)
     fun onErrorRetryClick()
 }

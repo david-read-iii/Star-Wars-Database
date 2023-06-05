@@ -4,12 +4,9 @@ import android.view.View
 import androidx.annotation.IntRange
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.davidread.starwarsdatabase.model.FragmentResourceNamesLayoutType
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 import com.davidread.starwarsdatabase.util.MutableSingleEventLiveData
-import com.davidread.starwarsdatabase.view.ResourceNamesAdapter
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
@@ -97,17 +94,11 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
      * source has another page to get, then loading will be shown on the UI and a subscription will
      * be started to get another page from the data source.
      *
-     * @param recyclerView [RecyclerView] that experienced the scroll event.
+     * @param isLastItemVisible Whether the last view visible in the `RecyclerView` is visible.
      */
-    override fun onResourceNamesListScroll(recyclerView: RecyclerView) {
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-        val adapter = recyclerView.adapter as ResourceNamesAdapter
-
-        val isLastItemVisible =
-            adapter.currentList.lastIndex == layoutManager.findLastVisibleItemPosition()
-        val isLastItemResourceName = adapter.currentList.last() is ResourceNameListItem.ResourceName
+    override fun onResourceNamesListScroll(isLastItemVisible: Boolean) {
+        val isLastItemResourceName = resourceNames.last() is ResourceNameListItem.ResourceName
         val doesDataSourceHaveNextPage = nextPage != null
-
         if (isLastItemVisible && isLastItemResourceName && doesDataSourceHaveNextPage) {
             resourceNames.add(ResourceNameListItem.Loading)
             resourceNamesLiveData.postValue(resourceNames)
@@ -130,6 +121,7 @@ abstract class ResourceNamesViewModelImpl : ResourceNamesViewModel, ViewModel() 
             FragmentResourceNamesLayoutType.SINGLE_FRAGMENT -> {
                 onNavigateToDetailsFragmentLiveData.postValue(id)
             }
+
             FragmentResourceNamesLayoutType.MASTER_DETAIL -> {
                 setSelectableItemBackgroundOnAllResourceNames()
                 resourceNames.filterIsInstance<ResourceNameListItem.ResourceName>()
