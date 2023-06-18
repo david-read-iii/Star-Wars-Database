@@ -1,6 +1,7 @@
 package com.davidread.starwarsdatabase.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.annotation.IntRange
 import com.davidread.starwarsdatabase.datasource.FilmsRemoteDataSource
 import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
@@ -49,7 +50,8 @@ class FilmNamesViewModelImpl @Inject constructor(private val filmsRemoteDataSour
                     val newFilmNames = pageResponse.results.map { filmResponse ->
                         ResourceNameListItem.ResourceName(
                             id = filmResponse.url.extractIDFromURL(),
-                            name = filmResponse.title
+                            name = filmResponse.title,
+                            backgroundAttrResId = android.R.attr.selectableItemBackground
                         )
                     }
                     resourceNames.apply {
@@ -57,6 +59,7 @@ class FilmNamesViewModelImpl @Inject constructor(private val filmsRemoteDataSour
                         addAll(newFilmNames)
                     }
                     resourceNamesLiveData.postValue(resourceNames)
+                    subNavHostFragmentVisibility.postValue(View.VISIBLE)
                     pageResponse.next?.let { next ->
                         nextPage = try {
                             next.extractPageFromURL()

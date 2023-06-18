@@ -25,11 +25,11 @@ class CategoryActivity : AppCompatActivity(), NavController.OnDestinationChanged
     }
 
     /**
-     * Manages which fragments are put in [R.id.nav_host_fragment].
+     * Manages which fragments are put in [R.id.main_nav_host_fragment].
      */
     private val navController: NavController by lazy {
         val navHostFragment: NavHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navHostFragment.navController
     }
 

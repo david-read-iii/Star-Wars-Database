@@ -10,7 +10,10 @@ import com.davidread.starwarsdatabase.model.view.ResourceNameListItem
 interface ResourceNamesViewModel {
     val resourceNamesLiveData: LiveData<List<ResourceNameListItem>>
     val isAllResourceNamesRequestedLiveData: LiveData<Boolean>
+    val subNavHostFragmentVisibility: LiveData<Int>
     @setparam:IntRange(from = 1)
     var nextPage: Int
+    fun onFragmentCreateView(screenWidthDp: Int)
+    fun onResourceNameClick(@IntRange(from = 1) id: Int, screenWidthDp: Int)
     fun getResourceNames(@IntRange(from = 1) page: Int)
 }
