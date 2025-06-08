@@ -45,6 +45,7 @@ class RemoteDataSourceModule {
         retrofit.create(PlanetsRemoteDataSource::class.java)
 
     companion object {
-        private const val SWAPI_BASE_URL = "https://swapi.dev/api/"
+//        private const val SWAPI_BASE_URL = "https://swapi.dev/api/" // Original SWAPI URL (not working as of 2025)
+        private const val SWAPI_BASE_URL = "https://swapi.py4e.com/api/" // SWAPI Mirror URL (working as of 2025)
     }
 }
