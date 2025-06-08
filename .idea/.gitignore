@@ -3,3 +3,8 @@
 /workspace.xml
 /kotlinc.xml
 /sonarlint
+/deploymentTargetSelector.xml
+/.name
+/AndroidProjectSystem.xml
+/migrations.xml
+/runConfigurations.xml

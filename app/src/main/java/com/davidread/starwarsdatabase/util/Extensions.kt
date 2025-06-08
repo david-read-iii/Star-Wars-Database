@@ -5,14 +5,14 @@ import com.davidread.starwarsdatabase.model.view.ResourceDetailListItem
 import java.util.regex.Pattern
 
 /**
- * Takes a [String] that matches the URL `https://swapi.dev/api/{endpoint}/{id}/` and returns the
+ * Takes a [String] that matches the URL `https://swapi.py4e.com/api/{endpoint}/{id}/` and returns the
  * `{id}` field as an [Int].
  *
  * @throws IllegalArgumentException Thrown when the [String] does not match the URL regular
  * expression.
  */
 fun String.extractIDFromURL(): Int {
-    val regex = "https://swapi\\.dev/api/[a-z]+/(\\d+)/"
+    val regex = "https://swapi\\.py4e\\.com/api/[a-z]+/(\\d+)/"
     val pattern = Pattern.compile(regex)
     val matcher = pattern.matcher(this)
     return if (matcher.matches()) {
@@ -23,14 +23,14 @@ fun String.extractIDFromURL(): Int {
 }
 
 /**
- * Takes a [List] of [String], where each matches the URL `https://swapi.dev/api/{endpoint}/{id}/`
+ * Takes a [List] of [String], where each matches the URL `https://swapi.py4e.com/api/{endpoint}/{id}/`
  * and each `{id}` field as an [Int] in a [List].
  *
  * @throws IllegalArgumentException Thrown when at least one [String] does not match the URL regular
  * expression.
  */
 fun List<String>.extractIDsFromURLs(): List<Int> {
-    val regex = "https://swapi\\.dev/api/[a-z]+/(\\d+)/"
+    val regex = "https://swapi\\.py4e\\.com/api/[a-z]+/(\\d+)/"
     val pattern = Pattern.compile(regex)
     val idList = mutableListOf<Int>()
     this.forEach { url ->
@@ -45,14 +45,14 @@ fun List<String>.extractIDsFromURLs(): List<Int> {
 }
 
 /**
- * Takes a [String] that matches the URL `https://swapi.dev/api/{endpoint}/?page={pageInt}` and
+ * Takes a [String] that matches the URL `https://swapi.py4e.com/api/{endpoint}/?page={pageInt}` and
  * returns the `{pageInt}` field as an [Int].
  *
  * @throws IllegalArgumentException Thrown when the [String] does not match the URL regular
  * expression.
  */
 fun String.extractPageFromURL(): Int {
-    val regex = "https://swapi\\.dev/api/[a-z]+/\\?page=(\\d+)"
+    val regex = "https://swapi\\.py4e\\.com/api/[a-z]+/\\?page=(\\d+)"
     val pattern = Pattern.compile(regex)
     val matcher = pattern.matcher(this)
     return if (matcher.matches()) {
